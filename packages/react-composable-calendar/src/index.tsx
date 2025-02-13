@@ -1,7 +1,15 @@
-import { createContext } from "react";
+import { createContext, forwardRef, type ComponentPropsWithoutRef } from "react";
 
 const ReactComposableCalendarContext = createContext(null);
 
-export function Hello() {
-  return <div>123</div>;
-}
+
+type RootProps = ComponentPropsWithoutRef<"div">;
+
+export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
+  return (
+    <div ref={ref}>
+      123
+    </div>
+  );
+})
+
