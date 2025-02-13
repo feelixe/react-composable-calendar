@@ -18,14 +18,13 @@ import { Slot } from "./slot.js";
 import { range } from "./range.js";
 import {
   CalendarContext,
+  DEFAULT_MODE,
   useCalendarValue,
   useCalendarView,
   type CalendarContextValue,
+  type Mode,
 } from "./context.js";
 
-type Mode = "single" | "range";
-
-const DEFAULT_MODE: Mode = "single";
 const DAYS_IN_WEEK = 7;
 
 type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
@@ -33,9 +32,11 @@ type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
   "children"
 >;
 
-type RootProps = ComponentPropsWithoutRef<"div">;
+type RootProps = ComponentPropsWithoutRef<"div"> & {
+  mode?: Mode;
+};
 export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
-  const { children, ...rest } = props;
+  const { children, mode = DEFAULT_MODE, ...rest } = props;
 
   const [view, setView] = useState(dayjs());
   const [value, setValue] = useState(dayjs());
@@ -44,8 +45,9 @@ export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
     () => ({
       viewState: [view, setView],
       valueState: [value, setValue],
+      mode,
     }),
-    [view, value]
+    [view, value, mode]
   );
 
   return (

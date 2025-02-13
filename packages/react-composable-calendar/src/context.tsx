@@ -1,9 +1,14 @@
 import type dayjs from "dayjs";
 import { createContext, useContext } from "react";
 
+export type Mode = "single" | "range";
+
+export const DEFAULT_MODE: Mode = "single";
+
 export type CalendarContextValue = {
   viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];
   valueState: [value: dayjs.Dayjs, setValue: (day: dayjs.Dayjs) => void];
+  mode: Mode;
 };
 
 export const CalendarContext = createContext<CalendarContextValue | null>(null);
