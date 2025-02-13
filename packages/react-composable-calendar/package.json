@@ -6,16 +6,20 @@
     "build": "tsc",
     "dev": "tsc --watch --preserveWatchOutput"
   },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "dayjs": "^1.11.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependencies": {
+    "dayjs": "^1.11.6"
   },
   "dependencies": {
     "@types/react": "^19.0.0",

@@ -16,6 +16,7 @@
     "sourceMap": false,
     "outDir": "./dist",
     "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
 
     // Bundler mode
     "moduleResolution": "node",
