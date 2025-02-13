@@ -1,9 +1,10 @@
 import * as Calendar from "react-composable-calendar";
-import "dayjs/locale/sv";
 import type { ComponentProps } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import dayjs from "dayjs";
 import { cn } from "./utils.ts";
+
+import "dayjs/locale/sv";
 dayjs.locale("sv");
 
 function Button(props: ComponentProps<"button">) {
@@ -43,7 +44,7 @@ export default function App() {
           <Calendar.Days className="grid grid-cols-7 gap-1">
             <Calendar.Day
               className={cn(
-                "w-full aspect-square cursor-pointer rounded-lg data-neighbouring:opacity-50 data-is-today:bg-gray-300 data-selected:bg-black data-selected:text-white"
+                "w-full aspect-square cursor-pointer rounded-lg data-neighbouring:opacity-50 data-is-today:bg-gray-200 data-selected:bg-black data-selected:text-white"
               )}
             />
           </Calendar.Days>
