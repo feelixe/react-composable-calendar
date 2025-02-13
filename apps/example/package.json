@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.1",
     "tailwindcss": "^4.0.6"
   },
   "devDependencies": {

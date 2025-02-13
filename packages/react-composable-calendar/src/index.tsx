@@ -15,6 +15,7 @@ import {
 import { getDefaultWeekdayName, type GetWeekdayNameFn } from "./week-name.js";
 import dayjs from "dayjs";
 import { Slot } from "./slot.js";
+import { range } from "./range.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -25,6 +26,7 @@ type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
 
 type CalendarContextValue = {
   viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];
+  valueState: [value: dayjs.Dayjs, setValue: (day: dayjs.Dayjs) => void];
 };
 
 const CalendarContext = createContext<CalendarContextValue | null>(null);
@@ -44,17 +46,24 @@ export function useCalendarView() {
   return context.viewState;
 }
 
+export function useCalendarValue() {
+  const context = useCalendarContext();
+  return context.valueState;
+}
+
 type RootProps = ComponentPropsWithoutRef<"div">;
 export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
   const { children, ...rest } = props;
 
   const [view, setView] = useState(dayjs());
+  const [value, setValue] = useState(dayjs());
 
   const contextValue = useMemo<CalendarContextValue>(
     () => ({
       viewState: [view, setView],
+      valueState: [value, setValue],
     }),
-    [view]
+    [view, value]
   );
 
   return (
@@ -70,11 +79,10 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
     const { children, ...rest } = props;
 
     const child = Children.only(children) as ReactElement<WeekdayProps>;
-    const weekRange = [...new Array(DAYS_IN_WEEK)].map((_, i) => i);
 
     return (
       <div ref={ref} {...rest}>
-        {weekRange.map((index) => {
+        {range(DAYS_IN_WEEK).map((index) => {
           return cloneElement(child, {
             ...child.props,
             key: index,
@@ -112,17 +120,25 @@ export const Weekday = forwardRef<HTMLDivElement, WeekdayProps>(
   }
 );
 
-export type MonthTitleProps = ComponentPropsWithoutRefAndChildren<"div">;
+export type MonthTitleProps = ComponentPropsWithoutRefAndChildren<"div"> & {
+  getMonthTitle?: (date: dayjs.Dayjs) => string;
+};
+
 export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
   (props, ref) => {
-    const { ...rest } = props;
+    const { getMonthTitle, ...rest } = props;
 
     const [view] = useCalendarView();
-    const monthName = view.format("MMMM");
+    const monthTitle = useMemo(() => {
+      if (getMonthTitle) {
+        return getMonthTitle(view);
+      }
+      return view.format("MMMM YYYY");
+    }, [view, getMonthTitle]);
 
     return (
       <div ref={ref} {...rest}>
-        {monthName}
+        {monthTitle}
       </div>
     );
   }
@@ -149,11 +165,99 @@ export const OffsetViewButton = forwardRef<
     [offset, view, setView, onClick]
   );
 
-  const Comp = asChild ? Slot : 'button';
+  const Comp = asChild ? Slot : "button";
 
   return (
     <Comp onClick={clickHandler} ref={ref} {...rest}>
       {children}
     </Comp>
+  );
+});
+
+export type DaysProps = ComponentPropsWithoutRef<"div">;
+export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
+  const { children, ...rest } = props;
+
+  const child = Children.only(children) as ReactElement<DayProps>;
+
+  const [view] = useCalendarView();
+
+  const startOfMonth = view.startOf("month");
+  const endOfMonth = view.endOf("month");
+
+  // Get the start/end of the weeks surrounding the month
+  const startOfWeek = startOfMonth.startOf("week");
+  const endOfWeek = endOfMonth.endOf("week");
+
+  const totalDays = endOfWeek.diff(startOfWeek, "day") + 1;
+  const days = range(totalDays).map((index) => startOfWeek.add(index, "day"));
+
+  return (
+    <div ref={ref} {...rest}>
+      {days.map((date) => {
+        return cloneElement(child, {
+          ...child.props,
+          key: date.format("YYYY-MM-DD"),
+          children: date.date(),
+          date,
+        });
+      })}
+    </div>
+  );
+});
+
+export type DayState = {
+  isToday: boolean;
+  isSelected: boolean;
+  isNeighbouringMonth: boolean;
+};
+
+export type DayProps = Omit<ComponentPropsWithoutRef<"button">, "className"> & {
+  asChild?: boolean;
+  date?: dayjs.Dayjs;
+  className?: string | undefined | ((state: DayState) => string);
+};
+export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
+  const { asChild, className, date, onClick, ...rest } = props;
+
+  if (!date) {
+    throw new Error("'Day' must be used within a 'Days' component");
+  }
+
+  const [value, setValue] = useCalendarValue();
+  const [view] = useCalendarView();
+
+  const isSelected = value.isSame(date, "day");
+  const isNeighbouringMonth = !date.isSame(view, "month");
+  const isToday = date.isSame(dayjs(), "day");
+
+  const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
+    (e) => {
+      setValue(date);
+      onClick?.(e);
+    },
+    [onClick, setValue, date]
+  );
+
+  const computedClassName = useMemo(() => {
+    if (className === undefined || typeof className === "string") {
+      return className;
+    }
+    return className({ isToday, isSelected, isNeighbouringMonth });
+  }, [className, isToday, isSelected, isNeighbouringMonth]);
+
+  const Comp = asChild ? Slot : "button";
+
+  return (
+    <Comp
+      aria-selected={isSelected ? true : undefined}
+      data-selected={isSelected ? true : undefined}
+      data-neighbouring={isNeighbouringMonth ? true : undefined}
+      data-is-today={isToday ? true : undefined}
+      onClick={clickHandler}
+      className={computedClassName}
+      ref={ref}
+      {...rest}
+    />
   );
 });
