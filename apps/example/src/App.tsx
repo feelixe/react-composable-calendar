@@ -21,13 +21,13 @@ export default function App() {
     <div className="p-4">
       <div className="max-w-sm">
         <Calendar.Root>
-          <Calendar.OffsetViewButton offset={-1}>
+          <Calendar.OffsetViewButton asChild offset={-1}>
             <Button>
               <MinusIcon />
             </Button>
           </Calendar.OffsetViewButton>
           <Calendar.MonthTitle className="flex items-center justify-center" />
-          <Calendar.OffsetViewButton offset={1}>
+          <Calendar.OffsetViewButton asChild offset={1}>
             <Button>
               <PlusIcon />
             </Button>

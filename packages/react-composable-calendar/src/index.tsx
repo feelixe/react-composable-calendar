@@ -14,6 +14,7 @@ import {
 } from "react";
 import { getDefaultWeekdayName, type GetWeekdayNameFn } from "./week-name.js";
 import dayjs from "dayjs";
+import { Slot } from "./slot.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -129,12 +130,13 @@ export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
 
 export type OffsetViewButtonProps = ComponentPropsWithoutRef<"button"> & {
   offset: number;
+  asChild?: boolean;
 };
 export const OffsetViewButton = forwardRef<
   HTMLButtonElement,
   OffsetViewButtonProps
 >((props, ref) => {
-  const { children, onClick, offset, ...rest } = props;
+  const { children, onClick, offset, asChild, ...rest } = props;
 
   const [view, setView] = useCalendarView();
 
@@ -147,9 +149,11 @@ export const OffsetViewButton = forwardRef<
     [offset, view, setView, onClick]
   );
 
+  const Comp = asChild ? Slot : 'button';
+
   return (
-    <button onClick={clickHandler} ref={ref} {...rest}>
+    <Comp onClick={clickHandler} ref={ref} {...rest}>
       {children}
-    </button>
+    </Comp>
   );
 });
