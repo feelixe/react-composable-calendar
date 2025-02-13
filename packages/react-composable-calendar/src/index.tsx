@@ -16,40 +16,22 @@ import { getDefaultWeekdayName, type GetWeekdayNameFn } from "./week-name.js";
 import dayjs from "dayjs";
 import { Slot } from "./slot.js";
 import { range } from "./range.js";
+import {
+  CalendarContext,
+  useCalendarValue,
+  useCalendarView,
+  type CalendarContextValue,
+} from "./context.js";
 
+type Mode = "single" | "range";
+
+const DEFAULT_MODE: Mode = "single";
 const DAYS_IN_WEEK = 7;
 
 type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
   ComponentPropsWithoutRef<T>,
   "children"
 >;
-
-type CalendarContextValue = {
-  viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];
-  valueState: [value: dayjs.Dayjs, setValue: (day: dayjs.Dayjs) => void];
-};
-
-const CalendarContext = createContext<CalendarContextValue | null>(null);
-
-export function useCalendarContext() {
-  const context = useContext(CalendarContext);
-  if (context === null) {
-    throw new Error(
-      "useCalendarContext must be used within a CalendarProvider"
-    );
-  }
-  return context;
-}
-
-export function useCalendarView() {
-  const context = useCalendarContext();
-  return context.viewState;
-}
-
-export function useCalendarValue() {
-  const context = useCalendarContext();
-  return context.valueState;
-}
 
 type RootProps = ComponentPropsWithoutRef<"div">;
 export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
@@ -68,7 +50,9 @@ export const Root = forwardRef<HTMLDivElement, RootProps>((props, ref) => {
 
   return (
     <div ref={ref} {...rest}>
-      <CalendarContext value={contextValue}>{children}</CalendarContext>
+      <CalendarContext.Provider value={contextValue}>
+        {children}
+      </CalendarContext.Provider>
     </div>
   );
 });
