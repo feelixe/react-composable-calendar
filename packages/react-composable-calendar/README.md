@@ -1,4 +1,4 @@
-# React Composable Calendar
+<img src="/static//header.png" alt="Usage demo">
 
 ## Installation
 1. Install dependencies

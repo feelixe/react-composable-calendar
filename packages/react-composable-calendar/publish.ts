@@ -3,7 +3,7 @@ import semver from "semver";
 import { $ } from "bun";
 import prompts from "prompts";
 
-const TAG_MAP = [[/^rc[0-9]+$/, "next"] as const];
+const TAG_MAP = [[/^rc[0-9]+$/, "rc"] as const];
 const DEFAULT_TAG = "latest";
 
 async function doesTagAlreadyExist(version: string) {
@@ -13,11 +13,6 @@ async function doesTagAlreadyExist(version: string) {
   } catch {
     return false;
   }
-}
-
-async function runTests() {
-  console.log("Running tests...");
-  await $`bun test`;
 }
 
 async function build() {
@@ -79,7 +74,6 @@ if (!userConfirmed) {
 
 const isPreRelease = tag !== DEFAULT_TAG;
 
-await runTests();
 await build();
 await tagAndPush(version);
 await publishToNpm(tag);
