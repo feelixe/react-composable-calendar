@@ -1,15 +1,7 @@
-# react-composable-calendar
+# React Composable Calendar
 
-To install dependencies:
-
-```bash
-bun install
+## Installation
+1. Install dependencies
 ```
-
-To run:
-
-```bash
-bun run index.ts
+npm i react-composable-calendar dayjs
 ```
-
-This project was created using `bun init` in bun v1.2.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

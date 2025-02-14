@@ -32,7 +32,17 @@ import type {
 } from "./types.js";
 import type { CalendarSingleValue } from "./types.js";
 import { normalizeValue } from "./value.js";
-import { useCalendarMode, useCalendarValue, useCalendarView } from "./hooks.js";
+import {
+  useCalendarMode,
+  useCalendarValue,
+  useCalendarView,
+  useIsEndOfRange,
+  useIsInRange,
+  useIsNeighbouringMonth,
+  useIsSelected,
+  useIsStartOfRange,
+  useIsToday,
+} from "./hooks.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -245,7 +255,10 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
     <div ref={ref} {...rest}>
       {days.map((date) => {
         return (
-          <CalendarDayContext key={date.format("YYYY-MM-DD")} value={{ date }}>
+          <CalendarDayContext
+            key={date.format("YYYY-MM-DD")}
+            value={{ day: date }}
+          >
             {cloneElement(child, {
               ...child.props,
               key: date.format("YYYY-MM-DD"),
@@ -270,23 +283,15 @@ export type DayProps = Omit<ComponentPropsWithoutRef<"button">, "className"> & {
 export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   const { asChild, className, onClick, children, ...rest } = props;
 
-  const date = useCalendarDayContext().date;
+  const { day } = useCalendarDayContext();
 
   const mode = useCalendarMode();
   const [value, setValue] = useCalendarValue();
-  const [view] = useCalendarView();
 
-  const isNeighbouringMonth = !date.isSame(view, "month");
-  const isToday = date.isSame(dayjs(), "day");
-  const isSelected = useMemo(() => {
-    return value.some((d) => d?.isSame(date, "day") ?? false);
-  }, [value, date]);
-  const isInRange = useMemo(() => {
-    if (mode === "single") {
-      return false;
-    }
-    return date.isAfter(value[0], "day") && date.isBefore(value[1], "day");
-  }, [mode, value, date]);
+  const isNeighbouringMonth = useIsNeighbouringMonth();
+  const isToday = useIsToday();
+  const isSelected = useIsSelected();
+  const isInRange = useIsInRange();
 
   const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
     (e) => {
@@ -295,27 +300,27 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
         return;
       }
       if (mode === "single") {
-        setValue([date, null]);
+        setValue([day, null]);
       } else {
         let newValue: CalendarInternalValue;
 
         if (!value[0]) {
-          newValue = [date, null];
+          newValue = [day, null];
         } else if (!value[1]) {
-          newValue = [value[0], date];
-        } else if (value[0].isSame(date, "day")) {
+          newValue = [value[0], day];
+        } else if (value[0].isSame(day, "day")) {
           newValue = [null, value[1]];
-        } else if (value[1].isSame(date, "day")) {
+        } else if (value[1].isSame(day, "day")) {
           newValue = [value[0], null];
         } else {
-          const distanceToStart = date.diff(value[0], "day");
-          const distanceToEnd = date.diff(value[1], "day");
+          const distanceToStart = day.diff(value[0], "day");
+          const distanceToEnd = day.diff(value[1], "day");
           const isStartClosest =
             Math.abs(distanceToStart) < Math.abs(distanceToEnd);
           if (isStartClosest) {
-            newValue = [date, value[1]];
+            newValue = [day, value[1]];
           } else {
-            newValue = [value[0], date];
+            newValue = [value[0], day];
           }
         }
         if (newValue[0] && newValue[1]) {
@@ -324,7 +329,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
         setValue(newValue);
       }
     },
-    [onClick, setValue, date, mode, value]
+    [onClick, setValue, day, mode, value]
   );
 
   const computedClassName = useMemo(() => {
@@ -362,7 +367,7 @@ export const DayLabel = forwardRef<HTMLDivElement, DayLabelProps>(
 
     return (
       <div ref={ref} {...rest}>
-        {dayContext.date.date()}
+        {dayContext.day.date()}
       </div>
     );
   }
@@ -476,13 +481,49 @@ export const ClearButton = forwardRef<HTMLButtonElement, ClearButtonProps>(
   }
 );
 
-export type InRangeProps = ComponentPropsWithoutRef<"div"> & {
+export type DayInRangeProps = ComponentPropsWithoutRef<"div"> & {
   asChild?: boolean;
 };
 
-export const InRange = forwardRef<HTMLDivElement, InRangeProps>(
+export const DayInRange = forwardRef<HTMLDivElement, DayInRangeProps>(
   (props, ref) => {
     const { asChild, ...rest } = props;
+    const mode = useCalendarMode();
+    const isInRange = useIsInRange();
+    const isStartOfRange = useIsStartOfRange();
+    const isEndOfRange = useIsEndOfRange();
+    const isEdge = isStartOfRange || isEndOfRange;
+
+    if (mode === "single" || !isInRange) {
+      return null;
+    }
+
+    const Comp = asChild ? Slot : "div";
+
+    return (
+      <Comp
+        data-start={isStartOfRange ? true : undefined}
+        data-end={isEndOfRange ? true : undefined}
+        data-edge={isEdge ? true : undefined}
+        ref={ref}
+        {...rest}
+      />
+    );
+  }
+);
+
+export type DayInSelectedProps = ComponentPropsWithoutRef<"div"> & {
+  asChild?: boolean;
+};
+
+export const DayIsSelected = forwardRef<HTMLDivElement, DayInSelectedProps>(
+  (props, ref) => {
+    const { asChild, ...rest } = props;
+
+    const isSelected = useIsSelected();
+    if (!isSelected) {
+      return null;
+    }
 
     const Comp = asChild ? Slot : "div";
 

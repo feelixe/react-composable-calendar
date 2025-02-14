@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "dev": "tsc --watch --preserveWatchOutput"
   },
   "exports": {
@@ -16,11 +16,19 @@
       "types": "./dist/types.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
     "dayjs": "^1.11.6",
+    "prompts": "^2.4.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "semver": "^7.7.1"
   },
   "peerDependencies": {
     "dayjs": "^1.11.6"

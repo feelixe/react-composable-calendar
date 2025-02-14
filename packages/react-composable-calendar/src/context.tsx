@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 import type { CalendarInternalValue, Mode } from "./types.js";
 
 export type CalendarDayContextValue = {
-  date: dayjs.Dayjs;
+  day: dayjs.Dayjs;
 };
 
 export const CalendarDayContext = createContext<CalendarDayContextValue | null>(

@@ -1,5 +1,1 @@
-- [] Select range
-- [] neighbouring month days
-- Day, accept children after date.
 - Day, maybe accept function as child for custom rendering
-- Day, Render day label in function instead
