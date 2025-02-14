@@ -1,13 +1,13 @@
 import type dayjs from "dayjs";
 import { createContext, useContext } from "react";
-
-export type Mode = "single" | "range";
-
-export const DEFAULT_MODE: Mode = "single";
+import type { CalendarInternalValue, Mode } from "./types.js";
 
 export type CalendarContextValue = {
   viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];
-  valueState: [value: dayjs.Dayjs, setValue: (day: dayjs.Dayjs) => void];
+  valueState: [
+    value: CalendarInternalValue,
+    setValue: (value: CalendarInternalValue) => void,
+  ];
   mode: Mode;
 };
 
@@ -31,4 +31,9 @@ export function useCalendarView() {
 export function useCalendarValue() {
   const context = useCalendarContext();
   return context.valueState;
+}
+
+export function useCalendarMode() {
+  const context = useCalendarContext();
+  return context.mode;
 }
