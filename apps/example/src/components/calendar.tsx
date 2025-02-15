@@ -38,8 +38,8 @@ export default function CalendarRange() {
           </Calendar.OffsetViewButton>
         </div>
 
-        <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
-          <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
+        <Calendar.Weekdays className="mb-2 grid grid-cols-7 font-light text-gray-500 text-sm">
+          <Calendar.WeekdayLabel className="flex items-center justify-center" />
         </Calendar.Weekdays>
 
         <Calendar.Days className="mb-1 grid grid-cols-7 gap-y-1">
