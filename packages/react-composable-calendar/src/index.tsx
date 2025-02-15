@@ -135,7 +135,7 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
   (props, ref) => {
     const { children, ...rest } = props;
 
-    const child = Children.only(children) as ReactElement<WeekdayProps>;
+    const child = Children.only(children) as ReactElement<WeekdayLabelProps>;
 
     return (
       <div ref={ref} {...rest}>
@@ -149,10 +149,10 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
   }
 );
 
-export type WeekdayProps = ComponentPropsWithoutRefAndChildren<"div"> & {
+export type WeekdayLabelProps = ComponentPropsWithoutRefAndChildren<"div"> & {
   getWeekdayName?: GetWeekdayNameFn;
 };
-export const Weekday = forwardRef<HTMLDivElement, WeekdayProps>(
+export const WeekdayLabel = forwardRef<HTMLDivElement, WeekdayLabelProps>(
   (props, ref) => {
     const { getWeekdayName = getDefaultWeekdayName, ...rest } = props;
 
