@@ -21,11 +21,9 @@ export function CalendarBody() {
           </Button>
         </CalendarPrimitive.OffsetViewButton>
       </div>
-
       <CalendarPrimitive.Weekdays className="mb-3 grid grid-cols-7 font-light text-muted-foreground text-xs">
         <CalendarPrimitive.WeekdayLabel className="flex items-center justify-center" />
       </CalendarPrimitive.Weekdays>
-
       <CalendarPrimitive.Days className="mb-1 grid grid-cols-7 gap-y-1">
         <CalendarPrimitive.Day className="group relative aspect-square w-full cursor-pointer">
           <CalendarPrimitive.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
@@ -34,6 +32,7 @@ export function CalendarBody() {
           </div>
         </CalendarPrimitive.Day>
       </CalendarPrimitive.Days>
+      <CalendarPrimitive.FormInput />
     </>
   );
 }

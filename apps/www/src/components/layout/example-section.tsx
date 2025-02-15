@@ -12,9 +12,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card.tsx";
+import { CodeBlock } from "../ui/code-block.tsx";
 import { Container } from "../ui/container.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs.tsx";
-import { CodeBlock } from "../ui/code-block.tsx";
 
 export type ExampleSectionProps = ComponentProps<typeof Container> & {
   title: string;
@@ -25,7 +25,7 @@ export type ExampleSectionProps = ComponentProps<typeof Container> & {
 export function ExampleSection(props: ExampleSectionProps) {
   const { className, title, description, children, code, ...rest } = props;
 
-  const [tab, setTab] = useState("code");
+  const [tab, setTab] = useState("preview");
 
   return (
     <Container {...rest}>

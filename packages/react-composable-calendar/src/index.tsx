@@ -13,7 +13,6 @@ import {
   type MouseEventHandler,
   type ReactElement,
   type ReactNode,
-  type RefAttributes,
 } from "react";
 import { getDefaultWeekdayName } from "./week-name.js";
 import dayjs from "dayjs";
@@ -25,6 +24,7 @@ import {
 } from "./contexts/calendar.js";
 import { DayContext, useDayContext } from "./contexts/day.js";
 import type {
+  CalendarInputName,
   CalendarInternalValue,
   CalendarRangeValue,
   Mode,
@@ -32,15 +32,16 @@ import type {
 import type { CalendarSingleValue } from "./types.js";
 import { normalizeValue, sortValue } from "./value.js";
 import {
-  useCalendarMode,
+  useMode,
   useCalendarValue,
-  useCalendarView,
+  useView,
   useIsEndOfRange,
   useIsInRange,
   useIsNeighboringMonth,
   useIsSelected,
   useIsStartOfRange,
   useIsToday,
+  useInputName,
 } from "./hooks.js";
 import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
 import {
@@ -71,20 +72,29 @@ export type RootSingleProps = RootBaseProps & {
   value?: CalendarSingleValue;
   onValueChange?: (value: CalendarSingleValue) => unknown;
   defaultValue?: CalendarSingleValue;
+  name?: string;
 };
 export type RootRangeProps = RootBaseProps & {
   mode: "range";
   value?: CalendarRangeValue;
   onValueChange?: (value: CalendarRangeValue) => unknown;
   defaultValue?: CalendarRangeValue;
+  name?: [string, string];
 };
 
 export type RootProps = RootSingleProps | RootRangeProps;
 
 export const Root = forwardRef<HTMLDivElement, RootProps>(
   (props: RootProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { children, value, onValueChange, defaultValue, mode, ...rest } =
-      props;
+    const {
+      children,
+      value,
+      onValueChange,
+      defaultValue,
+      mode,
+      name,
+      ...rest
+    } = props;
 
     const isStateUncontrolled = value === undefined;
 
@@ -121,13 +131,21 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
       setInternalValue(normalizeValue(value));
     }, [value]);
 
+    const normalizedName = useMemo<CalendarInputName>(() => {
+      if (mode === "range") {
+        return name ?? [null, null];
+      }
+      return [name ?? null, null];
+    }, [name, mode]);
+
     const contextValue = useMemo<CalendarContextValue>(
       () => ({
         viewState: [view, setView],
         valueState: [internalValue, updateValue],
         mode,
+        inputName: normalizedName,
       }),
-      [view, internalValue, mode, updateValue],
+      [view, internalValue, mode, updateValue, normalizedName],
     );
 
     const previousMode = useRef<Mode>(mode);
@@ -197,7 +215,7 @@ export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
   (props, ref) => {
     const { formatFn = defaultFormatMonth, ...rest } = props;
 
-    const [view] = useCalendarView();
+    const [view] = useView();
     const monthTitle = useMemo(() => {
       return formatFn(view);
     }, [view, formatFn]);
@@ -220,7 +238,7 @@ export const OffsetViewButton = forwardRef<
 >((props, ref) => {
   const { children, onClick, offset, asChild, ...rest } = props;
 
-  const [view, setView] = useCalendarView();
+  const [view, setView] = useView();
 
   const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
     (e) => {
@@ -270,7 +288,7 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
 
   const child = Children.only(children) as ReactElement<DayProps>;
 
-  const [view] = useCalendarView();
+  const [view] = useView();
 
   const startOfMonth = view.startOf("month");
   const endOfMonth = view.endOf("month");
@@ -317,7 +335,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   } = props;
 
   const { day } = useDayContext();
-  const mode = useCalendarMode();
+  const mode = useMode();
   const [value, setValue] = useCalendarValue();
   const isNeighboringMonth = useIsNeighboringMonth();
   const isToday = useIsToday();
@@ -386,37 +404,16 @@ export const DayLabel = forwardRef<HTMLDivElement, DayLabelProps>(
   },
 );
 
-export type FormInputProps = ComponentPropsWithoutRefAndChildren<"input"> & {
+export type FormInputProps = ComponentPropsWithoutRefAndChildren<"div"> & {
   formatFn?: FormatDateFn;
 };
-export const FormInputSingle = forwardRef<HTMLInputElement, FormInputProps>(
+export const FormInput = forwardRef<HTMLDivElement, FormInputProps>(
   (props, ref) => {
     const { formatFn = defaultFormatValue, ...rest } = props;
+
+    const mode = useMode();
     const [value] = useCalendarValue();
-
-    const inputValue = useMemo(() => {
-      return formatFn(value[0]) ?? "";
-    }, [formatFn, value]);
-
-    return <input ref={ref} type="hidden" value={inputValue} {...rest} />;
-  },
-);
-
-export type FormInputRangeProps = ComponentPropsWithoutRefAndChildren<"div"> & {
-  formatFn?: FormatDateFn;
-  nameStartDate: string;
-  nameEndDate: string;
-};
-export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
-  (props, ref) => {
-    const {
-      formatFn = defaultFormatValue,
-      nameStartDate: nameFrom,
-      nameEndDate: nameTo,
-      ...rest
-    } = props;
-
-    const [value] = useCalendarValue();
+    const inputName = useInputName();
 
     const inputValues = useMemo(() => {
       return [formatFn(value[0]) ?? "", formatFn(value[1]) ?? ""] as const;
@@ -424,8 +421,18 @@ export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
 
     return (
       <div ref={ref} {...rest}>
-        <input type="hidden" name={nameFrom} value={inputValues[0]} />
-        <input type="hidden" name={nameTo} value={inputValues[1]} />
+        <input
+          type="hidden"
+          name={inputName[0] ?? undefined}
+          value={inputValues[0]}
+        />
+        {mode === "range" && (
+          <input
+            type="hidden"
+            name={inputName[1] ?? undefined}
+            value={inputValues[1]}
+          />
+        )}
       </div>
     );
   },
@@ -487,7 +494,7 @@ export type DayInRangeProps = ComponentPropsWithoutRef<"div"> & {
 export const DayInRange = forwardRef<HTMLDivElement, DayInRangeProps>(
   (props, ref) => {
     const { asChild, ...rest } = props;
-    const mode = useCalendarMode();
+    const mode = useMode();
     const isInRange = useIsInRange();
     const isStartOfRange = useIsStartOfRange();
     const isEndOfRange = useIsEndOfRange();
@@ -540,7 +547,7 @@ export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
 
     const [value] = useCalendarValue();
     const [startValue, endValue] = value;
-    const mode = useCalendarMode();
+    const mode = useMode();
 
     const formattedValue = useMemo(() => {
       if (mode === "single") {

@@ -1,20 +1,92 @@
 ---
-import { basicCalendar } from "@/examples/code-examples.ts";
+import * as codeExamples from "@/examples/code-examples.ts";
 import { ExampleSection } from "../components/layout/example-section.tsx";
+import { MultiViewCalendar } from "../components/ui/calendar-multi-view.tsx";
 import { Calendar } from "../components/ui/calendar.tsx";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card.tsx";
+import { CodeBlock } from "../components/ui/code-block.tsx";
+import { Container } from "../components/ui/container.tsx";
+import { DatePicker } from "../components/ui/date-picker.tsx";
+import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
   <div class="grid gap-8 py-8">
+    <Container>
+      <Card>
+        <CardContent>
+          <Typography variant="h2" className="mb-1">Get started</Typography>
+          <Typography variant="p"> Install dependencies: </Typography>
+          <CodeBlock
+            client:load
+            code="npm i react-composable-calendar dayjs"
+            className="mb-6"
+          />
+
+          <Typography variant="h2" className="mb-1">
+            Copy paste into your codebase
+          </Typography>
+          <Typography variant="p" className="mb-3">
+            This package is designed with composability and headless components
+            at its core, following the same principles as shadcn/ui and Radix
+            UI. It offers flexibility and customization, empowering you to build
+            exactly what you need.
+          </Typography>
+          <Typography variant="p" className="mb-6">
+            Explore the examples below, find the one that aligns with your
+            vision, and start crafting your perfect calendar component with
+            ease.
+          </Typography>
+
+          <Typography variant="h2" className="mb-1">Change locale</Typography>
+          <Typography variant="p">
+            To change locale of the calendar, add this to your calendar
+            component
+          </Typography>
+          <CodeBlock
+            client:load
+            code='import dayjs from "dayjs";\nimport "dayjs/locale/en-gb.js";\n\ndayjs.locale("en-gb");'
+          />
+        </CardContent>
+      </Card>
+    </Container>
+
     <ExampleSection
       client:load
       title="Basic Calendar"
-      description="A simple calendar that accepts a single date input."
-      code={basicCalendar}
+      description="A simple calendar that accepts a single date or a range."
+      code={codeExamples.basicCalendar}
     >
       <Calendar
         mode="single"
+        className="grow border border-border rounded-md"
+        client:load
+      />
+    </ExampleSection>
+
+    <ExampleSection
+      client:load
+      title="Date Picker"
+      description="A Date Picker input that utilizes shadcn/ui's Button and Popover."
+      code={codeExamples.datePicker}
+    >
+      <DatePicker mode="single" client:load />
+    </ExampleSection>
+
+    <ExampleSection
+      client:load
+      title="Multiple Views"
+      description="You can have multiple views under the same calendar root."
+      code={codeExamples.datePicker}
+    >
+      <MultiViewCalendar
+        mode="range"
         className="grow border border-border rounded-md"
         client:load
       />

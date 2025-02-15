@@ -31,7 +31,7 @@ const menuItems: MenuItem[] = [
   {
     id: 1,
     label: "Documentation",
-    link: { to: "/" },
+    link: { to: "/docs" },
   },
   {
     id: 2,

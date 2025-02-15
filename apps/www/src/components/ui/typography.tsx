@@ -5,10 +5,10 @@ import { useMemo } from "react";
 const typographyVariants = cva("", {
   variants: {
     variant: {
-      h1: "scroll-m-20 text-3xl font-medium tracking-tight",
-      h2: "scroll-m-20 text-lg font-medium tracking-tight",
+      h1: "scroll-m-20 text-lg font-semibold tracking-tighter",
+      h2: "scroll-m-20 text-base font-semibold tracking-tight",
       h3: "scroll-m-20 text-base font-medium tracking-tight",
-      p: "tracking-tight text-muted-foreground",
+      p: "tracking-tight text-muted-foreground mb-1.5",
       caption: "text-sm text-muted-foreground tracking-tight",
       leading: "text-muted-foreground font-normal tracking-tighter text-xl",
     },

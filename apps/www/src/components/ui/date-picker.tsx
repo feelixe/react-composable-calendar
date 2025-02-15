@@ -43,7 +43,9 @@ export function DatePicker(props: DatePickerProps) {
   return (
     <CalendarPrimitive.Root {...rest}>
       <Popover>
-        <PopoverTrigger asChild>{children}</PopoverTrigger>
+        <PopoverTrigger asChild>
+          <DatePickerTrigger />
+        </PopoverTrigger>
         <PopoverContent className="w-auto min-w-72 p-3">
           <CalendarBody />
         </PopoverContent>

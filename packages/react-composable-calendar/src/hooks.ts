@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
 
-export function useCalendarView() {
+export function useView() {
   const context = useCalendarContext();
   const viewContext = useViewContext();
 
@@ -19,7 +19,7 @@ export function useCalendarValue() {
   return context.valueState;
 }
 
-export function useCalendarMode() {
+export function useMode() {
   const context = useCalendarContext();
   return context.mode;
 }
@@ -31,7 +31,7 @@ export type UseIsInRangeParams = {
 export function useIsInRange(args?: UseIsInRangeParams) {
   const { inclusive = true } = args ?? {};
 
-  const mode = useCalendarMode();
+  const mode = useMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
@@ -52,7 +52,7 @@ export function useIsInRange(args?: UseIsInRangeParams) {
 }
 
 export function useIsSelected() {
-  const mode = useCalendarMode();
+  const mode = useMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
@@ -74,7 +74,7 @@ export function useIsToday() {
 
 export function useIsNeighboringMonth() {
   const { day } = useDayContext();
-  const [view] = useCalendarView();
+  const [view] = useView();
 
   return useMemo(() => {
     return !day.isSame(view, "month");
@@ -100,7 +100,7 @@ export function useIsEndOfRange() {
 }
 
 export function useHasValue() {
-  const mode = useCalendarMode();
+  const mode = useMode();
   const [value] = useCalendarValue();
 
   return useMemo(() => {
@@ -108,4 +108,9 @@ export function useHasValue() {
       ? value[0] !== null
       : value[0] !== null && value[1] !== null;
   }, [mode, value]);
+}
+
+export function useInputName() {
+  const context = useCalendarContext();
+  return context.inputName;
 }
