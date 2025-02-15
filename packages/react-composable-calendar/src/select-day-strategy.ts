@@ -40,10 +40,20 @@ export const closestStrategy: SelectDayStrategy = (args) => {
 
 export const selectStartDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
-  return [clickedDate, currentValue[1]];
+  const [, endDate] = currentValue;
+
+  if (endDate && clickedDate.isAfter(endDate, "day")) {
+    return [clickedDate, clickedDate];
+  }
+  return [clickedDate, endDate];
 };
 
 export const selectEndDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
-  return [currentValue[0], clickedDate];
+  const [startDate] = currentValue;
+
+  if (startDate && clickedDate.isBefore(startDate, "day")) {
+    return [clickedDate, clickedDate];
+  }
+  return [startDate, clickedDate];
 };

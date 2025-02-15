@@ -10,7 +10,6 @@ import {
   type ElementType,
   type ForwardedRef,
   type MouseEventHandler,
-  type PropsWithChildren,
   type ReactElement,
   type RefAttributes,
 } from "react";
@@ -26,8 +25,6 @@ import { DayContext, useDayContext } from "./contexts/day.js";
 import type {
   CalendarInternalValue,
   CalendarRangeValue,
-  FormatDateFn,
-  GetWeekdayNameFn,
   Mode,
 } from "./types.js";
 import type { CalendarSingleValue } from "./types.js";
@@ -49,6 +46,12 @@ import {
   type SelectDayStrategy,
 } from "./select-day-strategy.js";
 import { ViewContext, type ViewContextValue } from "./contexts/view.js";
+import type {
+  FormatDateFn,
+  FormatRequiredDateFn,
+  GetWeekdayNameFn,
+} from "./format.js";
+import { defaultFormatMonth, defaultFormatValue } from "./format.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -174,20 +177,17 @@ export const WeekdayLabel = forwardRef<HTMLDivElement, WeekdayLabelProps>(
 );
 
 export type MonthTitleProps = ComponentPropsWithoutRefAndChildren<"div"> & {
-  getMonthTitle?: (date: dayjs.Dayjs) => string;
+  formatFn?: FormatRequiredDateFn;
 };
 
 export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
   (props, ref) => {
-    const { getMonthTitle, ...rest } = props;
+    const { formatFn = defaultFormatMonth, ...rest } = props;
 
     const [view] = useCalendarView();
     const monthTitle = useMemo(() => {
-      if (getMonthTitle) {
-        return getMonthTitle(view);
-      }
-      return view.format("MMMM YYYY");
-    }, [view, getMonthTitle]);
+      return formatFn(view);
+    }, [view, formatFn]);
 
     return (
       <div ref={ref} {...rest}>
@@ -374,22 +374,12 @@ export type FormInputProps = ComponentPropsWithoutRefAndChildren<"input"> & {
 };
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   (props, ref) => {
-    const { formatFn, ...rest } = props;
+    const { formatFn = defaultFormatValue, ...rest } = props;
     const [value] = useCalendarValue();
 
-    const defaultFormatFn = useCallback<FormatDateFn>((val) => {
-      if (!val) {
-        return "";
-      }
-      return val.format("YYYY-MM-DD");
-    }, []);
-
     const inputValue = useMemo(() => {
-      if (formatFn) {
-        return formatFn(value[0]);
-      }
-      return defaultFormatFn(value[0]);
-    }, [formatFn, value, defaultFormatFn]);
+      return formatFn(value[0]) ?? "";
+    }, [formatFn, value]);
 
     return <input ref={ref} type="hidden" value={inputValue} {...rest} />;
   }
@@ -402,22 +392,13 @@ export type FormInputRangeProps = ComponentPropsWithoutRefAndChildren<"div"> & {
 };
 export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
   (props, ref) => {
-    const { formatFn, nameFrom, nameTo, ...rest } = props;
+    const { formatFn = defaultFormatValue, nameFrom, nameTo, ...rest } = props;
+
     const [value] = useCalendarValue();
 
-    const computedFormatFn = useCallback<FormatDateFn>(
-      (val) => {
-        if (formatFn) {
-          return formatFn(val);
-        }
-        return val ? val.format("YYYY-MM-DD") : "";
-      },
-      [formatFn]
-    );
-
     const inputValues = useMemo(() => {
-      return [computedFormatFn(value[0]), computedFormatFn(value[1])] as const;
-    }, [value, computedFormatFn]);
+      return [formatFn(value[0]) ?? "", formatFn(value[1]) ?? ""] as const;
+    }, [value, formatFn]);
 
     return (
       <div ref={ref} {...rest}>
@@ -524,5 +505,34 @@ export const DayIsSelected = forwardRef<HTMLDivElement, DayInSelectedProps>(
     const Comp = asChild ? Slot : "div";
 
     return <Comp ref={ref} {...rest} />;
+  }
+);
+
+export type ValueLabelProps = ComponentPropsWithoutRef<"div"> & {
+  formatFn?: FormatDateFn;
+};
+export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
+  (props, ref) => {
+    const { formatFn = defaultFormatValue, ...rest } = props;
+
+    const [value] = useCalendarValue();
+    const [startValue, endValue] = value;
+    const mode = useCalendarMode();
+
+    const formattedValue = useMemo(() => {
+      if (mode === "single") {
+        return formatFn(startValue);
+      }
+      if (!startValue || !endValue) {
+        return null;
+      }
+      return `${formatFn(startValue)} - ${formatFn(endValue)}`;
+    }, [formatFn, startValue, endValue, mode]);
+
+    return (
+      <div ref={ref} {...rest}>
+        {formattedValue}
+      </div>
+    );
   }
 );

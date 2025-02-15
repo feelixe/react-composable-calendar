@@ -20,7 +20,7 @@ export default function CalendarRange() {
     <div className="p-4">
       <Calendar.Root
         mode="range"
-        className="max-w-xs rounded-md border border-gray-300 p-4 shadow"
+        className="max-w-xs rounded-md border border-gray-300 p-3 shadow"
       >
         <Calendar.FormInput name="date" />
 
@@ -42,7 +42,7 @@ export default function CalendarRange() {
           <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
         </Calendar.Weekdays>
 
-        <Calendar.Days className="mb-3 grid grid-cols-7 gap-y-1">
+        <Calendar.Days className="mb-1 grid grid-cols-7 gap-y-1">
           <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
             <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
             <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">

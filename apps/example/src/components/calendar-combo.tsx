@@ -19,21 +19,26 @@ function Button(props: ComponentProps<"button">) {
   );
 }
 
+export function range(length: number) {
+  return [...new Array(length)].map((_, i) => i);
+}
+
 export default function CalendarCombo() {
   return (
     <div className="p-4">
       <Calendar.Root
         mode="range"
-        className="max-w-xl rounded-md border border-gray-300 p-4 shadow"
+        className="max-w-xl rounded-md border border-gray-300 p-3 shadow"
       >
         <Calendar.FormInput name="date" />
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-1 flex items-center justify-end gap-2">
+          <Calendar.ValueLabel className="text-gray-600 text-sm" />
+          <div className="grow" />
           <Calendar.OffsetViewButton asChild offset={-1}>
             <Button>
               <ChevronLeftIcon className="size-3" />
             </Button>
           </Calendar.OffsetViewButton>
-          <Calendar.MonthTitle className="flex items-center justify-center" />
           <Calendar.OffsetViewButton asChild offset={1}>
             <Button>
               <ChevronRightIcon className="size-3" />
@@ -42,49 +47,22 @@ export default function CalendarCombo() {
         </div>
 
         <div className="grid grid-cols-2 gap-6">
-          <Calendar.View>
-            <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
-              <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
-            </Calendar.Weekdays>
-            <Calendar.Days className="mb-3 grid grid-cols-7 gap-y-1">
-              <Calendar.Day
-                selectDayStrategy={selectStartDateStrategy}
-                className="group relative aspect-square w-full cursor-pointer"
-              >
-                <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
-                <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
-                  <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />
-                </div>
-              </Calendar.Day>
-            </Calendar.Days>
-          </Calendar.View>
-
-          <Calendar.View viewOffset={1}>
-            <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
-              <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
-            </Calendar.Weekdays>
-
-            <Calendar.Days className="mb-3 grid grid-cols-7 gap-y-1">
-              <Calendar.Day
-                selectDayStrategy={selectEndDateStrategy}
-                className="group relative aspect-square w-full cursor-pointer"
-              >
-                <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
-                <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
-                  <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />
-                </div>
-              </Calendar.Day>
-            </Calendar.Days>
-          </Calendar.View>
-        </div>
-
-        <div className="flex justify-end">
-          <Calendar.ClearButton
-            disabledWhenCleared
-            className="cursor-pointer text-blue-600 disabled:text-gray-600"
-          >
-            Clear
-          </Calendar.ClearButton>
+          {range(2).map((viewIndex) => (
+            <Calendar.View key={viewIndex} viewOffset={viewIndex}>
+              <Calendar.MonthTitle className="mb-4 flex items-center justify-center" />
+              <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
+                <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
+              </Calendar.Weekdays>
+              <Calendar.Days className="grid grid-cols-7 gap-y-1">
+                <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
+                  <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
+                  <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
+                    <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />
+                  </div>
+                </Calendar.Day>
+              </Calendar.Days>
+            </Calendar.View>
+          ))}
         </div>
       </Calendar.Root>
     </div>
