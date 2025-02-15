@@ -5,7 +5,7 @@ React Composable Calendar is a collection of **headless**, **highly customizable
 ## Key Features
 
 * 📆 **Single Date or Range:** Select a single date or a range.
-* 🤯 **Headless:** bring your own styles with any styling method.
+* 🤯 **Headless:** Bring your own styles using any styling method.
 * 🏗️ **Composable:** Build your own calendar with small building blocks.
 * 💾 **State:** Supports uncontrolled and controlled state.
 * 🗿 **shadcn/ui:** Embraces the principles of shadcn/ui. 
