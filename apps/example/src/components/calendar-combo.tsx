@@ -1,6 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import * as Calendar from "react-composable-calendar";
+import {
+  selectEndDateStrategy,
+  selectStartDateStrategy,
+} from "react-composable-calendar/select-day-strategy";
 
 function Button(props: ComponentProps<"button">) {
   const { children, className, ...rest } = props;
@@ -43,7 +47,10 @@ export default function CalendarCombo() {
               <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
             </Calendar.Weekdays>
             <Calendar.Days className="mb-3 grid grid-cols-7 gap-y-1">
-              <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
+              <Calendar.Day
+                selectDayStrategy={selectStartDateStrategy}
+                className="group relative aspect-square w-full cursor-pointer"
+              >
                 <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
                 <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
                   <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />
@@ -58,7 +65,10 @@ export default function CalendarCombo() {
             </Calendar.Weekdays>
 
             <Calendar.Days className="mb-3 grid grid-cols-7 gap-y-1">
-              <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
+              <Calendar.Day
+                selectDayStrategy={selectEndDateStrategy}
+                className="group relative aspect-square w-full cursor-pointer"
+              >
                 <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
                 <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
                   <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />

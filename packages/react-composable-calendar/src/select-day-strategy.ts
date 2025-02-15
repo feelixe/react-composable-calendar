@@ -45,5 +45,5 @@ export const selectStartDateStrategy: SelectDayStrategy = (args) => {
 
 export const selectEndDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
-  return [clickedDate, currentValue[1]];
+  return [currentValue[0], clickedDate];
 };
