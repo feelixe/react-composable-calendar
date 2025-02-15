@@ -52,12 +52,16 @@ export function useIsInRange(args?: UseIsInRangeParams) {
 }
 
 export function useIsSelected() {
+  const mode = useCalendarMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
   return useMemo(() => {
+    if (mode === "single") {
+      return value[0]?.isSame(day, "day") ?? false;
+    }
     return value.some((d) => d?.isSame(day, "day") ?? false);
-  }, [value, day]);
+  }, [value, day, mode]);
 }
 
 export function useIsToday() {

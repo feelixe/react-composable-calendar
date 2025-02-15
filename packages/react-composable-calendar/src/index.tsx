@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ComponentPropsWithoutRef,
   type ElementType,
@@ -94,16 +95,8 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
           return normalizeValue(defaultValue);
         }
         return [null, null];
-      }
+      },
     );
-
-    // Sync internal state
-    useEffect(() => {
-      if (value === undefined) {
-        return;
-      }
-      setInternalValue(normalizeValue(value));
-    }, [value]);
 
     // Sync external state
     const updateValue = useCallback(
@@ -117,8 +110,16 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
           setInternalValue(newValue);
         }
       },
-      [onValueChange, isStateUncontrolled, mode]
+      [onValueChange, isStateUncontrolled, mode],
     );
+
+    // Sync internal state
+    useEffect(() => {
+      if (value === undefined) {
+        return;
+      }
+      setInternalValue(normalizeValue(value));
+    }, [value]);
 
     const contextValue = useMemo<CalendarContextValue>(
       () => ({
@@ -126,8 +127,20 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
         valueState: [internalValue, updateValue],
         mode,
       }),
-      [view, internalValue, mode, updateValue]
+      [view, internalValue, mode, updateValue],
     );
+
+    const previousMode = useRef<Mode>(mode);
+    useEffect(() => {
+      if (mode !== previousMode.current) {
+        if (mode === "single") {
+          updateValue([internalValue[0], null]);
+        } else {
+          updateValue([internalValue[0], internalValue[1]]);
+        }
+      }
+      previousMode.current = mode;
+    }, [mode, updateValue, internalValue]);
 
     return (
       <div ref={ref} {...rest}>
@@ -136,7 +149,7 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
         </CalendarContext.Provider>
       </div>
     );
-  }
+  },
 );
 
 export type WeekdaysProps = ComponentPropsWithoutRef<"div">;
@@ -155,7 +168,7 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
         ))}
       </div>
     );
-  }
+  },
 );
 
 export type WeekdayLabelProps = ComponentPropsWithoutRefAndChildren<"div"> & {
@@ -173,7 +186,7 @@ export const WeekdayLabel = forwardRef<HTMLDivElement, WeekdayLabelProps>(
         {weekdayName}
       </div>
     );
-  }
+  },
 );
 
 export type MonthTitleProps = ComponentPropsWithoutRefAndChildren<"div"> & {
@@ -194,7 +207,7 @@ export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
         {monthTitle}
       </div>
     );
-  }
+  },
 );
 
 export type OffsetViewButtonProps = ComponentPropsWithoutRef<"button"> & {
@@ -218,7 +231,7 @@ export const OffsetViewButton = forwardRef<
       const newView = view.add(offset, "month");
       setView(newView);
     },
-    [offset, view, setView, onClick]
+    [offset, view, setView, onClick],
   );
 
   const Comp = asChild ? Slot : "button";
@@ -239,7 +252,7 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
     () => ({
       viewOffset: viewOffset ?? 0,
     }),
-    [viewOffset]
+    [viewOffset],
   );
 
   return (
@@ -325,7 +338,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
       const sortedValue = sortValue(newValue);
       setValue(sortedValue);
     },
-    [onClick, setValue, selectDayStrategy, day, mode, value]
+    [onClick, setValue, selectDayStrategy, day, mode, value],
   );
 
   const computedClassName = useMemo(() => {
@@ -370,7 +383,7 @@ export const DayLabel = forwardRef<HTMLDivElement, DayLabelProps>(
         {dayContext.day.date()}
       </div>
     );
-  }
+  },
 );
 
 export type FormInputProps = ComponentPropsWithoutRefAndChildren<"input"> & {
@@ -386,7 +399,7 @@ export const FormInputSingle = forwardRef<HTMLInputElement, FormInputProps>(
     }, [formatFn, value]);
 
     return <input ref={ref} type="hidden" value={inputValue} {...rest} />;
-  }
+  },
 );
 
 export type FormInputRangeProps = ComponentPropsWithoutRefAndChildren<"div"> & {
@@ -415,7 +428,7 @@ export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
         <input type="hidden" name={nameTo} value={inputValues[1]} />
       </div>
     );
-  }
+  },
 );
 
 export type ClearButtonProps = ComponentPropsWithoutRef<"button"> & {
@@ -443,7 +456,7 @@ export const ClearButton = forwardRef<HTMLButtonElement, ClearButtonProps>(
         }
         setValue([null, null]);
       },
-      [onClick, setValue]
+      [onClick, setValue],
     );
 
     const isDisabled = useMemo(() => {
@@ -464,7 +477,7 @@ export const ClearButton = forwardRef<HTMLButtonElement, ClearButtonProps>(
         {children}
       </Comp>
     );
-  }
+  },
 );
 
 export type DayInRangeProps = ComponentPropsWithoutRef<"div"> & {
@@ -495,7 +508,7 @@ export const DayInRange = forwardRef<HTMLDivElement, DayInRangeProps>(
         {...rest}
       />
     );
-  }
+  },
 );
 
 export type DayInSelectedProps = ComponentPropsWithoutRef<"div"> & {
@@ -514,7 +527,7 @@ export const DayIsSelected = forwardRef<HTMLDivElement, DayInSelectedProps>(
     const Comp = asChild ? Slot : "div";
 
     return <Comp ref={ref} {...rest} />;
-  }
+  },
 );
 
 export type ValueLabelProps = ComponentPropsWithoutRef<"div"> & {
@@ -544,5 +557,5 @@ export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
         {formattedValue}
       </div>
     );
-  }
+  },
 );
