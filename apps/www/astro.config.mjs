@@ -1,13 +1,13 @@
+import * as path from "node:path";
+import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import astroTypesafeRoutes from "astro-typesafe-routes";
 // @ts-check
 import { defineConfig } from "astro/config";
-import astroTypesafeRoutes from "astro-typesafe-routes";
-import react from "@astrojs/react";
-import mdx from "@astrojs/mdx";
-import tailwindcss from "@tailwindcss/vite";
-import * as path from "node:path";
 
 export default defineConfig({
-  integrations: [react(), mdx(), astroTypesafeRoutes()],
+  integrations: [react(), mdx({}), astroTypesafeRoutes()],
   vite: {
     plugins: [tailwindcss()],
     resolve: {
