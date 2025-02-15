@@ -1,7 +1,7 @@
 import { CopyIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { ghcolors } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 import { cn } from "../../lib/utils.ts";
 import { Button } from "./button.tsx";
@@ -26,9 +26,9 @@ export function CodeBlock(props: CodeBlockProps) {
         <SyntaxHighlighter
           language={language}
           style={{
-            ...vscDarkPlus,
+            ...ghcolors,
             'pre[class*="language-"]': {
-              ...vscDarkPlus['pre[class*="language-"]'],
+              ...ghcolors['pre[class*="language-"]'],
               background: "transparent",
               padding: 0,
               margin: 0,

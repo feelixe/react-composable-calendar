@@ -1,4 +1,5 @@
 ---
+import { NavBar } from "../components/layout/nav-bar.tsx";
 import "@/styles/global.css";
 ---
 
@@ -12,6 +13,7 @@ import "@/styles/global.css";
     <title>Astro Basics</title>
   </head>
   <body class="dark bg-background text-foreground">
+    <NavBar client:load />
     <slot />
   </body>
 </html>
