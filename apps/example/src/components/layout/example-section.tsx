@@ -1,12 +1,27 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card.tsx";
+import type { ComponentProps } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card.tsx";
 
-export function ExampleSection() {
+export type ExampleSectionProps = ComponentProps<typeof Card> & {
+  title: string;
+  description?: string;
+};
+
+export function ExampleSection(props: ExampleSectionProps) {
+  const { className, title, description, children, ...rest } = props;
+
   return (
-    <Card>
+    <Card {...rest}>
       <CardHeader>
-        <CardTitle>Basic Calendar</CardTitle>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent>123</CardContent>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 }

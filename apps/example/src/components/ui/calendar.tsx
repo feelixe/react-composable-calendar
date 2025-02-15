@@ -14,7 +14,7 @@ export function CalendarBody() {
             <ChevronLeftIcon className="size-3" />
           </Button>
         </CalendarPrimitive.OffsetViewButton>
-        <CalendarPrimitive.MonthTitle className="flex items-center justify-center" />
+        <CalendarPrimitive.MonthTitle className="flex items-center justify-center text-sm" />
         <CalendarPrimitive.OffsetViewButton asChild offset={1}>
           <Button size="icon" variant="outline" className="size-8">
             <ChevronRightIcon className="size-3" />
