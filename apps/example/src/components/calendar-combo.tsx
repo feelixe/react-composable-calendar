@@ -1,10 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import * as Calendar from "react-composable-calendar";
-import {
-  selectEndDateStrategy,
-  selectStartDateStrategy,
-} from "react-composable-calendar/select-day-strategy";
 
 function Button(props: ComponentProps<"button">) {
   const { children, className, ...rest } = props;
@@ -30,10 +26,9 @@ export default function CalendarCombo() {
         mode="range"
         className="max-w-xl rounded-md border border-gray-300 p-3 shadow"
       >
-        <Calendar.FormInput name="date" />
+        <Calendar.FormInputRange nameFrom="startDate" nameTo="endDate" />
         <div className="mb-1 flex items-center justify-end gap-2">
-          <Calendar.ValueLabel className="text-gray-600 text-sm" />
-          <div className="grow" />
+          <Calendar.ValueLabel className="text-gray-400 text-sm" />
           <Calendar.OffsetViewButton asChild offset={-1}>
             <Button>
               <ChevronLeftIcon className="size-3" />

@@ -402,8 +402,8 @@ export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
 
     return (
       <div ref={ref} {...rest}>
-        <input type="hidden" value={inputValues[0]} />
-        <input type="hidden" value={inputValues[1]} />
+        <input type="hidden" name={nameFrom} value={inputValues[0]} />
+        <input type="hidden" name={nameTo} value={inputValues[1]} />
       </div>
     );
   }
