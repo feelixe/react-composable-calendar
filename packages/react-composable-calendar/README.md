@@ -18,7 +18,7 @@ npm i react-composable-calendar dayjs
 2. This package is designed for you to build your own calendar. To get started, copy and paste one of the examples below into your project, such as `/components/ui/calendar.tsx`, and customize it to fit your needs.
 
 ## Background
-This package was created to address a limitation in the calendar component used by shadcn/ui, `react-day-picker`, which lacks composability. React Composable Calendar was designed to offer a seamless and enjoyable developer experience, making it easy to build and customize calendars exactly the way you want.
+This package was created as an alternative the calendar component used by shadcn/ui, `react-day-picker`, which lacks composability. React Composable Calendar was designed to offer a seamless and enjoyable developer experience, making it easy to build and customize calendars exactly the way you want.
 
 ## Examples
 
