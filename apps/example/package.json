@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-switch": "^1.1.3",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-router": "^1.105.0",
     "class-variance-authority": "^0.7.1",
@@ -39,6 +41,7 @@
     "react-composable-calendar": "workspace:*",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0"
+    "vite": "^6.1.0",
+    "vite-plugin-compile-time": "^0.4.6"
   }
 }
