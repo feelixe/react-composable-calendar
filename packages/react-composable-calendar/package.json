@@ -17,8 +17,8 @@
       "types": "./dist/types.d.ts"
     },
     "./hooks": {
-      "import": "./dist/types.js",
-      "types": "./dist/types.d.ts"
+      "import": "./dist/hooks.js",
+      "types": "./dist/hooks.d.ts"
     },
     "./select-day-strategy": {
       "import": "./dist/select-day-strategy.js",

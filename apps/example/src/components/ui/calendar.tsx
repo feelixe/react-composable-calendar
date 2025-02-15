@@ -1,20 +1,13 @@
+"use client";
+
+import { cn } from "@/lib/utils.ts";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
-import { Button } from "./ui/button.tsx";
-import { cn } from "../lib/utils.ts";
+import { Button } from "./button.tsx";
 
-export type CalendarProps = CalendarPrimitive.RootProps;
-
-export function Calendar(props: CalendarProps) {
-  const { className, ...rest } = props;
-
+export function CalendarBody() {
   return (
-    <CalendarPrimitive.Root
-      className={cn("max-w-72 rounded-md border border-border p-3 shadow")}
-      {...rest}
-    >
-      <CalendarPrimitive.FormInput name="date" />
-
+    <>
       <div className="mb-4 flex items-center justify-between">
         <CalendarPrimitive.OffsetViewButton asChild offset={-1}>
           <Button size="icon" variant="outline" className="size-8">
@@ -29,7 +22,7 @@ export function Calendar(props: CalendarProps) {
         </CalendarPrimitive.OffsetViewButton>
       </div>
 
-      <CalendarPrimitive.Weekdays className="mb-2 grid grid-cols-7 font-light text-muted-foreground text-xs">
+      <CalendarPrimitive.Weekdays className="mb-3 grid grid-cols-7 font-light text-muted-foreground text-xs">
         <CalendarPrimitive.WeekdayLabel className="flex items-center justify-center" />
       </CalendarPrimitive.Weekdays>
 
@@ -41,6 +34,18 @@ export function Calendar(props: CalendarProps) {
           </div>
         </CalendarPrimitive.Day>
       </CalendarPrimitive.Days>
+    </>
+  );
+}
+
+export type CalendarProps = CalendarPrimitive.RootProps;
+
+export function Calendar(props: CalendarProps) {
+  const { className, ...rest } = props;
+
+  return (
+    <CalendarPrimitive.Root className={cn("max-w-72 p-3", className)} {...rest}>
+      <CalendarBody />
     </CalendarPrimitive.Root>
   );
 }

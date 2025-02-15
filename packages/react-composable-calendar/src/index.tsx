@@ -11,6 +11,7 @@ import {
   type ForwardedRef,
   type MouseEventHandler,
   type ReactElement,
+  type ReactNode,
   type RefAttributes,
 } from "react";
 import { getDefaultWeekdayName } from "./week-name.js";
@@ -375,7 +376,7 @@ export const DayLabel = forwardRef<HTMLDivElement, DayLabelProps>(
 export type FormInputProps = ComponentPropsWithoutRefAndChildren<"input"> & {
   formatFn?: FormatDateFn;
 };
-export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
+export const FormInputSingle = forwardRef<HTMLInputElement, FormInputProps>(
   (props, ref) => {
     const { formatFn = defaultFormatValue, ...rest } = props;
     const [value] = useCalendarValue();
@@ -390,12 +391,17 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
 
 export type FormInputRangeProps = ComponentPropsWithoutRefAndChildren<"div"> & {
   formatFn?: FormatDateFn;
-  nameFrom: string;
-  nameTo: string;
+  nameStartDate: string;
+  nameEndDate: string;
 };
 export const FormInputRange = forwardRef<HTMLDivElement, FormInputRangeProps>(
   (props, ref) => {
-    const { formatFn = defaultFormatValue, nameFrom, nameTo, ...rest } = props;
+    const {
+      formatFn = defaultFormatValue,
+      nameStartDate: nameFrom,
+      nameEndDate: nameTo,
+      ...rest
+    } = props;
 
     const [value] = useCalendarValue();
 
@@ -513,10 +519,11 @@ export const DayIsSelected = forwardRef<HTMLDivElement, DayInSelectedProps>(
 
 export type ValueLabelProps = ComponentPropsWithoutRef<"div"> & {
   formatFn?: FormatDateFn;
+  fallback?: ReactNode;
 };
 export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
   (props, ref) => {
-    const { formatFn = defaultFormatValue, ...rest } = props;
+    const { formatFn = defaultFormatValue, fallback, ...rest } = props;
 
     const [value] = useCalendarValue();
     const [startValue, endValue] = value;
@@ -524,13 +531,13 @@ export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
 
     const formattedValue = useMemo(() => {
       if (mode === "single") {
-        return formatFn(startValue);
+        return formatFn(startValue) ?? fallback;
       }
       if (!startValue || !endValue) {
-        return null;
+        return fallback;
       }
       return `${formatFn(startValue)} - ${formatFn(endValue)}`;
-    }, [formatFn, startValue, endValue, mode]);
+    }, [formatFn, startValue, endValue, mode, fallback]);
 
     return (
       <div ref={ref} {...rest}>

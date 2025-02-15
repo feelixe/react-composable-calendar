@@ -10,8 +10,6 @@ if (!element) {
 
 createRoot(element).render(
   <StrictMode>
-    <div className="dark min-h-screen bg-background p-4 text-foreground">
-      <App />
-    </div>
+    <App />
   </StrictMode>
 );

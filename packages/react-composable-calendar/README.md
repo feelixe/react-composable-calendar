@@ -23,12 +23,14 @@ This package was created to address a limitation in the calendar component used 
 ## Examples
 
 ### Basic Calendar
-Copy paste to `/components/ui/calendar.tsx`
+1. Copy paste to `/components/ui/calendar.tsx`
 ```tsx
+"use client";
+
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
-import { Button } from "./ui/button.tsx";
-import { cn } from "../lib/utils.ts";
+import { Button } from "./button.tsx";
+import { cn } from "@/lib/utils.ts";
 
 export type CalendarProps = CalendarPrimitive.RootProps;
 
@@ -74,11 +76,12 @@ export function Calendar(props: CalendarProps) {
 ```
 
 ### Date Picker Field
-1. Requires [Popover](https://ui.shadcn.com/docs/components/popover) and [Button](https://ui.shadcn.com/docs/components/button) from shadcn.
-2. Add Basic Calendar Component.
+1. Add **Basic Calendar Component** from above.
+2. Requires [Popover](https://ui.shadcn.com/docs/components/popover) and [Button](https://ui.shadcn.com/docs/components/button) from shadcn.
+
 ```tsx
 
 ```
 
-## More examples
+### More examples
 Visit the documentation site for advanced usage and more examples.

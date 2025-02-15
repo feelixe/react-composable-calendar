@@ -94,3 +94,14 @@ export function useIsEndOfRange() {
     return value[1]?.isSame(day, "day");
   }, [value, day]);
 }
+
+export function useHasValue() {
+  const mode = useCalendarMode();
+  const [value] = useCalendarValue();
+
+  return useMemo(() => {
+    return mode === "single"
+      ? value[0] !== null
+      : value[0] !== null && value[1] !== null;
+  }, [mode, value]);
+}
