@@ -10,6 +10,7 @@ import {
   type ElementType,
   type ForwardedRef,
   type MouseEventHandler,
+  type PropsWithChildren,
   type ReactElement,
   type RefAttributes,
 } from "react";
@@ -30,7 +31,7 @@ import type {
   Mode,
 } from "./types.js";
 import type { CalendarSingleValue } from "./types.js";
-import { normalizeValue } from "./value.js";
+import { normalizeValue, sortValue } from "./value.js";
 import {
   useCalendarMode,
   useCalendarValue,
@@ -47,6 +48,7 @@ import {
   closestStrategy,
   type SelectDayStrategy,
 } from "./select-day-strategy.js";
+import { ViewContext, type ViewContextValue } from "./contexts/view.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -144,9 +146,9 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
     return (
       <div ref={ref} {...rest}>
         {range(DAYS_IN_WEEK).map((index) => (
-          <WeekdayContext key={index} value={{ weekdayIndex: index }}>
+          <WeekdayContext.Provider key={index} value={{ weekdayIndex: index }}>
             {cloneElement(child)}
-          </WeekdayContext>
+          </WeekdayContext.Provider>
         ))}
       </div>
     );
@@ -228,6 +230,27 @@ export const OffsetViewButton = forwardRef<
   );
 });
 
+export type ViewProps = ComponentPropsWithoutRef<"div"> &
+  Partial<ViewContextValue>;
+export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
+  const { children, viewOffset, ...divProps } = props;
+
+  const contextValue = useMemo<ViewContextValue>(
+    () => ({
+      viewOffset: viewOffset ?? 0,
+    }),
+    [viewOffset]
+  );
+
+  return (
+    <div ref={ref} {...divProps}>
+      <ViewContext.Provider value={contextValue}>
+        {children}
+      </ViewContext.Provider>
+    </div>
+  );
+});
+
 export type DaysProps = ComponentPropsWithoutRef<"div">;
 export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
   const { children, ...rest } = props;
@@ -238,10 +261,8 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
 
   const startOfMonth = view.startOf("month");
   const endOfMonth = view.endOf("month");
-
   const startOfWeek = startOfMonth.startOf("week");
   const endOfWeek = endOfMonth.endOf("week");
-
   const totalDays = endOfWeek.diff(startOfWeek, "day") + 1;
   const days = range(totalDays).map((index) => startOfWeek.add(index, "day"));
 
@@ -249,9 +270,12 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
     <div ref={ref} {...rest}>
       {days.map((date) => {
         return (
-          <DayContext key={date.format("YYYY-MM-DD")} value={{ day: date }}>
+          <DayContext.Provider
+            key={date.format("YYYY-MM-DD")}
+            value={{ day: date }}
+          >
             {cloneElement(child)}
-          </DayContext>
+          </DayContext.Provider>
         );
       })}
     </div>
@@ -280,10 +304,8 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   } = props;
 
   const { day } = useDayContext();
-
   const mode = useCalendarMode();
   const [value, setValue] = useCalendarValue();
-
   const isNeighbouringMonth = useIsNeighbouringMonth();
   const isToday = useIsToday();
   const isSelected = useIsSelected();
@@ -300,7 +322,8 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
         currentValue: value,
         mode,
       });
-      setValue(newValue);
+      const sortedValue = sortValue(newValue);
+      setValue(sortedValue);
     },
     [onClick, setValue, selectDayStrategy, day, mode, value]
   );

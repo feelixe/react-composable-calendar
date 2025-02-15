@@ -42,7 +42,7 @@ export default function CalendarCombo() {
         </div>
 
         <div className="grid grid-cols-2 gap-6">
-          <div>
+          <Calendar.View>
             <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
               <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
             </Calendar.Weekdays>
@@ -57,9 +57,9 @@ export default function CalendarCombo() {
                 </div>
               </Calendar.Day>
             </Calendar.Days>
-          </div>
+          </Calendar.View>
 
-          <div>
+          <Calendar.View viewOffset={1}>
             <Calendar.Weekdays className="mb-2 grid grid-cols-7 gap-1 font-light">
               <Calendar.WeekdayLabel className="flex items-center justify-center text-gray-500" />
             </Calendar.Weekdays>
@@ -75,7 +75,7 @@ export default function CalendarCombo() {
                 </div>
               </Calendar.Day>
             </Calendar.Days>
-          </div>
+          </Calendar.View>
         </div>
 
         <div className="flex justify-end">

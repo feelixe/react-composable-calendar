@@ -2,10 +2,16 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import dayjs from "dayjs";
 import { useDayContext } from "./contexts/day.js";
+import { useViewContext } from "./contexts/view.js";
 
 export function useCalendarView() {
   const context = useCalendarContext();
-  return context.viewState;
+  const viewContext = useViewContext();
+
+  const [view, setView] = context.viewState;
+  const viewWithOffset = view.add(viewContext.viewOffset, "month");
+
+  return [viewWithOffset, setView] as const;
 }
 
 export function useCalendarValue() {
