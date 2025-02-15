@@ -60,84 +60,83 @@ type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
   "children"
 >;
 
-export type RootProps<TMode extends Mode> = Omit<
+export type RootBaseProps = Omit<
   ComponentPropsWithoutRef<"div">,
   "defaultValue"
-> &
-  (
-    | {
-        mode: "single";
-        value?: CalendarSingleValue;
-        onValueChange?: (value: CalendarSingleValue) => unknown;
-        defaultValue?: CalendarSingleValue;
+>;
+export type RootSingleProps = RootBaseProps & {
+  mode: "single";
+  value?: CalendarSingleValue;
+  onValueChange?: (value: CalendarSingleValue) => unknown;
+  defaultValue?: CalendarSingleValue;
+};
+export type RootRangeProps = RootBaseProps & {
+  mode: "range";
+  value?: CalendarRangeValue;
+  onValueChange?: (value: CalendarRangeValue) => unknown;
+  defaultValue?: CalendarRangeValue;
+};
+
+export type RootProps = RootSingleProps | RootRangeProps;
+
+export const Root = forwardRef<HTMLDivElement, RootProps>(
+  (props: RootProps, ref: ForwardedRef<HTMLDivElement>) => {
+    const { children, value, onValueChange, defaultValue, mode, ...rest } =
+      props;
+
+    const isStateUncontrolled = value === undefined;
+
+    const [view, setView] = useState(dayjs());
+    const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
+      () => {
+        if (defaultValue !== undefined) {
+          return normalizeValue(defaultValue);
+        }
+        return [null, null];
       }
-    | {
-        mode: "range";
-        value?: CalendarRangeValue;
-        onValueChange?: (value: CalendarRangeValue) => unknown;
-        defaultValue?: CalendarRangeValue;
+    );
+
+    // Sync internal state
+    useEffect(() => {
+      if (value === undefined) {
+        return;
       }
-  );
+      setInternalValue(normalizeValue(value));
+    }, [value]);
 
-export const Root = forwardRef<HTMLDivElement, RootProps<Mode>>(function Root<
-  TMode extends Mode,
->(props: RootProps<TMode>, ref: ForwardedRef<HTMLDivElement>) {
-  const { children, value, onValueChange, defaultValue, mode, ...rest } = props;
+    // Sync external state
+    const updateValue = useCallback(
+      (newValue: CalendarInternalValue) => {
+        if (mode === "single") {
+          onValueChange?.(newValue[0]);
+        } else {
+          onValueChange?.(newValue);
+        }
+        if (isStateUncontrolled) {
+          setInternalValue(newValue);
+        }
+      },
+      [onValueChange, isStateUncontrolled, mode]
+    );
 
-  const isStateUncontrolled = value === undefined;
+    const contextValue = useMemo<CalendarContextValue>(
+      () => ({
+        viewState: [view, setView],
+        valueState: [internalValue, updateValue],
+        mode,
+      }),
+      [view, internalValue, mode, updateValue]
+    );
 
-  const [view, setView] = useState(dayjs());
-  const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
-    () => {
-      if (defaultValue !== undefined) {
-        return normalizeValue(defaultValue);
-      }
-      return [null, null];
-    }
-  );
-
-  // Sync internal state
-  useEffect(() => {
-    if (value === undefined) {
-      return;
-    }
-    setInternalValue(normalizeValue(value));
-  }, [value]);
-
-  // Sync external state
-  const updateValue = useCallback(
-    (newValue: CalendarInternalValue) => {
-      if (mode === "single") {
-        onValueChange?.(newValue[0]);
-      } else {
-        onValueChange?.(newValue);
-      }
-      if (isStateUncontrolled) {
-        setInternalValue(newValue);
-      }
-    },
-    [onValueChange, isStateUncontrolled, mode]
-  );
-
-  const contextValue = useMemo<CalendarContextValue>(
-    () => ({
-      viewState: [view, setView],
-      valueState: [internalValue, updateValue],
-      mode,
-    }),
-    [view, internalValue, mode, updateValue]
-  );
-
-  return (
-    <div ref={ref} {...rest}>
-      <CalendarContext.Provider value={contextValue}>
-        {children}
-      </CalendarContext.Provider>
-    </div>
-  );
-}) as <TMode extends Mode>(
-  props: RootProps<TMode> & RefAttributes<HTMLDivElement>
-) => ReactElement;
+    return (
+      <div ref={ref} {...rest}>
+        <CalendarContext.Provider value={contextValue}>
+          {children}
+        </CalendarContext.Provider>
+      </div>
+    );
+  }
+);
 
 export type WeekdaysProps = ComponentPropsWithoutRef<"div">;
 export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(

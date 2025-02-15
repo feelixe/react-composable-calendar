@@ -28,7 +28,6 @@ export default function CalendarCombo() {
 			>
 				<Calendar.FormInputRange nameFrom="startDate" nameTo="endDate" />
 				<div className="mb-2 flex items-center justify-end gap-2">
-					<Calendar.ValueLabel className="text-gray-400 text-sm" />
 					<Calendar.OffsetViewButton asChild offset={-1}>
 						<Button>
 							<ChevronLeftIcon className="size-3" />
@@ -39,6 +38,8 @@ export default function CalendarCombo() {
 							<ChevronRightIcon className="size-3" />
 						</Button>
 					</Calendar.OffsetViewButton>
+					<div className="grow" />
+					<Calendar.ValueLabel className="text-sm" />
 				</div>
 
 				<div className="grid grid-cols-2 gap-6">

@@ -1,65 +1,47 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import type { ComponentProps } from "react";
-import * as Calendar from "react-composable-calendar";
+import * as CalendarPrimitive from "react-composable-calendar";
+import { Button } from "./ui/button.tsx";
+import { cn } from "../lib/utils.ts";
 
-function Button(props: ComponentProps<"button">) {
-  const { children, className, ...rest } = props;
+export type CalendarProps = Omit<CalendarPrimitive.RootSingleProps, "mode">;
+
+export default function Calendar(props: CalendarProps) {
+  const { className, ...rest } = props;
 
   return (
-    <button
-      className="cursor-pointer rounded-lg border border-gray-300 p-2"
+    <CalendarPrimitive.Root
+      mode="single"
+      className={cn("max-w-72 rounded-md border border-border p-3 shadow")}
       {...rest}
     >
-      {children}
-    </button>
-  );
-}
+      <CalendarPrimitive.FormInput name="date" />
 
-export default function CalendarRange() {
-  return (
-    <div className="p-4">
-      <Calendar.Root
-        mode="range"
-        className="max-w-xs rounded-md border border-gray-300 p-3 shadow"
-      >
-        <Calendar.FormInput name="date" />
+      <div className="mb-4 flex items-center justify-between">
+        <CalendarPrimitive.OffsetViewButton asChild offset={-1}>
+          <Button>
+            <ChevronLeftIcon className="size-3" />
+          </Button>
+        </CalendarPrimitive.OffsetViewButton>
+        <CalendarPrimitive.MonthTitle className="flex items-center justify-center" />
+        <CalendarPrimitive.OffsetViewButton asChild offset={1}>
+          <Button>
+            <ChevronRightIcon className="size-3" />
+          </Button>
+        </CalendarPrimitive.OffsetViewButton>
+      </div>
 
-        <div className="mb-4 flex items-center justify-between">
-          <Calendar.OffsetViewButton asChild offset={-1}>
-            <Button>
-              <ChevronLeftIcon className="size-3" />
-            </Button>
-          </Calendar.OffsetViewButton>
-          <Calendar.MonthTitle className="flex items-center justify-center" />
-          <Calendar.OffsetViewButton asChild offset={1}>
-            <Button>
-              <ChevronRightIcon className="size-3" />
-            </Button>
-          </Calendar.OffsetViewButton>
-        </div>
+      <CalendarPrimitive.Weekdays className="mb-2 grid grid-cols-7 font-light text-muted-foreground text-xs">
+        <CalendarPrimitive.WeekdayLabel className="flex items-center justify-center" />
+      </CalendarPrimitive.Weekdays>
 
-        <Calendar.Weekdays className="mb-2 grid grid-cols-7 font-light text-gray-500 text-sm">
-          <Calendar.WeekdayLabel className="flex items-center justify-center" />
-        </Calendar.Weekdays>
-
-        <Calendar.Days className="mb-1 grid grid-cols-7 gap-y-1">
-          <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
-            <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
-            <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
-              <Calendar.DayLabel className="group-data-[neighboring]:text-gray-400 group-data-[selected]:text-white" />
-            </div>
-          </Calendar.Day>
-        </Calendar.Days>
-
-        <div className="flex justify-end">
-          <Calendar.ClearButton
-            disabledWhenCleared
-            className="cursor-pointer text-blue-600 disabled:text-gray-600"
-          >
-            Clear
-          </Calendar.ClearButton>
-        </div>
-      </Calendar.Root>
-    </div>
+      <CalendarPrimitive.Days className="mb-1 grid grid-cols-7 gap-y-1">
+        <CalendarPrimitive.Day className="group relative aspect-square w-full cursor-pointer">
+          <CalendarPrimitive.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
+          <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-foreground">
+            <CalendarPrimitive.DayLabel className="group-data-[neighboring]:text-muted-foreground group-data-[selected]:text-background" />
+          </div>
+        </CalendarPrimitive.Day>
+      </CalendarPrimitive.Days>
+    </CalendarPrimitive.Root>
   );
 }
