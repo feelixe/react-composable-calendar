@@ -43,6 +43,10 @@ import {
   useIsToday,
 } from "./hooks.js";
 import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
+import {
+  closestStrategy,
+  type SelectDayStrategy,
+} from "./select-day-strategy.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -263,9 +267,17 @@ export type DayState = {
 export type DayProps = Omit<ComponentPropsWithoutRef<"button">, "className"> & {
   asChild?: boolean;
   className?: string | undefined | ((state: DayState) => string);
+  selectDayStrategy?: SelectDayStrategy;
 };
 export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
-  const { asChild, className, onClick, children, ...rest } = props;
+  const {
+    asChild,
+    className,
+    onClick,
+    selectDayStrategy = closestStrategy,
+    children,
+    ...rest
+  } = props;
 
   const { day } = useDayContext();
 
@@ -283,37 +295,14 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
       if (e.isDefaultPrevented()) {
         return;
       }
-      if (mode === "single") {
-        setValue([day, null]);
-      } else {
-        let newValue: CalendarInternalValue;
-
-        if (!value[0]) {
-          newValue = [day, null];
-        } else if (!value[1]) {
-          newValue = [value[0], day];
-        } else if (value[0].isSame(day, "day")) {
-          newValue = [null, value[1]];
-        } else if (value[1].isSame(day, "day")) {
-          newValue = [value[0], null];
-        } else {
-          const distanceToStart = day.diff(value[0], "day");
-          const distanceToEnd = day.diff(value[1], "day");
-          const isStartClosest =
-            Math.abs(distanceToStart) < Math.abs(distanceToEnd);
-          if (isStartClosest) {
-            newValue = [day, value[1]];
-          } else {
-            newValue = [value[0], day];
-          }
-        }
-        if (newValue[0] && newValue[1]) {
-          newValue = newValue.sort((a, b) => a!.diff(b, "day"));
-        }
-        setValue(newValue);
-      }
+      const newValue = selectDayStrategy({
+        clickedDate: day,
+        currentValue: value,
+        mode,
+      });
+      setValue(newValue);
     },
-    [onClick, setValue, day, mode, value]
+    [onClick, setValue, selectDayStrategy, day, mode, value]
   );
 
   const computedClassName = useMemo(() => {

@@ -7,13 +7,6 @@ export type SelectDayStrategyParams = {
   mode: "single" | "range";
 };
 
-function sortValue(value: CalendarInternalValue): CalendarInternalValue {
-  if (!value[0] || !value[1]) {
-    return value;
-  }
-  return value.sort((a, b) => a!.diff(b, "day"));
-}
-
 export type SelectDayStrategy = (
   args: SelectDayStrategyParams
 ) => CalendarInternalValue;
@@ -24,25 +17,33 @@ export const closestStrategy: SelectDayStrategy = (args) => {
   if (mode === "single") {
     return [clickedDate, null];
   }
-  let newValue: CalendarInternalValue;
-
   if (!currentValue[0]) {
-    newValue = [clickedDate, null];
-  } else if (!currentValue[1]) {
-    newValue = [currentValue[0], clickedDate];
-  } else if (currentValue[0].isSame(clickedDate, "day")) {
-    newValue = [null, currentValue[1]];
-  } else if (currentValue[1].isSame(clickedDate, "day")) {
-    newValue = [currentValue[0], null];
-  } else {
-    const distanceToStart = clickedDate.diff(currentValue[0], "day");
-    const distanceToEnd = clickedDate.diff(currentValue[1], "day");
-    const isStartClosest = Math.abs(distanceToStart) < Math.abs(distanceToEnd);
-    if (isStartClosest) {
-      newValue = [clickedDate, currentValue[1]];
-    } else {
-      newValue = [currentValue[0], clickedDate];
-    }
+    return [clickedDate, null];
   }
-  return sortValue(newValue);
+  if (!currentValue[1]) {
+    return [currentValue[0], clickedDate];
+  }
+  if (currentValue[0].isSame(clickedDate, "day")) {
+    return [null, currentValue[1]];
+  }
+  if (currentValue[1].isSame(clickedDate, "day")) {
+    return [currentValue[0], null];
+  }
+  const distanceToStart = clickedDate.diff(currentValue[0], "day");
+  const distanceToEnd = clickedDate.diff(currentValue[1], "day");
+  const isStartClosest = Math.abs(distanceToStart) < Math.abs(distanceToEnd);
+  if (isStartClosest) {
+    return [clickedDate, currentValue[1]];
+  }
+  return [currentValue[0], clickedDate];
+};
+
+export const selectStartDateStrategy: SelectDayStrategy = (args) => {
+  const { currentValue, clickedDate } = args;
+  return [clickedDate, currentValue[1]];
+};
+
+export const selectEndDateStrategy: SelectDayStrategy = (args) => {
+  const { currentValue, clickedDate } = args;
+  return [clickedDate, currentValue[1]];
 };

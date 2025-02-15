@@ -6,3 +6,10 @@ export function normalizeValue(value: CalendarAnyValue): CalendarInternalValue {
   }
   return [value, null];
 }
+
+export function sortValue(value: CalendarInternalValue): CalendarInternalValue {
+  if (!value[0] || !value[1]) {
+    return value;
+  }
+  return value.sort((a, b) => a!.diff(b, "day"));
+}
