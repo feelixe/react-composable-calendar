@@ -13,15 +13,17 @@ import {
   CardTitle,
 } from "../ui/card.tsx";
 import { Container } from "../ui/container.tsx";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs.tsx";
+import { CodeBlock } from "../ui/code-block.tsx";
 
 export type ExampleSectionProps = ComponentProps<typeof Container> & {
   title: string;
   description?: string;
+  code: string;
 };
 
 export function ExampleSection(props: ExampleSectionProps) {
-  const { className, title, description, children, ...rest } = props;
+  const { className, title, description, children, code, ...rest } = props;
 
   const [tab, setTab] = useState("code");
 
@@ -42,38 +44,16 @@ export function ExampleSection(props: ExampleSectionProps) {
               </TabsList>
             </div>
           </CardHeader>
-          <CardContent
-            className={cn(
-              "w-full",
-              tab === "code" ? "[&_.preview]:hidden" : "[&_.code]:hidden",
-            )}
-          >
-            {children}
+          <CardContent>
+            <TabsContent value="preview" className="flex justify-center">
+              {children}
+            </TabsContent>
+            <TabsContent value="code">
+              <CodeBlock code={code} />
+            </TabsContent>
           </CardContent>
         </Tabs>
       </Card>
     </Container>
-  );
-}
-
-export type ExampleSectionCodeProps = ComponentProps<"div">;
-export function ExampleSectionCode(props: ExampleSectionCodeProps) {
-  const { className, children, ...rest } = props;
-
-  return (
-    <div className={cn("code max-w-full overflow-hidden", className)} {...rest}>
-      {children}
-    </div>
-  );
-}
-
-export type ExampleSectionPreviewProps = ComponentProps<"div">;
-export function ExampleSectionPreview(props: ExampleSectionPreviewProps) {
-  const { className, children, ...rest } = props;
-
-  return (
-    <div className={cn("preview flex justify-center", className)} {...rest}>
-      {children}
-    </div>
   );
 }

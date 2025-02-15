@@ -5,7 +5,6 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 import { cn } from "../../lib/utils.ts";
 import { Button } from "./button.tsx";
-import { Code } from "astro:components";
 
 export type CodeBlockProps = Omit<ComponentProps<"div">, "children"> & {
   code: string;
@@ -18,7 +17,7 @@ export function CodeBlock(props: CodeBlockProps) {
   return (
     <div
       className={cn(
-        "relative flex rounded-md bg-[#1e1e1e] px-4 py-3 text-sm",
+        "relative mb-4 flex rounded-md bg-[#1e1e1e] px-4 py-3 text-sm",
         className,
       )}
       {...rest}
@@ -26,7 +25,7 @@ export function CodeBlock(props: CodeBlockProps) {
       <Button
         type="button"
         variant="ghost"
-        className="absolute top-2 right-2 shrink-0"
+        className="absolute top-2 right-2 size-7 shrink-0"
         onClick={() => {
           navigator.clipboard.writeText(code);
           toast(

@@ -1,14 +1,11 @@
-import { markdownComponent } from "@/components/markdown/components";
-export const components = markdownComponent;
+import { markdownComponents } from "@/components/markdown/components";
+import { CodeBlock } from "@/components/ui/code-block.tsx"
+import { basicCalendar } from "@/examples/code-examples.ts"
+
+export const components = markdownComponents;
 
 # Installation
 Install dependencies
-```tsx
-const hej = 123;
+<CodeBlock client:load language="bash" code="npm i react-composable-calendar dayjs" />
 
-return (
-  <div>
-    hej!
-  </div>
-)
-```
+Copy paste the **examples** you want into your project and start building your perfect calendar!
