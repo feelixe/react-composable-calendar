@@ -1,8 +1,28 @@
 ---
-import { Button } from "@/components/ui/button.tsx";
+import { basicCalendar } from "@/examples/code-examples.ts";
+import {
+  ExampleSection,
+  ExampleSectionCode,
+  ExampleSectionPreview,
+} from "../components/layout/example-section.tsx";
+import { Calendar } from "../components/ui/calendar.tsx";
+import { CodeBlock } from "../components/ui/code-block.tsx";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <Button>Hit me</Button>
+  <div class="grid gap-8 py-8">
+    <ExampleSection
+      client:load
+      title="Basic Calendar"
+      description="A simple calendar that accepts a single date input."
+    >
+      <ExampleSectionPreview>
+        <Calendar mode="single" client:load />
+      </ExampleSectionPreview>
+      <ExampleSectionCode>
+        <CodeBlock client:load code={basicCalendar} />
+      </ExampleSectionCode>
+    </ExampleSection>
+  </div>
 </Layout>

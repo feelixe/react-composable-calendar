@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button.tsx";
+import Link from "astro-typesafe-routes/link/react";
+import type { Route, RouteOptions } from "astro-typesafe-routes/path";
 import {
   CalendarDaysIcon,
   ExternalLinkIcon,
@@ -5,7 +8,6 @@ import {
   XIcon,
 } from "lucide-react";
 import { type ReactNode, useState } from "react";
-import { Button } from "@/components/ui/button.tsx";
 import { Container } from "../ui/container.tsx";
 import {
   Drawer,
@@ -13,8 +15,6 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "../ui/drawer.tsx";
-import type { RouteOptions, Route } from "astro-typesafe-routes/path";
-import Link from "astro-typesafe-routes/link/react";
 
 type MenuItem = {
   id: number;
@@ -82,7 +82,7 @@ export function NavBar() {
               </Button>
             ))}
             <div className="grow" />
-            <DrawerClose>
+            <DrawerClose asChild>
               <Button size="icon" variant="outline">
                 <XIcon />
               </Button>

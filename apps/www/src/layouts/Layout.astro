@@ -1,6 +1,7 @@
 ---
 import { NavBar } from "../components/layout/nav-bar.tsx";
 import "@/styles/global.css";
+import { Toaster } from "../components/ui/sonner.tsx";
 ---
 
 <!doctype html>
@@ -14,6 +15,7 @@ import "@/styles/global.css";
   </head>
   <body class="dark bg-background text-foreground">
     <NavBar client:load />
+    <Toaster client:load />
     <slot />
   </body>
 </html>
