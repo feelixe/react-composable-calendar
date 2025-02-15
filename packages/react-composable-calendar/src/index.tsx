@@ -19,10 +19,9 @@ import { Slot } from "./slot.js";
 import { range } from "./range.js";
 import {
   CalendarContext,
-  CalendarDayContext,
-  useCalendarDayContext,
   type CalendarContextValue,
-} from "./context.js";
+} from "./contexts/calendar.js";
+import { DayContext, useDayContext } from "./contexts/day.js";
 import type {
   CalendarInternalValue,
   CalendarRangeValue,
@@ -43,6 +42,7 @@ import {
   useIsStartOfRange,
   useIsToday,
 } from "./hooks.js";
+import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -139,34 +139,24 @@ export const Weekdays = forwardRef<HTMLDivElement, WeekdaysProps>(
 
     return (
       <div ref={ref} {...rest}>
-        {range(DAYS_IN_WEEK).map((index) => {
-          return cloneElement(child, {
-            ...child.props,
-            key: index,
-            weekdayIndex: index,
-          });
-        })}
+        {range(DAYS_IN_WEEK).map((index) => (
+          <WeekdayContext key={index} value={{ weekdayIndex: index }}>
+            {cloneElement(child)}
+          </WeekdayContext>
+        ))}
       </div>
     );
   }
 );
 
 export type WeekdayProps = ComponentPropsWithoutRefAndChildren<"div"> & {
-  weekdayIndex?: number;
   getWeekdayName?: GetWeekdayNameFn;
 };
 export const Weekday = forwardRef<HTMLDivElement, WeekdayProps>(
   (props, ref) => {
-    const {
-      weekdayIndex,
-      getWeekdayName = getDefaultWeekdayName,
-      ...rest
-    } = props;
+    const { getWeekdayName = getDefaultWeekdayName, ...rest } = props;
 
-    if (weekdayIndex === undefined) {
-      throw new Error("'Weekday' must be used within a 'Weekdays' component");
-    }
-
+    const { weekdayIndex } = useWeekdayContext();
     const weekdayName = getWeekdayName(weekdayIndex);
 
     return (
@@ -255,15 +245,9 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
     <div ref={ref} {...rest}>
       {days.map((date) => {
         return (
-          <CalendarDayContext
-            key={date.format("YYYY-MM-DD")}
-            value={{ day: date }}
-          >
-            {cloneElement(child, {
-              ...child.props,
-              key: date.format("YYYY-MM-DD"),
-            })}
-          </CalendarDayContext>
+          <DayContext key={date.format("YYYY-MM-DD")} value={{ day: date }}>
+            {cloneElement(child)}
+          </DayContext>
         );
       })}
     </div>
@@ -283,7 +267,7 @@ export type DayProps = Omit<ComponentPropsWithoutRef<"button">, "className"> & {
 export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   const { asChild, className, onClick, children, ...rest } = props;
 
-  const { day } = useCalendarDayContext();
+  const { day } = useDayContext();
 
   const mode = useCalendarMode();
   const [value, setValue] = useCalendarValue();
@@ -363,7 +347,7 @@ export const DayLabel = forwardRef<HTMLDivElement, DayLabelProps>(
   (props, ref) => {
     const { ...rest } = props;
 
-    const dayContext = useCalendarDayContext();
+    const dayContext = useDayContext();
 
     return (
       <div ref={ref} {...rest}>

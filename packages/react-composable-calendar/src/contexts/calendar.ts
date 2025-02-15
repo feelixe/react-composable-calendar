@@ -1,24 +1,6 @@
 import type dayjs from "dayjs";
 import { createContext, useContext } from "react";
-import type { CalendarInternalValue, Mode } from "./types.js";
-
-export type CalendarDayContextValue = {
-  day: dayjs.Dayjs;
-};
-
-export const CalendarDayContext = createContext<CalendarDayContextValue | null>(
-  null
-);
-
-export function useCalendarDayContext() {
-  const context = useContext(CalendarDayContext);
-  if (context === null) {
-    throw new Error(
-      "'DayLabel' and 'Day' must be used within a 'Days' component"
-    );
-  }
-  return context;
-}
+import type { CalendarInternalValue, Mode } from "../types.js";
 
 export type CalendarContextValue = {
   viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];

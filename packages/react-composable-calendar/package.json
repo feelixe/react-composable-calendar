@@ -15,6 +15,10 @@
     "./types": {
       "import": "./dist/types.js",
       "types": "./dist/types.d.ts"
+    },
+    "./hooks": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
     }
   },
   "files": [
