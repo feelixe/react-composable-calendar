@@ -8,20 +8,40 @@ import { Button } from "./button.tsx";
 
 export type CodeBlockProps = Omit<ComponentProps<"div">, "children"> & {
   children: string | string[];
+  language?: string;
 };
 
 export function CodeBlock(props: CodeBlockProps) {
-  const { className, children, ...rest } = props;
+  const { language = "tsx", className, children, ...rest } = props;
 
   return (
     <div
-      className={cn("relative text-sm [&>pre]:rounded-md", className)}
+      className={cn(
+        "relative flex rounded-md bg-[#1e1e1e] px-4 py-3 text-sm",
+        className,
+      )}
       {...rest}
     >
+      <div className="grow self-center">
+        <SyntaxHighlighter
+          language={language}
+          style={{
+            ...vscDarkPlus,
+            'pre[class*="language-"]': {
+              ...vscDarkPlus['pre[class*="language-"]'],
+              background: "transparent",
+              padding: 0,
+              margin: 0,
+            },
+          }}
+        >
+          {children}
+        </SyntaxHighlighter>
+      </div>
       <Button
         type="button"
         variant="ghost"
-        className="absolute top-2 right-2"
+        className="shrink-0"
         onClick={() => {
           const code = Array.isArray(children) ? children.join("") : children;
           navigator.clipboard.writeText(code);
@@ -36,9 +56,6 @@ export function CodeBlock(props: CodeBlockProps) {
       >
         <CopyIcon />
       </Button>
-      <SyntaxHighlighter language="tsx" style={vscDarkPlus}>
-        {children}
-      </SyntaxHighlighter>
     </div>
   );
 }

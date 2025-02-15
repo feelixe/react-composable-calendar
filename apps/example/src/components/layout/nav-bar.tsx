@@ -40,7 +40,7 @@ const menuItems: MenuItem[] = [
   {
     id: 3,
     label: "npm",
-    link: "https://github.com/feelixe/react-composable-calendar",
+    link: "https://www.npmjs.com/package/react-composable-calendar",
   },
 ];
 
@@ -50,8 +50,10 @@ export function NavBar() {
   return (
     <div className="sticky top-0 z-50 w-full border-border border-b bg-background">
       <Container className="flex items-center gap-2 py-5">
-        <CalendarDaysIcon />
-        <div className="font-medium text-sm">React Composable Calendar</div>
+        <Link to="/" className="flex items-center gap-2">
+          <CalendarDaysIcon />
+          <div className="font-medium text-sm">React Composable Calendar</div>
+        </Link>
         <div className="grow" />
         <Drawer open={menuOpen} onOpenChange={setMenuOpen} direction="right">
           <DrawerTrigger asChild>

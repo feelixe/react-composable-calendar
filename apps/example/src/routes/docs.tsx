@@ -1,13 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import dayjs from "dayjs";
 import { Container } from "../components/ui/container.tsx";
-import "dayjs/locale/en-gb";
-dayjs.locale("en-gb");
+import { InstallationStep } from "../docs/parts/installation.tsx";
+import { ComponentsStep } from "../docs/parts/components.tsx";
 
 export const Route = createFileRoute("/docs")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <Container className="grid gap-6 p-4">docs here</Container>;
+  return (
+    <Container className="grid gap-8 py-8">
+      <InstallationStep />
+      <ComponentsStep />
+    </Container>
+  );
 }
