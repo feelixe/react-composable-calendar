@@ -26,7 +26,6 @@ export default function CalendarCombo() {
         mode="range"
         className="max-w-xl rounded-md border border-gray-300 px-4 pt-3 pb-2 shadow"
       >
-        <Calendar.FormInputRange nameFrom="startDate" nameTo="endDate" />
         <div className="mb-2 flex items-center justify-end gap-2">
           <Calendar.OffsetViewButton asChild offset={-1}>
             <Button>
