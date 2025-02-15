@@ -18,7 +18,7 @@ export const closestStrategy: SelectDayStrategy = (args) => {
     return [clickedDate, null];
   }
   if (!currentValue[0]) {
-    return [clickedDate, null];
+    return [clickedDate, currentValue[1]];
   }
   if (!currentValue[1]) {
     return [currentValue[0], clickedDate];

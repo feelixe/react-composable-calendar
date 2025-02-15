@@ -46,7 +46,7 @@ export default function CalendarRange() {
           <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
             <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-black/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
             <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[selected]:bg-black">
-              <Calendar.DayLabel className="group-data-[neighbouring]:text-gray-400 group-data-[selected]:text-white" />
+              <Calendar.DayLabel className="group-data-[neighboring]:text-gray-400 group-data-[selected]:text-white" />
             </div>
           </Calendar.Day>
         </Calendar.Days>

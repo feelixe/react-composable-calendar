@@ -68,7 +68,7 @@ export function useIsToday() {
   }, [day]);
 }
 
-export function useIsNeighbouringMonth() {
+export function useIsNeighboringMonth() {
   const { day } = useDayContext();
   const [view] = useCalendarView();
 

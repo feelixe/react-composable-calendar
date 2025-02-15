@@ -35,7 +35,7 @@ import {
   useCalendarView,
   useIsEndOfRange,
   useIsInRange,
-  useIsNeighbouringMonth,
+  useIsNeighboringMonth,
   useIsSelected,
   useIsStartOfRange,
   useIsToday,
@@ -285,7 +285,7 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
 export type DayState = {
   isToday: boolean;
   isSelected: boolean;
-  isNeighbouringMonth: boolean;
+  isNeighboringMonth: boolean;
 };
 
 export type DayProps = Omit<ComponentPropsWithoutRef<"button">, "className"> & {
@@ -306,7 +306,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   const { day } = useDayContext();
   const mode = useCalendarMode();
   const [value, setValue] = useCalendarValue();
-  const isNeighbouringMonth = useIsNeighbouringMonth();
+  const isNeighboringMonth = useIsNeighboringMonth();
   const isToday = useIsToday();
   const isSelected = useIsSelected();
   const isInRange = useIsInRange();
@@ -332,8 +332,12 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
     if (className === undefined || typeof className === "string") {
       return className;
     }
-    return className({ isToday, isSelected, isNeighbouringMonth });
-  }, [className, isToday, isSelected, isNeighbouringMonth]);
+    return className({
+      isToday,
+      isSelected,
+      isNeighboringMonth: isNeighboringMonth,
+    });
+  }, [className, isToday, isSelected, isNeighboringMonth]);
 
   const Comp = asChild ? Slot : "button";
 
@@ -341,7 +345,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
     <Comp
       aria-selected={isSelected ? true : undefined}
       data-selected={isSelected ? true : undefined}
-      data-neighbouring={isNeighbouringMonth ? true : undefined}
+      data-neighboring={isNeighboringMonth ? true : undefined}
       data-in-range={isInRange ? true : undefined}
       data-is-today={isToday ? true : undefined}
       onClick={clickHandler}

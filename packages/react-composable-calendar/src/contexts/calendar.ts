@@ -2,6 +2,10 @@ import type dayjs from "dayjs";
 import { createContext, useContext } from "react";
 import type { CalendarInternalValue, Mode } from "../types.js";
 
+export type CalendarOptions = {
+  showNeighboringMonth?: boolean;
+};
+
 export type CalendarContextValue = {
   viewState: [view: dayjs.Dayjs, setView: (day: dayjs.Dayjs) => void];
   valueState: [
