@@ -16,7 +16,7 @@ import {
 import { getDefaultWeekdayName } from "./week-name.js";
 import dayjs from "dayjs";
 import { Slot } from "./slot.js";
-import { range } from "./range.js";
+import { range } from "./array-range.js";
 import {
   CalendarContext,
   type CalendarContextValue,

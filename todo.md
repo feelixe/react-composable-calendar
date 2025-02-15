@@ -1,2 +1,3 @@
 - Day, maybe accept function as child for custom rendering
 - Range, cant select same date.
+- Date boundaries 
