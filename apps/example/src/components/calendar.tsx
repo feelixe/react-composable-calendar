@@ -3,14 +3,13 @@ import * as CalendarPrimitive from "react-composable-calendar";
 import { Button } from "./ui/button.tsx";
 import { cn } from "../lib/utils.ts";
 
-export type CalendarProps = Omit<CalendarPrimitive.RootSingleProps, "mode">;
+export type CalendarProps = CalendarPrimitive.RootProps;
 
-export default function Calendar(props: CalendarProps) {
+export function Calendar(props: CalendarProps) {
   const { className, ...rest } = props;
 
   return (
     <CalendarPrimitive.Root
-      mode="single"
       className={cn("max-w-72 rounded-md border border-border p-3 shadow")}
       {...rest}
     >
@@ -18,13 +17,13 @@ export default function Calendar(props: CalendarProps) {
 
       <div className="mb-4 flex items-center justify-between">
         <CalendarPrimitive.OffsetViewButton asChild offset={-1}>
-          <Button>
+          <Button size="icon" variant="outline" className="size-8">
             <ChevronLeftIcon className="size-3" />
           </Button>
         </CalendarPrimitive.OffsetViewButton>
         <CalendarPrimitive.MonthTitle className="flex items-center justify-center" />
         <CalendarPrimitive.OffsetViewButton asChild offset={1}>
-          <Button>
+          <Button size="icon" variant="outline" className="size-8">
             <ChevronRightIcon className="size-3" />
           </Button>
         </CalendarPrimitive.OffsetViewButton>
