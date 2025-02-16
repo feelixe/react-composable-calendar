@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils.ts";
-import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
 import { Button } from "./button.tsx";
