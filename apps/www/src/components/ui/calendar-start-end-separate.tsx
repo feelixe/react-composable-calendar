@@ -16,13 +16,10 @@ export function CalendarStartEndSeparate(props: CalendarPrimitive.RootProps) {
 
   return (
     <CalendarPrimitive.Root className={cn("max-w-lg p-3", className)} {...rest}>
-      <div className="mb-2 flex items-center justify-end gap-2">
-        <div className="grow" />
-        <CalendarPrimitive.ValueLabel
-          fallback="No date selected"
-          className="text-muted-foreground text-sm "
-        />
-      </div>
+      <CalendarPrimitive.ValueLabel
+        fallback="No date selected"
+        className="mb-3 text-center text-muted-foreground text-sm"
+      />
 
       <div className="grid grid-cols-2 gap-6">
         {range(2).map((index) => (
