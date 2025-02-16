@@ -1,4 +1,5 @@
 - Day, maybe accept function as child for custom rendering
 - Range, cant select same date.
 - Date boundaries
-- UseCalendarSingle and Range  
+- UseCalendarSingle and Range 
+- Make calendar view mandatory so you can have them not synced. 

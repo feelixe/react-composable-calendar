@@ -5,6 +5,11 @@ import { useMemo } from "react";
 const typographyVariants = cva("", {
   variants: {
     variant: {
+      display1:
+        "text-3xl font-semibold tracking-tighter border-b border-border",
+      display2:
+        "text-2xl pb-2 font-semibold tracking-tighter border-b border-border",
+      display3: "text-xl font-medium tracking-tighter",
       h1: "scroll-m-20 text-lg font-semibold tracking-tighter",
       h2: "scroll-m-20 text-base font-semibold tracking-tight",
       h3: "scroll-m-20 text-base font-medium tracking-tight",
@@ -29,6 +34,15 @@ export function Typography(props: TypographyProps) {
   const Element = useMemo(() => {
     if (element) {
       return element;
+    }
+    if (variant === "display1") {
+      return "h1";
+    }
+    if (variant === "display2") {
+      return "h2";
+    }
+    if (variant === "display3") {
+      return "h3";
     }
     if (variant) {
       if (variant === "caption" || variant === "leading") {

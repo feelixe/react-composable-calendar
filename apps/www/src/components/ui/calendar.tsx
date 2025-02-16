@@ -1,17 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils.ts";
+import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
 import { Button } from "./button.tsx";
-import { useState } from "react";
-import dayjs from "dayjs";
-
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-
-dayjs.extend(timezone);
-dayjs.extend(utc);
 
 export function CalendarBody() {
   return (

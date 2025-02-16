@@ -2,10 +2,12 @@ import { ExternalLinkIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { cn } from "../../lib/utils.ts";
 
-export type ExternalLinkProps = ComponentProps<"a">;
+export type ExternalLinkProps = ComponentProps<"a"> & {
+  text: string;
+};
 
 export function ExternalLink(props: ExternalLinkProps) {
-  const { className, children, ...rest } = props;
+  const { className, children, text, ...rest } = props;
 
   return (
     <a
@@ -15,9 +17,9 @@ export function ExternalLink(props: ExternalLinkProps) {
       <ExternalLinkIcon
         target="_blank"
         href={"https://ui.shadcn.com/docs/installation"}
-        className="relative bottom-0.5 left-px inline size-3"
+        className="relative bottom-0.5 left-px mr-1 inline size-3"
       />
-      {children}
+      {text}
     </a>
   );
 }

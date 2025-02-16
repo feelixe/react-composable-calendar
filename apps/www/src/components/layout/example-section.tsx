@@ -19,11 +19,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs.tsx";
 export type ExampleSectionProps = ComponentProps<typeof Container> & {
   title: string;
   description?: string;
-  code: string;
 };
 
 export function ExampleSection(props: ExampleSectionProps) {
-  const { className, title, description, children, code, ...rest } = props;
+  const { className, title, description, children, ...rest } = props;
 
   const [tab, setTab] = useState("preview");
 
@@ -44,16 +43,35 @@ export function ExampleSection(props: ExampleSectionProps) {
               </TabsList>
             </div>
           </CardHeader>
-          <CardContent>
-            <TabsContent value="preview" className="flex justify-center">
+          <CardContent
+            className={cn(
+              tab === "preview" ? "[&_.code]:hidden" : "[&_.preview]:hidden",
+            )}
+          >
+            {children}
+            {/* <TabsContent value="preview" className="flex justify-center">
               {children}
             </TabsContent>
             <TabsContent value="code">
               <CodeBlock code={code} />
-            </TabsContent>
+            </TabsContent> */}
           </CardContent>
         </Tabs>
       </Card>
     </Container>
   );
+}
+
+export type ExampleSectionPreviewProps = ComponentProps<"div">;
+
+export function ExampleSectionPreview(props: ExampleSectionPreviewProps) {
+  const { className, ...rest } = props;
+  return <div className={cn("preview", className)} {...rest} />;
+}
+
+export type ExampleSectionCodeProps = ComponentProps<"div">;
+
+export function ExampleSectionCode(props: ExampleSectionCodeProps) {
+  const { className, ...rest } = props;
+  return <div className={cn("code", className)} {...rest} />;
 }

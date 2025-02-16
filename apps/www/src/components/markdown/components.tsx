@@ -5,13 +5,16 @@ import { cn } from "../../lib/utils.ts";
 
 export const markdownComponents = {
   h1: (props: TypographyProps) => (
-    <Typography variant="h1" className="mb-3" {...props} />
+    <Typography variant="display1" className="mb-3" {...props} />
   ),
   h2: (props: TypographyProps) => (
-    <Typography variant="h2" className="mb-3" {...props} />
+    <Typography variant="display2" className="mb-3" {...props} />
   ),
   h3: (props: TypographyProps) => (
-    <Typography variant="h3" className="mb-3" {...props} />
+    <Typography variant="display3" className="mb-3" {...props} />
+  ),
+  h4: (props: TypographyProps) => (
+    <Typography variant="h3" className="mb-2" {...props} />
   ),
   p: (props: TypographyProps) => (
     <Typography variant="p" className="mb-2" {...props} />
@@ -22,7 +25,9 @@ export const markdownComponents = {
     </pre>
   ),
   code: (props: PropsWithChildren) => (
-    <code className="rounded bg-muted px-1.5 py-0.5">{props.children}</code>
+    <code className="rounded bg-muted px-1.5 py-0.5 text-[0.9em]">
+      {props.children}
+    </code>
   ),
   li: (props: TypographyProps) => {
     const { className, children, ...rest } = props;
