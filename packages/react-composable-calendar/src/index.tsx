@@ -41,6 +41,7 @@ import {
   useIsStartOfRange,
   useIsToday,
   useInputName,
+  useCalendarLocale,
 } from "./hooks.js";
 import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
 import {
@@ -54,7 +55,7 @@ import type {
   GetWeekdayNameFn,
 } from "./format.js";
 import { defaultFormatMonth, defaultFormatValue } from "./format.js";
-import { dayjs } from "./extended-dayjs.js";
+import { dayjs, type Dayjs } from "./extended-dayjs.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -71,6 +72,10 @@ export type RootBaseProps = Omit<
    * Timezone that will be passed to dayjs, see https://day.js.org/docs/en/timezone/timezone.
    */
   timezone?: string;
+  /**
+   * Locale that will be passed to dayjs, see https://day.js.org/docs/en/i18n/instance-locale.
+   */
+  locale?: string;
 };
 
 export type RootSingleProps = RootBaseProps & {
@@ -100,19 +105,25 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
       mode,
       name,
       timezone,
+      locale,
       ...rest
     } = props;
 
     const isStateUncontrolled = value === undefined;
 
     const [view, setView] = useState(() => {
+      let defaultView: Dayjs;
       if (timezone?.toLowerCase() === "utc") {
-        return dayjs().utc().startOf("month");
+        defaultView = dayjs().utc().startOf("month");
+      } else if (timezone) {
+        defaultView = dayjs().tz(timezone).startOf("month");
+      } else {
+        defaultView = dayjs().startOf("month");
       }
-      if (timezone) {
-        return dayjs().tz(timezone).startOf("month");
+      if (locale) {
+        defaultView = defaultView.locale(locale);
       }
-      return dayjs().startOf("month");
+      return defaultView;
     });
 
     const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
@@ -161,8 +172,17 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
         mode,
         inputName: normalizedName,
         timezone: timezone ?? null,
+        locale: locale ?? null,
       }),
-      [view, internalValue, mode, updateValue, normalizedName, timezone],
+      [
+        view,
+        internalValue,
+        mode,
+        updateValue,
+        normalizedName,
+        timezone,
+        locale,
+      ],
     );
 
     const previousMode = useRef<Mode>(mode);
@@ -214,7 +234,8 @@ export const WeekdayLabel = forwardRef<HTMLDivElement, WeekdayLabelProps>(
     const { getWeekdayName = getDefaultWeekdayName, ...rest } = props;
 
     const { weekdayIndex } = useWeekdayContext();
-    const weekdayName = getWeekdayName(weekdayIndex);
+    const locale = useCalendarLocale();
+    const weekdayName = getWeekdayName(weekdayIndex, locale);
 
     return (
       <div ref={ref} {...rest}>

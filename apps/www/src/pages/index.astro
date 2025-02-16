@@ -62,8 +62,8 @@ import * as DatePickerDocs from "@/docs/date-picker.mdx";
 
           <Typography variant="h2" className="mb-1">Change locale</Typography>
           <Typography variant="p">
-            To change locale of the calendar, add this to your calendar
-            component.
+            To change locale of the calendar, you can pass a locale to the root
+            component or set the locale for dayjs globally.
           </Typography>
           <CodeBlock client:load code={codeExamples.locale} />
         </CardContent>
@@ -79,7 +79,6 @@ import * as DatePickerDocs from "@/docs/date-picker.mdx";
       <ExampleSectionPreview>
         <Calendar
           mode="single"
-          timezone=""
           className="grow border border-border rounded-md"
           client:load
         />

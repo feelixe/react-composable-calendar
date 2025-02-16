@@ -9,7 +9,7 @@ export function ComponentSingle() {
   );
 }
 
-export function Component() {
+export function ComponentRange() {
   return (
     <CalendarPrimitive.Root mode="range" name={["dateFrom", "dateTo"]}>
       <CalendarPrimitive.FormInput />

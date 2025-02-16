@@ -15,6 +15,7 @@ export type CalendarContextValue = {
   mode: Mode;
   inputName: CalendarInputName;
   timezone: string | null;
+  locale: string | null;
 };
 
 export const CalendarContext = createContext<CalendarContextValue | null>(null);

@@ -30,6 +30,11 @@ export function useCalendarTimezone() {
   return context.timezone;
 }
 
+export function useCalendarLocale() {
+  const context = useCalendarContext();
+  return context.locale;
+}
+
 export type UseIsInRangeParams = {
   inclusive?: boolean;
 };
@@ -78,9 +83,9 @@ export function useTodaysDate() {
       return dayjs();
     }
     if (timezone === "UTC") {
-      return dayjs.utc();
+      return dayjs().utc();
     }
-    return dayjs.tz(timezone);
+    return dayjs().tz(timezone);
   }, [timezone]);
 }
 

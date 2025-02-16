@@ -25,3 +25,8 @@ export const locale = await fs.readFile(
   path.join("./src/examples/code/locale.tsx"),
   "utf-8",
 );
+
+export const localeGlobal = await fs.readFile(
+  path.join("./src/examples/code/locale-global.tsx"),
+  "utf-8",
+);
