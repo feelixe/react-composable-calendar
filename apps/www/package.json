@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "bun --bun astro dev",
-    "build": "astro build",
+    "build": "bun --bun astro build",
     "preview": "astro preview",
     "astro": "astro",
     "lint:fix": "biome check  --fix --unsafe"

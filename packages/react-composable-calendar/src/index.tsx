@@ -177,11 +177,6 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
       previousMode.current = mode;
     }, [mode, updateValue, internalValue]);
 
-    console.log(
-      "ctxval",
-      contextValue.viewState[0].format("YYYY-MM-DDTHH:mm:ss.SSSZZ"),
-    );
-
     return (
       <div ref={ref} {...rest}>
         <CalendarContext.Provider value={contextValue}>
@@ -311,8 +306,6 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
   const child = Children.only(children) as ReactElement<DayProps>;
 
   const [view] = useView();
-
-  console.log("comp", view.format("YYYY-MM-DDTHH:mm:ss.SSSZZ"));
 
   const startOfMonth = view.startOf("month");
   const endOfMonth = view.endOf("month");

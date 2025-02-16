@@ -52,8 +52,6 @@ export function Calendar(props: CalendarProps) {
 
   const [val, setVal] = useState<dayjs.Dayjs | null>(null);
 
-  console.warn("val", val?.format("YYYY-MM-DDTHH:mm:ss.SSSZZ"));
-
   return (
     <CalendarPrimitive.Root
       mode="single"
