@@ -662,3 +662,35 @@ export const ValueLabel = forwardRef<HTMLDivElement, ValueLabelProps>(
     );
   },
 );
+
+export type SetYearButtonProps = ComponentPropsWithoutRef<"button"> & {
+  asChild?: boolean;
+  year: number;
+};
+
+export const SetYearButton = forwardRef<HTMLButtonElement, SetYearButtonProps>(
+  (props, ref) => {
+    const { year, asChild, children, onClick, ...rest } = props;
+
+    const [view, setView] = useView();
+
+    const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
+      (e) => {
+        onClick?.(e);
+        if (e.isDefaultPrevented()) {
+          return;
+        }
+        setView(view.set("year", year));
+      },
+      [onClick, setView, view, year],
+    );
+
+    const Comp = asChild ? Slot : "button";
+
+    return (
+      <Comp onClick={clickHandler} {...rest}>
+        {children}
+      </Comp>
+    );
+  },
+);

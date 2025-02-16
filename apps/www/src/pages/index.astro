@@ -1,4 +1,5 @@
 ---
+import * as Demos from "@/components/demos.tsx";
 import { ExternalLink } from "@/components/ui/external-link.tsx";
 import * as BasicCalendarDocs from "@/docs/basic-calendar.mdx";
 import * as DatePickerDocs from "@/docs/date-picker.mdx";
@@ -19,7 +20,6 @@ import { Container } from "../components/ui/container.tsx";
 import { DatePicker } from "../components/ui/date-picker.tsx";
 import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
-import * as Demos from "@/components/demos.tsx";
 ---
 
 <Layout>
@@ -125,6 +125,20 @@ import * as Demos from "@/components/demos.tsx";
     >
       <ExampleSectionPreview>
         <Demos.DemoSeparateViews client:load />
+      </ExampleSectionPreview>
+      <ExampleSectionCode>
+        <SeparateViewsDocs.Content />
+      </ExampleSectionCode>
+    </ExampleSection>
+
+    <ExampleSection
+      client:load
+      id="with-year-select"
+      title="With Year Select"
+      description="If you need a wide range of dates, you can add a dropdown to select year."
+    >
+      <ExampleSectionPreview>
+        <Demos.DemoWithYearSelect client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <SeparateViewsDocs.Content />
