@@ -38,6 +38,20 @@ export const closestStrategy: SelectDayStrategy = (args) => {
   return [currentValue[0], clickedDate];
 };
 
+export function changeAtIndexStrategy(index: number): SelectDayStrategy {
+  return (args: SelectDayStrategyParams) => {
+    const { currentValue, clickedDate, mode } = args;
+    if (mode === "single") {
+      return [clickedDate, null];
+    }
+    const [start, end] = currentValue;
+    if (index === 0) {
+      return [clickedDate, end];
+    }
+    return [start, clickedDate];
+  };
+}
+
 export const selectStartDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [, endDate] = currentValue;

@@ -1,8 +1,9 @@
 ---
 import { ExternalLink } from "@/components/ui/external-link.tsx";
-import * as MultipleViewsDocs from "@/docs/multiple-views.mdx";
 import * as BasicCalendarDocs from "@/docs/basic-calendar.mdx";
 import * as DatePickerDocs from "@/docs/date-picker.mdx";
+import * as MultipleViewsDocs from "@/docs/multiple-views.mdx";
+import * as SeparateViewsDocs from "@/docs/separate-views.mdx";
 import * as codeExamples from "@/examples/code-examples.ts";
 import {
   ExampleSection,
@@ -18,6 +19,7 @@ import { Container } from "../components/ui/container.tsx";
 import { DatePicker } from "../components/ui/date-picker.tsx";
 import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
+import * as Demos from "@/components/demos.tsx";
 ---
 
 <Layout>
@@ -80,11 +82,7 @@ import Layout from "../layouts/Layout.astro";
       description="A simple calendar that accepts a single date or a range."
     >
       <ExampleSectionPreview>
-        <Calendar
-          mode="single"
-          className="grow border border-border rounded-md"
-          client:load
-        />
+        <Demos.DemoCalendar client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <BasicCalendarDocs.Content />
@@ -98,7 +96,7 @@ import Layout from "../layouts/Layout.astro";
       description="A Date Picker input that utilizes shadcn/ui's Button and Popover."
     >
       <ExampleSectionPreview>
-        <DatePicker mode="single" client:load />
+        <Demos.DemoDatePicker client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <DatePickerDocs.Content />
@@ -112,11 +110,7 @@ import Layout from "../layouts/Layout.astro";
       description="You can have multiple views under the same calendar root."
     >
       <ExampleSectionPreview>
-        <MultiViewCalendar
-          mode="range"
-          className="grow border border-border rounded-md"
-          client:load
-        />
+        <Demos.DemoMultiView client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <MultipleViewsDocs.Content />
@@ -130,14 +124,10 @@ import Layout from "../layouts/Layout.astro";
       description="You can even have two views that work independently of each other."
     >
       <ExampleSectionPreview>
-        <CalendarStartEndSeparate
-          mode="range"
-          className="grow border border-border rounded-md"
-          client:load
-        />
+        <Demos.DemoSeparateViews client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
-        <CodeBlock code={codeExamples.datePicker} />
+        <SeparateViewsDocs.Content />
       </ExampleSectionCode>
     </ExampleSection>
   </div>

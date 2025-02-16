@@ -1,38 +1,35 @@
 "use client";
 
 import { cn } from "@/lib/utils.ts";
+import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
-import {
-  selectStartDateStrategy,
-  selectEndDateStrategy,
-} from "react-composable-calendar/select-day-strategy";
+import { changeAtIndexStrategy } from "react-composable-calendar/select-day-strategy";
 import { Button } from "./button.tsx";
-
-import dayjs from "dayjs";
-import "dayjs/locale/en-gb";
-
-dayjs.locale("en-gb");
-
-export type CalendarProps = CalendarPrimitive.RootProps;
 
 export function range(length: number) {
   return [...new Array(length)].map((_, i) => i);
 }
 
-export function CalendarStartEndSeparate(props: CalendarProps) {
+export function CalendarStartEndSeparate(props: CalendarPrimitive.RootProps) {
   const { className, ...rest } = props;
 
   return (
     <CalendarPrimitive.Root className={cn("max-w-lg p-3", className)} {...rest}>
       <div className="mb-2 flex items-center justify-end gap-2">
         <div className="grow" />
-        <CalendarPrimitive.ValueLabel className="text-muted-foreground text-sm " />
+        <CalendarPrimitive.ValueLabel
+          fallback="No date selected"
+          className="text-muted-foreground text-sm "
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-6">
         {range(2).map((index) => (
-          <CalendarPrimitive.View key={index}>
+          <CalendarPrimitive.View
+            defaultValue={dayjs().add(index, "month")}
+            key={index}
+          >
             <div className="mb-4 flex items-center justify-between">
               <CalendarPrimitive.OffsetViewButton asChild offset={-1}>
                 <Button size="icon" variant="outline" className="size-8">
@@ -52,9 +49,7 @@ export function CalendarStartEndSeparate(props: CalendarProps) {
 
             <CalendarPrimitive.Days className="mb-1 grid grid-cols-7 gap-y-1">
               <CalendarPrimitive.Day
-                selectDayStrategy={
-                  index === 0 ? selectStartDateStrategy : selectEndDateStrategy
-                }
+                selectDayStrategy={changeAtIndexStrategy(index)}
                 className="group relative aspect-square w-full cursor-pointer data-[neighboring]:invisible"
               >
                 <CalendarPrimitive.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
