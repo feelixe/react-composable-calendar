@@ -20,7 +20,7 @@ npm i react-composable-calendar dayjs
 ## Background
 This package was created as an alternative the calendar component used by shadcn/ui, `react-day-picker`, which lacks composability. React Composable Calendar was designed to offer a seamless and enjoyable developer experience, making it easy to build and customize calendars exactly the way you want.
 
-## Examples
+## Components
 
 ### Basic Calendar
 1. Copy paste to `/components/ui/calendar.tsx`
@@ -75,13 +75,5 @@ export function Calendar(props: CalendarProps) {
 }
 ```
 
-### Date Picker Field
-1. Add **Basic Calendar Component** from above.
-2. Requires [Popover](https://ui.shadcn.com/docs/components/popover) and [Button](https://ui.shadcn.com/docs/components/button) from shadcn.
-
-```tsx
-
-```
-
-### More examples
-Visit the documentation site for advanced usage and more examples.
+### More components
+Visit the [documentation site](https://react-composable-calendar.vercel.app/) for advanced usage and more examples.
