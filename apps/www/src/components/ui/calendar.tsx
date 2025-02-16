@@ -7,7 +7,7 @@ import { Button } from "./button.tsx";
 
 export function CalendarBody() {
   return (
-    <>
+    <CalendarPrimitive.View>
       <div className="mb-4 flex items-center justify-between">
         <CalendarPrimitive.OffsetViewButton asChild offset={-1}>
           <Button size="icon" variant="outline" className="size-8">
@@ -33,7 +33,7 @@ export function CalendarBody() {
         </CalendarPrimitive.Day>
       </CalendarPrimitive.Days>
       <CalendarPrimitive.FormInput />
-    </>
+    </CalendarPrimitive.View>
   );
 }
 

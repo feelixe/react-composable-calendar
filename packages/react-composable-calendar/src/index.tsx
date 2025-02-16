@@ -11,6 +11,7 @@ import {
   type ElementType,
   type ForwardedRef,
   type MouseEventHandler,
+  type PropsWithChildren,
   type ReactElement,
   type ReactNode,
 } from "react";
@@ -42,13 +43,18 @@ import {
   useIsToday,
   useInputName,
   useCalendarLocale,
+  useCalendarTimezone,
 } from "./hooks.js";
 import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
 import {
   closestStrategy,
   type SelectDayStrategy,
 } from "./select-day-strategy.js";
-import { ViewContext, type ViewContextValue } from "./contexts/view.js";
+import {
+  useViewContext,
+  ViewContext,
+  type ViewContextValue,
+} from "./contexts/view.js";
 import type {
   FormatDateFn,
   FormatRequiredDateFn,
@@ -111,21 +117,6 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
 
     const isStateUncontrolled = value === undefined;
 
-    const [view, setView] = useState(() => {
-      let defaultView: Dayjs;
-      if (timezone?.toLowerCase() === "utc") {
-        defaultView = dayjs().utc().startOf("month");
-      } else if (timezone) {
-        defaultView = dayjs().tz(timezone).startOf("month");
-      } else {
-        defaultView = dayjs().startOf("month");
-      }
-      if (locale) {
-        defaultView = defaultView.locale(locale);
-      }
-      return defaultView;
-    });
-
     const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
       () => {
         if (defaultValue !== undefined) {
@@ -167,22 +158,13 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
 
     const contextValue = useMemo<CalendarContextValue>(
       () => ({
-        viewState: [view, setView],
         valueState: [internalValue, updateValue],
         mode,
         inputName: normalizedName,
         timezone: timezone ?? null,
         locale: locale ?? null,
       }),
-      [
-        view,
-        internalValue,
-        mode,
-        updateValue,
-        normalizedName,
-        timezone,
-        locale,
-      ],
+      [internalValue, mode, updateValue, normalizedName, timezone, locale],
     );
 
     const previousMode = useRef<Mode>(mode);
@@ -299,16 +281,33 @@ export const OffsetViewButton = forwardRef<
   );
 });
 
-export type ViewProps = ComponentPropsWithoutRef<"div"> &
-  Partial<ViewContextValue>;
+export type ViewProps = ComponentPropsWithoutRef<"div">;
 export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
-  const { children, viewOffset, ...divProps } = props;
+  const { children, ...divProps } = props;
+
+  const timezone = useCalendarTimezone();
+  const locale = useCalendarLocale();
+
+  const [view, setView] = useState(() => {
+    let defaultView: Dayjs;
+    if (timezone?.toLowerCase() === "utc") {
+      defaultView = dayjs().utc().startOf("month");
+    } else if (timezone) {
+      defaultView = dayjs().tz(timezone).startOf("month");
+    } else {
+      defaultView = dayjs().startOf("month");
+    }
+    if (locale) {
+      defaultView = defaultView.locale(locale);
+    }
+    return defaultView;
+  });
 
   const contextValue = useMemo<ViewContextValue>(
     () => ({
-      viewOffset: viewOffset ?? 0,
+      viewState: [view, setView],
     }),
-    [viewOffset],
+    [view],
   );
 
   return (
@@ -319,6 +318,32 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
     </div>
   );
 });
+
+export type ViewOffsetProps = ComponentPropsWithoutRef<"div"> & {
+  offset: number;
+};
+export const ViewOffset = forwardRef<HTMLDivElement, ViewOffsetProps>(
+  (props, ref) => {
+    const { children, offset, ...rest } = props;
+
+    const [view, setView] = useView();
+
+    const offsetViewValue = useMemo<ViewContextValue>(
+      () => ({
+        viewState: [view.add(offset, "month"), setView],
+      }),
+      [view, setView, offset],
+    );
+
+    return (
+      <div ref={ref} {...rest}>
+        <ViewContext.Provider value={offsetViewValue}>
+          {children}
+        </ViewContext.Provider>
+      </div>
+    );
+  },
+);
 
 export type DaysProps = ComponentPropsWithoutRef<"div">;
 export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {

@@ -4,10 +4,8 @@ import type {
   CalendarInternalValue,
   Mode,
 } from "../types.js";
-import type { Dayjs } from "../extended-dayjs.js";
 
 export type CalendarContextValue = {
-  viewState: [view: Dayjs, setView: (day: Dayjs) => void];
   valueState: [
     value: CalendarInternalValue,
     setValue: (value: CalendarInternalValue) => void,

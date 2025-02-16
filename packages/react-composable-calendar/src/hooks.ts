@@ -5,14 +5,11 @@ import { useViewContext } from "./contexts/view.js";
 import { dayjs } from "./extended-dayjs.js";
 
 export function useView() {
-  const context = useCalendarContext();
   const viewContext = useViewContext();
-
-  const [view, setView] = context.viewState;
-
-  const viewWithOffset = view.add(viewContext.viewOffset, "month");
-
-  return [viewWithOffset, setView] as const;
+  return viewContext.viewState;
+  // const [view, setView] = context.viewState;
+  // const viewWithOffset = view.add(viewContext.viewOffset, "month");
+  // return [viewWithOffset, setView] as const;
 }
 
 export function useCalendarValue() {
