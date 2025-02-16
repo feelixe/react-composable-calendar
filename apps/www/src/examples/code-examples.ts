@@ -21,6 +21,11 @@ export const separateViews = await fs.readFile(
   "utf-8",
 );
 
+export const withYearSelect = await fs.readFile(
+  path.join("./src/components/ui/calendar-with-year-select.tsx"),
+  "utf-8",
+);
+
 export const timezone = await fs.readFile(
   path.join("./src/examples/code/timezone.tsx"),
   "utf-8",

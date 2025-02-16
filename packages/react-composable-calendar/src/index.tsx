@@ -688,7 +688,7 @@ export const SetYearButton = forwardRef<HTMLButtonElement, SetYearButtonProps>(
     const Comp = asChild ? Slot : "button";
 
     return (
-      <Comp onClick={clickHandler} {...rest}>
+      <Comp ref={ref} onClick={clickHandler} {...rest}>
         {children}
       </Comp>
     );
