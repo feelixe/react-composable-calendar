@@ -1,6 +1,21 @@
-<img src="/static//header.png" alt="Usage demo">
+<img src="https://i.imgur.com/WFBtiZr.png" alt="header">
 
-React Composable Calendar is a collection of **headless**, **highly customizable**, and **modular** React calendar components. Designed with flexibility in mind, it aligns with the principles of [shadcn/ui](https://github.com/shadcn-ui/ui) and [Radix UI](https://github.com/radix-ui/primitives). If you're familiar with these libraries, you'll feel right at home.
+<p align="center">
+React Composable Calendar is a collection of headless, highly customizable, and modular React calendar components. Designed with flexibility in mind, it aligns with the principles of shadcn/ui and Radix UI.
+</p>
+
+<p align="center">
+<a href="https://www.npmjs.com/package/react-composable-calendar"><img src="https://badge.fury.io/js/react-composable-calendar.svg?icon=si%3Anpm" alt="npm version" height="18"></a>
+<a href="/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" height="18" /></a>
+</p>
+
+<p align="center">
+  <a href="https://react-composable-calendar.vercel.app/">Documentation</a>
+  •
+  <a href="https://www.npmjs.com/package/react-composable-calendar">npm</a>
+  •
+  <a href="https://github.com/feelixe/react-composable-calendar">GitHub</a>
+</p>
 
 ## Key Features
 
