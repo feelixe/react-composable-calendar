@@ -15,13 +15,7 @@ export function DemoCalendar() {
 }
 
 export function DemoDatePicker() {
-  return (
-    <DatePicker
-      mode="single"
-      locale="en-gb"
-      className="grow rounded-md border border-border"
-    />
-  );
+  return <DatePicker mode="single" locale="en-gb" />;
 }
 
 export function DemoMultiView() {
