@@ -19,10 +19,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs.tsx";
 export type ExampleSectionProps = ComponentProps<typeof Container> & {
   title: string;
   description?: string;
+  id: string;
 };
 
 export function ExampleSection(props: ExampleSectionProps) {
-  const { className, title, description, children, ...rest } = props;
+  const { className, title, id, description, children, ...rest } = props;
 
   const [tab, setTab] = useState("preview");
 
@@ -33,7 +34,7 @@ export function ExampleSection(props: ExampleSectionProps) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>{title}</CardTitle>
+                <CardTitle id={id}>{title}</CardTitle>
                 <CardDescription>{description}</CardDescription>
               </div>
 
@@ -49,12 +50,6 @@ export function ExampleSection(props: ExampleSectionProps) {
             )}
           >
             {children}
-            {/* <TabsContent value="preview" className="flex justify-center">
-              {children}
-            </TabsContent>
-            <TabsContent value="code">
-              <CodeBlock code={code} />
-            </TabsContent> */}
           </CardContent>
         </Tabs>
       </Card>
@@ -66,7 +61,9 @@ export type ExampleSectionPreviewProps = ComponentProps<"div">;
 
 export function ExampleSectionPreview(props: ExampleSectionPreviewProps) {
   const { className, ...rest } = props;
-  return <div className={cn("preview", className)} {...rest} />;
+  return (
+    <div className={cn("preview flex justify-center", className)} {...rest} />
+  );
 }
 
 export type ExampleSectionCodeProps = ComponentProps<"div">;

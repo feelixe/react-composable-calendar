@@ -14,6 +14,8 @@ import { Container } from "../components/ui/container.tsx";
 import { DatePicker } from "../components/ui/date-picker.tsx";
 import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
+import * as BasicCalendarDocs from "@/docs/basic-calendar.mdx";
+import * as DatePickerDocs from "@/docs/date-picker.mdx";
 ---
 
 <Layout>
@@ -70,6 +72,7 @@ import Layout from "../layouts/Layout.astro";
 
     <ExampleSection
       client:load
+      id="basic-calendar"
       title="Basic Calendar"
       description="A simple calendar that accepts a single date or a range."
     >
@@ -81,11 +84,14 @@ import Layout from "../layouts/Layout.astro";
           client:load
         />
       </ExampleSectionPreview>
-      <ExampleSectionCode />
+      <ExampleSectionCode>
+        <BasicCalendarDocs.Content />
+      </ExampleSectionCode>
     </ExampleSection>
 
     <ExampleSection
       client:load
+      id="date-picker"
       title="Date Picker"
       description="A Date Picker input that utilizes shadcn/ui's Button and Popover."
     >
@@ -93,12 +99,13 @@ import Layout from "../layouts/Layout.astro";
         <DatePicker mode="range" client:load />
       </ExampleSectionPreview>
       <ExampleSectionCode>
-        <CodeBlock code={codeExamples.datePicker} />
+        <DatePickerDocs.Content />
       </ExampleSectionCode>
     </ExampleSection>
 
     <ExampleSection
       client:load
+      id="multiple-views"
       title="Multiple Views"
       description="You can have multiple views under the same calendar root."
     >

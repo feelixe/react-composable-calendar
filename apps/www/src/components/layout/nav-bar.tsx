@@ -63,7 +63,7 @@ export function NavBar() {
             key={item.id}
             asChild
             variant="ghost"
-            className="hidden xl:flex"
+            className="hidden md:flex"
             onClick={() => setMenuOpen(false)}
           >
             {typeof item.link === "string" ? (
@@ -78,7 +78,7 @@ export function NavBar() {
         ))}
 
         <Drawer open={menuOpen} onOpenChange={setMenuOpen} direction="right">
-          <DrawerTrigger asChild className="block xl:hidden">
+          <DrawerTrigger asChild className="flex md:hidden">
             <Button size="icon" variant="ghost">
               <MenuIcon />
             </Button>

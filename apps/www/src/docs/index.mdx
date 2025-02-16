@@ -1,6 +1,5 @@
 import { markdownComponents } from "@/components/markdown/components";
 import { CodeBlock } from "@/components/ui/code-block.tsx"
-import { basicCalendar } from "@/examples/code-examples.ts"
 import { Separator } from "@/components/ui/separator";
 import { ExternalLink } from "@/components/ui/external-link";
 import * as codeExamples from "@/examples/code-examples";
@@ -11,7 +10,7 @@ export const components = markdownComponents;
 
 ### Timezone
 To change the timezone of the calendar, pass a time to the prop `timezone` on the `CalendarPrimitive.Root`.
-A list of valid timezones can be found in the <ExternalLink href="https://www.iana.org/time-zones">IANA Database</ExternalLink>.
+A list of valid timezones can be found in the <ExternalLink href="https://www.iana.org/time-zones" text="IANA Database" />.
 
 #### Notes
 - When using a controlled state or passing a `defaultValue`, ensure the date provided is set to the same timezone.

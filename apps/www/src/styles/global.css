@@ -97,4 +97,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  .link {
+    @apply text-blue-500 cursor-pointer hover:underline;
+  }
 }

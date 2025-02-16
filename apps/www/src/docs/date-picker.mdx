@@ -1,0 +1,14 @@
+import { CodeBlock } from "@/components/ui/code-block.tsx"
+import { ExternalLink } from "@/components/ui/external-link"
+import { markdownComponents } from "@/components/markdown/components"
+import { datePicker } from "@/examples/code-examples.ts";
+
+export const components = markdownComponents;
+
+## Installation
+* Setup <a class="link" href="#basic-calendar">Basic Calendar</a>.
+* Add <ExternalLink text="Button" href="https://ui.shadcn.com/docs/components/button" /> and
+<ExternalLink text="Popover" href="https://ui.shadcn.com/docs/components/popover" />.
+* Copy paste this code block into `src/components/ui/date-picker.tsx`
+
+<CodeBlock code={datePicker} />
