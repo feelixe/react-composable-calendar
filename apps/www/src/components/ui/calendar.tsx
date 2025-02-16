@@ -50,17 +50,8 @@ export type CalendarProps = CalendarPrimitive.RootProps;
 export function Calendar(props: CalendarProps) {
   const { className, ...rest } = props;
 
-  const [val, setVal] = useState<dayjs.Dayjs | null>(null);
-
   return (
-    <CalendarPrimitive.Root
-      mode="single"
-      value={val}
-      onValueChange={setVal}
-      className={cn("max-w-72 p-3", className)}
-      timezone="Australia/Sydney"
-      // {...rest}
-    >
+    <CalendarPrimitive.Root className={cn("max-w-72 p-3", className)} {...rest}>
       <CalendarBody />
     </CalendarPrimitive.Root>
   );
