@@ -28,31 +28,77 @@ The Root component is the foundational wrapper for the calendar. It manages the 
 including the current view, selected date(s), and mode (single or range). It also provides context
 to its child components, allowing them to access and modify the calendar's state.
 
-#### Notes
-- The Root component is designed to be flexible, supporting both controlled and uncontrolled usage.
-- It ensures proper synchronization between the internal state and external props, even when the mode changes dynamically.
+<Separator className="my-8" />
+
+### CalendarPrimitive.View
+Provides context for a view. A view is a month that is being viewed.
+You can have multiple views within a calendar root.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.OffsetViewButton
+A Button that offset the current view but a number.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.ViewOffset
+This will offset all children with an amount. Useful if you for example want to show two views
+next to each other where one of them is them next month.
 
 <Separator className="my-8" />
 
 ### CalendarPrimitive.Weekdays
 The Weekdays component is responsible for rendering the weekday labels (e.g., Monday, Tuesday, etc.) in
-the calendar. It wraps each weekday label in a WeekdayContext.Provider, allowing child components to
-access the current weekday index. This component is designed to work with a single child element, which is
-cloned for each weekday.
-#### Notes
-- The Weekdays component expects a single child element, which is cloned for each weekday (7 times in total).
-- It uses WeekdayContext.Provider to provide the weekdayIndex to its children, enabling dynamic rendering based on the weekday.
-- This component is typically used as part of a larger calendar layout to display the days of the week.
+the calendar.
 
 <Separator className="my-8" />
 
 ### CalendarPrimitive.WeekdayLabel
 The WeekdayLabel component is used to display the name of a weekday (e.g., "Monday", "Tuesday")
-within the calendar. It retrieves the current weekday index from the WeekdayContext and
-uses a provided or default function (getWeekdayName) to determine the display name for
-the weekday. This component is designed to be flexible, allowing customization of weekday
-names through the getWeekdayName prop.
+within the calendar. It retrieves the current weekday index from the WeekdayContext.
 
-#### Notes
-- The component relies on the WeekdayContext to access the current weekdayIndex.
-- By default, it uses getDefaultWeekdayName to determine the weekday name, but this can be overridden with a custom getWeekdayName function.
+<Separator className="my-8" />
+
+### CalendarPrimitive.MonthTitle
+Shows the name of the month that the view is currently in.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.Days
+Will render all days of the month as children.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.Day
+A button that represents a day of the month. If clicked, value is changed to that day.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.DayLabel
+Renders the day's number in the month.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.FormInput
+Renders an `<input />` with the calendars value. If in `range` mode, two inputs will be rendered.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.ClearButton
+A button that when clicked clears the selected value of the calendar.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.DayInRange
+Conditionally rendered if a day is within the selected range.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.DayIsSelected
+Conditionally rendered if a day is selected.
+
+<Separator className="my-8" />
+
+### CalendarPrimitive.ValueLabel
+Shows the selected value formatted as a string.
+
