@@ -1,14 +1,10 @@
 ---
+import { ExternalLink } from "@/components/ui/external-link.tsx";
 import * as codeExamples from "@/examples/code-examples.ts";
 import { ExampleSection } from "../components/layout/example-section.tsx";
 import { MultiViewCalendar } from "../components/ui/calendar-multi-view.tsx";
 import { Calendar } from "../components/ui/calendar.tsx";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card.tsx";
+import { Card, CardContent } from "../components/ui/card.tsx";
 import { CodeBlock } from "../components/ui/code-block.tsx";
 import { Container } from "../components/ui/container.tsx";
 import { DatePicker } from "../components/ui/date-picker.tsx";
@@ -38,10 +34,17 @@ import Layout from "../layouts/Layout.astro";
             UI. It offers flexibility and customization, empowering you to build
             exactly what you need.
           </Typography>
-          <Typography variant="p" className="mb-6">
+          <Typography variant="p" className="mb-3">
             Explore the examples below, find the one that aligns with your
             vision, and start crafting your perfect calendar component with
             ease.
+          </Typography>
+          <Typography variant="p" className="mb-6">
+            The examples require you to have
+            <ExternalLink href="https://ui.shadcn.com/docs/installation">
+              shadcn/ui
+            </ExternalLink>
+            setup in your project.
           </Typography>
 
           <Typography variant="h2" className="mb-1">Change locale</Typography>
