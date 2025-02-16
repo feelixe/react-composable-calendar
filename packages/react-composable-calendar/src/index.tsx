@@ -281,14 +281,29 @@ export const OffsetViewButton = forwardRef<
   );
 });
 
-export type ViewProps = ComponentPropsWithoutRef<"div">;
+export type ViewProps = Omit<
+  ComponentPropsWithoutRef<"div">,
+  "defaultValue"
+> & {
+  value?: Dayjs;
+  onValueChange?: (value: Dayjs) => unknown;
+  defaultValue?: Dayjs;
+};
 export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
-  const { children, ...divProps } = props;
+  const { value, onValueChange, defaultValue, children, ...divProps } = props;
 
   const timezone = useCalendarTimezone();
   const locale = useCalendarLocale();
 
-  const [view, setView] = useState(() => {
+  const isStateUncontrolled = value === undefined;
+
+  const [internalView, setInternalView] = useState<Dayjs>(() => {
+    if (!isStateUncontrolled) {
+      return value;
+    }
+    if (defaultValue) {
+      return defaultValue;
+    }
     let defaultView: Dayjs;
     if (timezone?.toLowerCase() === "utc") {
       defaultView = dayjs().utc().startOf("month");
@@ -303,11 +318,29 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
     return defaultView;
   });
 
+  // Sync external state
+  const updateValue = useCallback(
+    (newView: Dayjs) => {
+      if (isStateUncontrolled) {
+        setInternalView(newView);
+      }
+    },
+    [isStateUncontrolled],
+  );
+
+  // Sync internal state
+  useEffect(() => {
+    if (value === undefined) {
+      return;
+    }
+    setInternalView(value);
+  }, [value]);
+
   const contextValue = useMemo<ViewContextValue>(
     () => ({
-      viewState: [view, setView],
+      viewState: [internalView, updateValue],
     }),
-    [view],
+    [internalView, updateValue],
   );
 
   return (
