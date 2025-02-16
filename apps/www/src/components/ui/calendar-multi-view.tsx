@@ -5,19 +5,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
 import { Button } from "./button.tsx";
 
-import dayjs from "dayjs";
-import "dayjs/locale/en-gb";
-import { Fragment } from "react/jsx-runtime";
-
-dayjs.locale("en-gb");
-
-export type CalendarProps = CalendarPrimitive.RootProps;
-
 export function range(length: number) {
   return [...new Array(length)].map((_, i) => i);
 }
 
-export function MultiViewCalendar(props: CalendarProps) {
+export function MultiViewCalendar(props: CalendarPrimitive.RootProps) {
   const { className, ...rest } = props;
 
   return (

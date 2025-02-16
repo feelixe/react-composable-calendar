@@ -1,5 +1,8 @@
 ---
 import { ExternalLink } from "@/components/ui/external-link.tsx";
+import * as MultipleViewsDocs from "@/docs/multiple-views.mdx";
+import * as BasicCalendarDocs from "@/docs/basic-calendar.mdx";
+import * as DatePickerDocs from "@/docs/date-picker.mdx";
 import * as codeExamples from "@/examples/code-examples.ts";
 import {
   ExampleSection,
@@ -7,6 +10,7 @@ import {
   ExampleSectionPreview,
 } from "../components/layout/example-section.tsx";
 import { MultiViewCalendar } from "../components/ui/calendar-multi-view.tsx";
+import { CalendarStartEndSeparate } from "../components/ui/calendar-start-end-separate.tsx";
 import { Calendar } from "../components/ui/calendar.tsx";
 import { Card, CardContent } from "../components/ui/card.tsx";
 import { CodeBlock } from "../components/ui/code-block.tsx";
@@ -14,8 +18,6 @@ import { Container } from "../components/ui/container.tsx";
 import { DatePicker } from "../components/ui/date-picker.tsx";
 import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
-import * as BasicCalendarDocs from "@/docs/basic-calendar.mdx";
-import * as DatePickerDocs from "@/docs/date-picker.mdx";
 ---
 
 <Layout>
@@ -111,6 +113,24 @@ import * as DatePickerDocs from "@/docs/date-picker.mdx";
     >
       <ExampleSectionPreview>
         <MultiViewCalendar
+          mode="range"
+          className="grow border border-border rounded-md"
+          client:load
+        />
+      </ExampleSectionPreview>
+      <ExampleSectionCode>
+        <MultipleViewsDocs.Content />
+      </ExampleSectionCode>
+    </ExampleSection>
+
+    <ExampleSection
+      client:load
+      id="start-end-date-separately"
+      title="Select start and end date separately"
+      description="You can even have two views that work independently of each other."
+    >
+      <ExampleSectionPreview>
+        <CalendarStartEndSeparate
           mode="range"
           className="grow border border-border rounded-md"
           client:load

@@ -11,6 +11,16 @@ export const datePicker = await fs.readFile(
   "utf-8",
 );
 
+export const multipleViews = await fs.readFile(
+  path.join("./src/components/ui/calendar-multi-view.tsx"),
+  "utf-8",
+);
+
+export const separateViews = await fs.readFile(
+  path.join("./src/components/ui/calendar-start-end-separate.tsx"),
+  "utf-8",
+);
+
 export const timezone = await fs.readFile(
   path.join("./src/examples/code/timezone.tsx"),
   "utf-8",
