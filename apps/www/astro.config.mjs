@@ -12,7 +12,7 @@ export default defineConfig({
     assetsInclude: ["**/*.txt"],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "src"),
+        "@": path.resolve(import.meta.dir, "src"),
       },
     },
   },
