@@ -1,14 +1,15 @@
 import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
-import dayjs from "dayjs";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
+import { dayjs } from "./extended-dayjs.js";
 
 export function useView() {
   const context = useCalendarContext();
   const viewContext = useViewContext();
 
   const [view, setView] = context.viewState;
+
   const viewWithOffset = view.add(viewContext.viewOffset, "month");
 
   return [viewWithOffset, setView] as const;
@@ -22,6 +23,11 @@ export function useCalendarValue() {
 export function useMode() {
   const context = useCalendarContext();
   return context.mode;
+}
+
+export function useCalendarTimezone() {
+  const context = useCalendarContext();
+  return context.timezone;
 }
 
 export type UseIsInRangeParams = {
@@ -64,12 +70,27 @@ export function useIsSelected() {
   }, [value, day, mode]);
 }
 
+export function useTodaysDate() {
+  const timezone = useCalendarTimezone();
+
+  return useMemo(() => {
+    if (timezone === null) {
+      return dayjs();
+    }
+    if (timezone === "UTC") {
+      return dayjs.utc();
+    }
+    return dayjs.tz(timezone);
+  }, [timezone]);
+}
+
 export function useIsToday() {
+  const todaysDate = useCalendarTimezone();
   const { day } = useDayContext();
 
   return useMemo(() => {
-    return day.isSame(dayjs(), "day");
-  }, [day]);
+    return day.isSame(todaysDate, "day");
+  }, [day, todaysDate]);
 }
 
 export function useIsNeighboringMonth() {

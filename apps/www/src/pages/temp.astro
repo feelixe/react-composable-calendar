@@ -68,29 +68,6 @@ import Layout from "../layouts/Layout.astro";
     >
       <Calendar
         mode="single"
-        timezone=""
-        className="grow border border-border rounded-md"
-        client:load
-      />
-    </ExampleSection>
-
-    <ExampleSection
-      client:load
-      title="Date Picker"
-      description="A Date Picker input that utilizes shadcn/ui's Button and Popover."
-      code={codeExamples.datePicker}
-    >
-      <DatePicker mode="range" client:load />
-    </ExampleSection>
-
-    <ExampleSection
-      client:load
-      title="Multiple Views"
-      description="You can have multiple views under the same calendar root."
-      code={codeExamples.datePicker}
-    >
-      <MultiViewCalendar
-        mode="range"
         className="grow border border-border rounded-md"
         client:load
       />

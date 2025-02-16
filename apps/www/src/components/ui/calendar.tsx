@@ -4,6 +4,14 @@ import { cn } from "@/lib/utils.ts";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as CalendarPrimitive from "react-composable-calendar";
 import { Button } from "./button.tsx";
+import { useState } from "react";
+import dayjs from "dayjs";
+
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export function CalendarBody() {
   return (
@@ -42,8 +50,19 @@ export type CalendarProps = CalendarPrimitive.RootProps;
 export function Calendar(props: CalendarProps) {
   const { className, ...rest } = props;
 
+  const [val, setVal] = useState<dayjs.Dayjs | null>(null);
+
+  console.warn("val", val?.format("YYYY-MM-DDTHH:mm:ss.SSSZZ"));
+
   return (
-    <CalendarPrimitive.Root className={cn("max-w-72 p-3", className)} {...rest}>
+    <CalendarPrimitive.Root
+      mode="single"
+      value={val}
+      onValueChange={setVal}
+      className={cn("max-w-72 p-3", className)}
+      timezone="Australia/Sydney"
+      // {...rest}
+    >
       <CalendarBody />
     </CalendarPrimitive.Root>
   );

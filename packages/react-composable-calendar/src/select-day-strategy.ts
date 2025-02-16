@@ -1,14 +1,14 @@
-import type dayjs from "dayjs";
 import type { CalendarInternalValue } from "./types.js";
+import type { Dayjs } from "./extended-dayjs.js";
 
 export type SelectDayStrategyParams = {
   currentValue: CalendarInternalValue;
-  clickedDate: dayjs.Dayjs;
+  clickedDate: Dayjs;
   mode: "single" | "range";
 };
 
 export type SelectDayStrategy = (
-  args: SelectDayStrategyParams
+  args: SelectDayStrategyParams,
 ) => CalendarInternalValue;
 
 export const closestStrategy: SelectDayStrategy = (args) => {

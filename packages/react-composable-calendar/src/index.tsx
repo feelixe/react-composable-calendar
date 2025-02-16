@@ -15,7 +15,6 @@ import {
   type ReactNode,
 } from "react";
 import { getDefaultWeekdayName } from "./week-name.js";
-import dayjs from "dayjs";
 import { Slot } from "./slot.js";
 import { range } from "./array-range.js";
 import {
@@ -55,6 +54,7 @@ import type {
   GetWeekdayNameFn,
 } from "./format.js";
 import { defaultFormatMonth, defaultFormatValue } from "./format.js";
+import { dayjs } from "./extended-dayjs.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -66,7 +66,13 @@ type ComponentPropsWithoutRefAndChildren<T extends ElementType> = Omit<
 export type RootBaseProps = Omit<
   ComponentPropsWithoutRef<"div">,
   "defaultValue"
->;
+> & {
+  /**
+   * Timezone that will be passed to dayjs, see https://day.js.org/docs/en/timezone/timezone.
+   */
+  timezone?: string;
+};
+
 export type RootSingleProps = RootBaseProps & {
   mode: "single";
   value?: CalendarSingleValue;
@@ -93,12 +99,22 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
       defaultValue,
       mode,
       name,
+      timezone,
       ...rest
     } = props;
 
     const isStateUncontrolled = value === undefined;
 
-    const [view, setView] = useState(dayjs());
+    const [view, setView] = useState(() => {
+      if (timezone?.toLowerCase() === "utc") {
+        return dayjs().utc().startOf("month");
+      }
+      if (timezone) {
+        return dayjs().tz(timezone).startOf("month");
+      }
+      return dayjs().startOf("month");
+    });
+
     const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
       () => {
         if (defaultValue !== undefined) {
@@ -144,8 +160,9 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
         valueState: [internalValue, updateValue],
         mode,
         inputName: normalizedName,
+        timezone: timezone ?? null,
       }),
-      [view, internalValue, mode, updateValue, normalizedName],
+      [view, internalValue, mode, updateValue, normalizedName, timezone],
     );
 
     const previousMode = useRef<Mode>(mode);
@@ -159,6 +176,11 @@ export const Root = forwardRef<HTMLDivElement, RootProps>(
       }
       previousMode.current = mode;
     }, [mode, updateValue, internalValue]);
+
+    console.log(
+      "ctxval",
+      contextValue.viewState[0].format("YYYY-MM-DDTHH:mm:ss.SSSZZ"),
+    );
 
     return (
       <div ref={ref} {...rest}>
@@ -289,6 +311,8 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
   const child = Children.only(children) as ReactElement<DayProps>;
 
   const [view] = useView();
+
+  console.log("comp", view.format("YYYY-MM-DDTHH:mm:ss.SSSZZ"));
 
   const startOfMonth = view.startOf("month");
   const endOfMonth = view.endOf("month");
