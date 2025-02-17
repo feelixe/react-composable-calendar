@@ -614,6 +614,25 @@ export const DayInRange = forwardRef<HTMLDivElement, DayInRangeProps>(
   },
 );
 
+export type DayIsTodayProps = ComponentPropsWithoutRef<"div"> & {
+  asChild?: boolean;
+};
+
+export const DayIsToday = forwardRef<HTMLDivElement, DayIsTodayProps>(
+  (props, ref) => {
+    const { asChild, ...rest } = props;
+
+    const isToday = useIsToday();
+    if (!isToday) {
+      return null;
+    }
+
+    const Comp = asChild ? Slot : "div";
+
+    return <Comp ref={ref} {...rest} />;
+  },
+);
+
 export type DayInSelectedProps = ComponentPropsWithoutRef<"div"> & {
   asChild?: boolean;
 };

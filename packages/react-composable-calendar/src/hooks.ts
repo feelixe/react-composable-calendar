@@ -87,7 +87,7 @@ export function useTodaysDate() {
 }
 
 export function useIsToday() {
-  const todaysDate = useCalendarTimezone();
+  const todaysDate = useTodaysDate();
   const { day } = useDayContext();
 
   return useMemo(() => {
