@@ -13,7 +13,7 @@ To change the timezone of the calendar, pass a time to the prop `timezone` on th
 A list of valid timezones can be found in the <ExternalLink href="https://www.iana.org/time-zones" text="IANA Database" />.
 
 #### Notes
-- If you want to use `UTC` as timezone, do use `.tz("UTC")`, instead use `dayjs().utc()`.
+- If you want to use `UTC` as timezone, do not use `.tz("UTC")`, instead use `dayjs().utc()`.
 - When using a controlled state or passing a `defaultValue`, ensure the date provided is set to the same timezone.
 <CodeBlock client:load code={codeExamples.timezone} />
 
