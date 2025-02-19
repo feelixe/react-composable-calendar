@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useState } from "react";
-import * as CalendarPrimitive from "react-composable-calendar";
+import * as Calendar from "react-composable-calendar";
 import type { CalendarSingleValue } from "react-composable-calendar/types";
 
 dayjs.extend(timezone);
@@ -14,13 +14,13 @@ const [value, setValue] = useState<CalendarSingleValue>(
 
 export function Component() {
   return (
-    <CalendarPrimitive.Root
+    <Calendar.Root
       mode="single"
       value={value}
       onValueChange={setValue}
       timezone="Europe/Stockholm"
     >
       {/* ... */}
-    </CalendarPrimitive.Root>
+    </Calendar.Root>
   );
 }

@@ -1,10 +1,10 @@
-import * as CalendarPrimitive from "react-composable-calendar";
+import * as Calendar from "react-composable-calendar";
 import "dayjs/locale/en-gb.js";
 
 export function Component() {
   return (
-    <CalendarPrimitive.Root mode="single" locale="en-gb">
+    <Calendar.Root mode="single" locale="en-gb">
       {/* ... */}
-    </CalendarPrimitive.Root>
+    </Calendar.Root>
   );
 }

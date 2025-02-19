@@ -1,19 +1,19 @@
-import * as CalendarPrimitive from "react-composable-calendar";
+import * as Calendar from "react-composable-calendar";
 
 export function ComponentSingle() {
   return (
-    <CalendarPrimitive.Root mode="single" name="date">
-      <CalendarPrimitive.FormInput />
+    <Calendar.Root mode="single" name="date">
+      <Calendar.FormInput />
       {/* ... */}
-    </CalendarPrimitive.Root>
+    </Calendar.Root>
   );
 }
 
 export function ComponentRange() {
   return (
-    <CalendarPrimitive.Root mode="range" name={["dateFrom", "dateTo"]}>
-      <CalendarPrimitive.FormInput />
+    <Calendar.Root mode="range" name={["dateFrom", "dateTo"]}>
+      <Calendar.FormInput />
       {/* ... */}
-    </CalendarPrimitive.Root>
+    </Calendar.Root>
   );
 }

@@ -1,4 +1,4 @@
-import { Calendar } from "./ui/calendar.tsx";
+import { BasicCalendar } from "./ui/calendar.tsx";
 import "dayjs/locale/en-gb.js";
 import { MultiViewCalendar } from "./ui/calendar-multi-view.tsx";
 import { CalendarStartEndSeparate } from "./ui/calendar-start-end-separate.tsx";
@@ -7,7 +7,7 @@ import { DatePicker } from "./ui/date-picker.tsx";
 
 export function DemoCalendar() {
   return (
-    <Calendar
+    <BasicCalendar
       mode="single"
       locale="en-gb"
       className="grow rounded-md border border-border"

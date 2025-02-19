@@ -10,7 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Calendar as CalendarIcon } from "lucide-react";
 import type { ComponentProps } from "react";
-import * as CalendarPrimitive from "react-composable-calendar";
+import * as Calendar from "react-composable-calendar";
 import { useHasValue } from "react-composable-calendar/hooks";
 
 export type DatePickerTriggerProps = ComponentProps<typeof Button>;
@@ -31,17 +31,17 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
       {...rest}
     >
       <CalendarIcon className="mr-2 h-4 w-4" />
-      <CalendarPrimitive.ValueLabel fallback="Select a date" />
+      <Calendar.ValueLabel fallback="Select a date" />
     </Button>
   );
 }
 
-export type DatePickerProps = CalendarPrimitive.RootProps;
+export type DatePickerProps = Calendar.RootProps;
 
 export function DatePicker(props: DatePickerProps) {
   const { children, ...rest } = props;
   return (
-    <CalendarPrimitive.Root {...rest}>
+    <Calendar.Root {...rest}>
       <Popover>
         <PopoverTrigger asChild>
           <DatePickerTrigger />
@@ -50,6 +50,6 @@ export function DatePicker(props: DatePickerProps) {
           <CalendarBody />
         </PopoverContent>
       </Popover>
-    </CalendarPrimitive.Root>
+    </Calendar.Root>
   );
 }

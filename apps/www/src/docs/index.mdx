@@ -9,7 +9,7 @@ export const components = markdownComponents;
 ## Guides
 
 ### Timezone
-To change the timezone of the calendar, pass a time to the prop `timezone` on the `CalendarPrimitive.Root`.
+To change the timezone of the calendar, pass a time to the prop `timezone` on the `Calendar.Root`.
 A list of valid timezones can be found in the <ExternalLink href="https://www.iana.org/time-zones" text="IANA Database" />.
 
 #### Notes
@@ -18,98 +18,98 @@ A list of valid timezones can be found in the <ExternalLink href="https://www.ia
 <CodeBlock client:load code={codeExamples.timezone} />
 
 ## Form Input
-To use the calendar as a uncontrolled input field, make sure you render the `CalendarPrimitive.FormInput` somewhere inside the root.
+To use the calendar as a uncontrolled input field, make sure you render the `Calendar.FormInput` somewhere inside the root.
 Then all you need to do is pass a name for the form input. (If in `range` mode you need to pass two names)
 <CodeBlock client:load code={codeExamples.formInput} />
 
 ## Components
 
-### CalendarPrimitive.Root
+### Calendar.Root
 The Root component is the foundational wrapper for the calendar. It manages the calendar's state,
 including the current view, selected date(s), and mode (single or range). It also provides context
 to its child components, allowing them to access and modify the calendar's state.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.View
+### Calendar.View
 Provides context for a view. A view is a month that is being viewed.
 You can have multiple views within a calendar root.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.OffsetViewButton
+### Calendar.OffsetViewButton
 A Button that offset the current view but a number.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.ViewOffset
+### Calendar.ViewOffset
 This will offset all children with an amount. Useful if you for example want to show two views
 next to each other where one of them is them next month.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.Weekdays
+### Calendar.Weekdays
 The Weekdays component is responsible for rendering the weekday labels (e.g., Monday, Tuesday, etc.) in
 the calendar.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.WeekdayLabel
+### Calendar.WeekdayLabel
 The WeekdayLabel component is used to display the name of a weekday (e.g., "Monday", "Tuesday")
 within the calendar. It retrieves the current weekday index from the WeekdayContext.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.MonthTitle
+### Calendar.MonthTitle
 Shows the name of the month that the view is currently in.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.Days
+### Calendar.Days
 Will render all days of the month as children.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.Day
+### Calendar.Day
 A button that represents a day of the month. If clicked, value is changed to that day.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.DayLabel
+### Calendar.DayLabel
 Renders the day's number in the month.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.FormInput
+### Calendar.FormInput
 Renders an `<input />` with the calendars value. If in `range` mode, two inputs will be rendered.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.ClearButton
+### Calendar.ClearButton
 A button that when clicked clears the selected value of the calendar.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.DayInRange
+### Calendar.DayInRange
 Conditionally rendered if a day is within the selected range.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.DayIsToday
+### Calendar.DayIsToday
 Conditionally rendered if a day is today.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.DayIsSelected
+### Calendar.DayIsSelected
 Conditionally rendered if a day is selected.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.ValueLabel
+### Calendar.ValueLabel
 Shows the selected value formatted as a string.
 
 <Separator className="my-8" />
 
-### CalendarPrimitive.SetYearButton
+### Calendar.SetYearButton
 Renders a Button that changes the view's year when clicked.
 

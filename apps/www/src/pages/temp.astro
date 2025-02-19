@@ -3,7 +3,7 @@ import { ExternalLink } from "@/components/ui/external-link.tsx";
 import * as codeExamples from "@/examples/code-examples.ts";
 import { ExampleSection } from "../components/layout/example-section.tsx";
 import { MultiViewCalendar } from "../components/ui/calendar-multi-view.tsx";
-import { Calendar } from "../components/ui/calendar.tsx";
+import { BasicCalendar } from "../components/ui/calendar.tsx";
 import { Card, CardContent } from "../components/ui/card.tsx";
 import { CodeBlock } from "../components/ui/code-block.tsx";
 import { Container } from "../components/ui/container.tsx";
@@ -66,7 +66,7 @@ import Layout from "../layouts/Layout.astro";
       description="A simple calendar that accepts a single date or a range."
       code={codeExamples.basicCalendar}
     >
-      <Calendar
+      <BasicCalendar
         mode="single"
         className="grow border border-border rounded-md"
         client:load
