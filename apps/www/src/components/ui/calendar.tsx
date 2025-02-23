@@ -37,9 +37,7 @@ export function CalendarBody() {
   );
 }
 
-export type CalendarProps = Calendar.RootProps;
-
-export function BasicCalendar(props: CalendarProps) {
+export function BasicCalendar(props: Calendar.RootProps) {
   const { className, ...rest } = props;
 
   return (

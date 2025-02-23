@@ -1,5 +1,6 @@
 import { BasicCalendar } from "./ui/calendar.tsx";
 import "dayjs/locale/en-gb.js";
+import { CalendarDisabledDates } from "./ui/calendar-disable-dates.tsx";
 import { MultiViewCalendar } from "./ui/calendar-multi-view.tsx";
 import { CalendarStartEndSeparate } from "./ui/calendar-start-end-separate.tsx";
 import { CalendarWithYearSelect } from "./ui/calendar-with-year-select.tsx";
@@ -44,6 +45,16 @@ export function DemoWithYearSelect() {
     <CalendarWithYearSelect
       locale="en-gb"
       mode="range"
+      className="grow rounded-md border border-border"
+    />
+  );
+}
+
+export function DemoDisabledDates() {
+  return (
+    <CalendarDisabledDates
+      locale="en-gb"
+      mode="single"
       className="grow rounded-md border border-border"
     />
   );

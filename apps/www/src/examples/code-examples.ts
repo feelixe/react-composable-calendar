@@ -6,6 +6,11 @@ export const basicCalendar = await fs.readFile(
   "utf-8",
 );
 
+export const disableDates = await fs.readFile(
+  path.join("./src/components/ui/calendar-disable-dates.tsx"),
+  "utf-8",
+);
+
 export const datePicker = await fs.readFile(
   path.join("./src/components/ui/date-picker.tsx"),
   "utf-8",

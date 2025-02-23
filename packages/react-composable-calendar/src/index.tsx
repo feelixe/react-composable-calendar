@@ -34,7 +34,7 @@ import { normalizeValue, sortValue } from "./value.js";
 import {
   useMode,
   useCalendarValue,
-  useView,
+  useViewState,
   useIsEndOfRange,
   useIsInRange,
   useIsNeighboringMonth,
@@ -43,7 +43,8 @@ import {
   useIsToday,
   useInputName,
   useCalendarLocale,
-  useCalendarTimezone,
+  useTodaysDate,
+  useCalendarView,
 } from "./hooks.js";
 import { useWeekdayContext, WeekdayContext } from "./contexts/weekday.js";
 import {
@@ -51,8 +52,8 @@ import {
   type SelectDayStrategy,
 } from "./select-day-strategy.js";
 import {
-  useViewContext,
   ViewContext,
+  type IsDateSelectableFn,
   type ViewContextValue,
 } from "./contexts/view.js";
 import type {
@@ -61,7 +62,7 @@ import type {
   GetWeekdayNameFn,
 } from "./format.js";
 import { defaultFormatMonth, defaultFormatValue } from "./format.js";
-import { dayjs, type Dayjs } from "./extended-dayjs.js";
+import type { Dayjs } from "./extended-dayjs.js";
 
 const DAYS_IN_WEEK = 7;
 
@@ -235,7 +236,7 @@ export const MonthTitle = forwardRef<HTMLDivElement, MonthTitleProps>(
   (props, ref) => {
     const { formatFn = defaultFormatMonth, ...rest } = props;
 
-    const [view] = useView();
+    const [view] = useViewState();
     const monthTitle = useMemo(() => {
       return formatFn(view);
     }, [view, formatFn]);
@@ -258,7 +259,7 @@ export const OffsetViewButton = forwardRef<
 >((props, ref) => {
   const { children, onClick, offset, asChild, ...rest } = props;
 
-  const [view, setView] = useView();
+  const [view, setView] = useViewState();
 
   const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
     (e) => {
@@ -287,12 +288,20 @@ export type ViewProps = Omit<
 > & {
   value?: Dayjs;
   onValueChange?: (value: Dayjs) => unknown;
+  isDateSelectableFn?: IsDateSelectableFn;
   defaultValue?: Dayjs;
 };
 export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
-  const { value, onValueChange, defaultValue, children, ...divProps } = props;
+  const {
+    value,
+    onValueChange,
+    defaultValue,
+    children,
+    isDateSelectableFn,
+    ...divProps
+  } = props;
 
-  const timezone = useCalendarTimezone();
+  const today = useTodaysDate();
   const locale = useCalendarLocale();
 
   const isStateUncontrolled = value === undefined;
@@ -304,18 +313,8 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
     if (defaultValue) {
       return defaultValue;
     }
-    let defaultView: Dayjs;
-    if (timezone?.toLowerCase() === "utc") {
-      defaultView = dayjs().utc().startOf("month");
-    } else if (timezone) {
-      defaultView = dayjs().tz(timezone).startOf("month");
-    } else {
-      defaultView = dayjs().startOf("month");
-    }
-    if (locale) {
-      defaultView = defaultView.locale(locale);
-    }
-    return defaultView;
+    const startOfMonth = today.startOf("month");
+    return locale ? startOfMonth.locale(locale) : startOfMonth;
   });
 
   // Sync external state
@@ -339,8 +338,9 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
   const contextValue = useMemo<ViewContextValue>(
     () => ({
       viewState: [internalView, updateValue],
+      isDateSelectableFn,
     }),
-    [internalView, updateValue],
+    [internalView, updateValue, isDateSelectableFn],
   );
 
   return (
@@ -359,7 +359,7 @@ export const ViewOffset = forwardRef<HTMLDivElement, ViewOffsetProps>(
   (props, ref) => {
     const { children, offset, ...rest } = props;
 
-    const [view, setView] = useView();
+    const [view, setView] = useViewState();
 
     const offsetViewValue = useMemo<ViewContextValue>(
       () => ({
@@ -384,7 +384,7 @@ export const Days = forwardRef<HTMLDivElement, DaysProps>((props, ref) => {
 
   const child = Children.only(children) as ReactElement<DayProps>;
 
-  const [view] = useView();
+  const [view] = useViewState();
 
   const startOfMonth = view.startOf("month");
   const endOfMonth = view.endOf("month");
@@ -431,12 +431,20 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
   } = props;
 
   const { day } = useDayContext();
-  const mode = useMode();
   const [value, setValue] = useCalendarValue();
+  const view = useCalendarView();
+  const mode = useMode();
   const isNeighboringMonth = useIsNeighboringMonth();
   const isToday = useIsToday();
   const isSelected = useIsSelected();
   const isInRange = useIsInRange();
+
+  const isDisabled = useMemo(() => {
+    if (!view.isDateSelectableFn) {
+      return false;
+    }
+    return !view.isDateSelectableFn(day);
+  }, [view.isDateSelectableFn, day]);
 
   const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
     (e) => {
@@ -475,6 +483,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
       data-neighboring={isNeighboringMonth ? true : undefined}
       data-in-range={isInRange ? true : undefined}
       data-is-today={isToday ? true : undefined}
+      disabled={isDisabled}
       onClick={clickHandler}
       className={computedClassName}
       ref={ref}
@@ -691,7 +700,7 @@ export const SetYearButton = forwardRef<HTMLButtonElement, SetYearButtonProps>(
   (props, ref) => {
     const { year, asChild, children, onClick, ...rest } = props;
 
-    const [view, setView] = useView();
+    const [view, setView] = useViewState();
 
     const clickHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(
       (e) => {

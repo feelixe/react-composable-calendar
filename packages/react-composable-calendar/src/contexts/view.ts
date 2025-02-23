@@ -1,8 +1,11 @@
 import type { Dayjs } from "../extended-dayjs.js";
 import { createContext, useContext } from "react";
 
+export type IsDateSelectableFn = (date: Dayjs) => boolean;
+
 export type ViewContextValue = {
   viewState: [view: Dayjs, setView: (day: Dayjs) => void];
+  isDateSelectableFn?: IsDateSelectableFn;
 };
 
 export const ViewContext = createContext<ViewContextValue | null>(null);

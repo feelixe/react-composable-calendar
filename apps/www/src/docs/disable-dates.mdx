@@ -1,0 +1,13 @@
+import { CodeBlock } from "@/components/ui/code-block.tsx"
+import { ExternalLink } from "@/components/ui/external-link"
+import { markdownComponents } from "@/components/markdown/components"
+import { disableDates } from "@/examples/code-examples.ts";
+
+export const components = markdownComponents;
+
+## Installation
+* Setup <ExternalLink text="shadcn/ui" href="https://ui.shadcn.com/docs/installation" />.
+* Add <ExternalLink text="Button" href="https://ui.shadcn.com/docs/components/button" />.
+* Copy paste this code block into `src/components/ui/calendar.tsx`.
+
+<CodeBlock client:load code={disableDates} />

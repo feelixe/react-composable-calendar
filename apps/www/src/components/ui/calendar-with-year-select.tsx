@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils.ts";
 import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as Calendar from "react-composable-calendar";
-import { useView } from "react-composable-calendar/hooks";
+import { useViewState } from "react-composable-calendar/hooks";
 import { Button } from "./button.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./select.tsx";
 
@@ -19,7 +19,7 @@ const yearRange = range(
 );
 
 function YearSelect() {
-  const [view, setView] = useView();
+  const [view, setView] = useViewState();
 
   return (
     <Select

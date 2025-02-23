@@ -6,19 +6,16 @@ import * as DatePickerDocs from "@/docs/date-picker.mdx";
 import * as MultipleViewsDocs from "@/docs/multiple-views.mdx";
 import * as SeparateViewsDocs from "@/docs/separate-views.mdx";
 import * as WithYearSelectDocs from "@/docs/with-year-select.mdx";
+import * as DisableDatesDocs from "@/docs/disable-dates.mdx";
 import * as codeExamples from "@/examples/code-examples.ts";
 import {
   ExampleSection,
   ExampleSectionCode,
   ExampleSectionPreview,
 } from "../components/layout/example-section.tsx";
-import { MultiViewCalendar } from "../components/ui/calendar-multi-view.tsx";
-import { CalendarStartEndSeparate } from "../components/ui/calendar-start-end-separate.tsx";
-import { BasicCalendar } from "../components/ui/calendar.tsx";
 import { Card, CardContent } from "../components/ui/card.tsx";
 import { CodeBlock } from "../components/ui/code-block.tsx";
 import { Container } from "../components/ui/container.tsx";
-import { DatePicker } from "../components/ui/date-picker.tsx";
 import { Typography } from "../components/ui/typography.tsx";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -143,6 +140,20 @@ import Layout from "../layouts/Layout.astro";
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <WithYearSelectDocs.Content />
+      </ExampleSectionCode>
+    </ExampleSection>
+
+    <ExampleSection
+      client:load
+      id="disabled-dates"
+      title="Disabled Dates"
+      description="You can disable dates in the view."
+    >
+      <ExampleSectionPreview>
+        <Demos.DemoDisabledDates client:load />
+      </ExampleSectionPreview>
+      <ExampleSectionCode>
+        <DisableDatesDocs.Content />
       </ExampleSectionCode>
     </ExampleSection>
   </div>

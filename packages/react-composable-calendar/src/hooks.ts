@@ -2,16 +2,17 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { dayjs } from "./extended-dayjs.js";
+import { getToday } from "./helpers.js";
 
-export function useView() {
+export function useViewState() {
   const viewContext = useViewContext();
   return viewContext.viewState;
-  // const [view, setView] = context.viewState;
-  // const viewWithOffset = view.add(viewContext.viewOffset, "month");
-  // return [viewWithOffset, setView] as const;
 }
 
+export function useCalendarView() {
+  const context = useViewContext();
+  return context;
+}
 export function useCalendarValue() {
   const context = useCalendarContext();
   return context.valueState;
@@ -76,13 +77,7 @@ export function useTodaysDate() {
   const timezone = useCalendarTimezone();
 
   return useMemo(() => {
-    if (timezone === null) {
-      return dayjs();
-    }
-    if (timezone === "UTC") {
-      return dayjs().utc();
-    }
-    return dayjs().tz(timezone);
+    return getToday(timezone);
   }, [timezone]);
 }
 
@@ -97,7 +92,7 @@ export function useIsToday() {
 
 export function useIsNeighboringMonth() {
   const { day } = useDayContext();
-  const [view] = useView();
+  const [view] = useViewState();
 
   return useMemo(() => {
     return !day.isSame(view, "month");
