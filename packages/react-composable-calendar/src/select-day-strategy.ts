@@ -38,20 +38,6 @@ export const closestStrategy: SelectDayStrategy = (args) => {
   return [currentValue[0], clickedDate];
 };
 
-export function changeAtIndexStrategy(index: number): SelectDayStrategy {
-  return (args: SelectDayStrategyParams) => {
-    const { currentValue, clickedDate, mode } = args;
-    if (mode === "single") {
-      return [clickedDate, null];
-    }
-    const [start, end] = currentValue;
-    if (index === 0) {
-      return [clickedDate, end];
-    }
-    return [start, clickedDate];
-  };
-}
-
 export const selectStartDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [, endDate] = currentValue;
@@ -71,3 +57,13 @@ export const selectEndDateStrategy: SelectDayStrategy = (args) => {
   }
   return [startDate, clickedDate];
 };
+
+export function changeAtIndexStrategy(index: number): SelectDayStrategy {
+  if (index === 0) {
+    return selectStartDateStrategy;
+  }
+  if (index === 1) {
+    return selectEndDateStrategy;
+  }
+  throw new Error("Invalid index, must be 0 or 1");
+}

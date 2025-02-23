@@ -1,7 +1,7 @@
 import { CopyIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { toast } from "sonner";
 import { cn } from "../../lib/utils.ts";
 import { Button } from "./button.tsx";
