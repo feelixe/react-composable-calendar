@@ -80,7 +80,7 @@ import Layout from "../layouts/Layout.astro";
       description="A simple calendar that accepts a single date or a range."
     >
       <ExampleSectionPreview>
-        <Demos.DemoCalendar client:load />
+        <Demos.DemoCalendar client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <BasicCalendarDocs.Content />
@@ -94,7 +94,7 @@ import Layout from "../layouts/Layout.astro";
       description="A Date Picker input that utilizes shadcn/ui's Button and Popover."
     >
       <ExampleSectionPreview>
-        <Demos.DemoDatePicker client:load />
+        <Demos.DemoDatePicker client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <DatePickerDocs.Content />
@@ -108,7 +108,7 @@ import Layout from "../layouts/Layout.astro";
       description="You can have multiple views under the same calendar root."
     >
       <ExampleSectionPreview>
-        <Demos.DemoMultiView client:load />
+        <Demos.DemoMultiView client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <MultipleViewsDocs.Content />
@@ -122,7 +122,7 @@ import Layout from "../layouts/Layout.astro";
       description="You can even have two views that work independently of each other."
     >
       <ExampleSectionPreview>
-        <Demos.DemoSeparateViews client:load />
+        <Demos.DemoSeparateViews client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <SeparateViewsDocs.Content />
@@ -136,7 +136,7 @@ import Layout from "../layouts/Layout.astro";
       description="If you need a wide range of dates, you can add a dropdown to select year."
     >
       <ExampleSectionPreview>
-        <Demos.DemoWithYearSelect client:load />
+        <Demos.DemoWithYearSelect client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <WithYearSelectDocs.Content />
@@ -150,7 +150,7 @@ import Layout from "../layouts/Layout.astro";
       description="You can disable dates in the view."
     >
       <ExampleSectionPreview>
-        <Demos.DemoDisabledDates client:load />
+        <Demos.DemoDisabledDates client:only="react" />
       </ExampleSectionPreview>
       <ExampleSectionCode>
         <DisableDatesDocs.Content />
