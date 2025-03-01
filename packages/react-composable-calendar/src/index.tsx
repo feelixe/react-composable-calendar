@@ -320,11 +320,12 @@ export const View = forwardRef<HTMLDivElement, ViewProps>((props, ref) => {
   // Sync external state
   const updateValue = useCallback(
     (newView: Dayjs) => {
+      onValueChange?.(newView);
       if (isStateUncontrolled) {
         setInternalView(newView);
       }
     },
-    [isStateUncontrolled],
+    [isStateUncontrolled, onValueChange],
   );
 
   // Sync internal state
@@ -642,11 +643,11 @@ export const DayIsToday = forwardRef<HTMLDivElement, DayIsTodayProps>(
   },
 );
 
-export type DayInSelectedProps = ComponentPropsWithoutRef<"div"> & {
+export type DayIsSelectedProps = ComponentPropsWithoutRef<"div"> & {
   asChild?: boolean;
 };
 
-export const DayIsSelected = forwardRef<HTMLDivElement, DayInSelectedProps>(
+export const DayIsSelected = forwardRef<HTMLDivElement, DayIsSelectedProps>(
   (props, ref) => {
     const { asChild, ...rest } = props;
 
