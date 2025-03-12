@@ -39,8 +39,8 @@ export function MultiViewCalendar(props: Calendar.RootProps) {
               </Calendar.Weekdays>
 
               <Calendar.Days className="mb-1 grid grid-cols-7 gap-y-1">
-                <Calendar.Day className="group relative aspect-square w-full cursor-pointer data-[neighboring]:invisible ">
-                  <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
+                <Calendar.Day className="group relative aspect-square w-full cursor-pointer data-[neighboring]:invisible">
+                  <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-[end]:rounded-r-lg data-[start]:rounded-l-lg" />
                   <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[is-today]:bg-muted group-data-[selected]:bg-foreground">
                     <Calendar.DayLabel className="group-data-[neighboring]:text-muted-foreground group-data-[selected]:text-background" />
                   </div>

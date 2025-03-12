@@ -68,8 +68,8 @@ export function CalendarBody() {
       </Calendar.Weekdays>
       <Calendar.Days className="mb-1 grid grid-cols-7 gap-y-1">
         <Calendar.Day className="group relative aspect-square w-full cursor-pointer">
-          <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 bg-foreground/10 data-end:rounded-r-lg data-start:rounded-l-lg" />
-          <div className="absolute top-0 right-0 bottom-0 left-0 z-20 flex items-center justify-center rounded-lg group-data-[is-today]:bg-muted group-data-[selected]:bg-foreground">
+          <Calendar.DayInRange className="absolute top-0 right-0 bottom-0 left-0 size-full bg-foreground/10 data-[end]:rounded-r-lg data-[start]:rounded-l-lg" />
+          <div className="relative z-10 flex size-full items-center justify-center rounded-lg group-data-[is-today]:bg-muted group-data-[selected]:bg-foreground">
             <Calendar.DayLabel className="group-data-[neighboring]:text-muted-foreground group-data-[selected]:text-background" />
           </div>
         </Calendar.Day>
@@ -79,9 +79,7 @@ export function CalendarBody() {
   );
 }
 
-export type CalendarProps = Calendar.RootProps;
-
-export function BasicCalendar(props: CalendarProps) {
+export function BasicCalendar(props: Calendar.RootProps) {
   const { className, ...rest } = props;
 
   return (
