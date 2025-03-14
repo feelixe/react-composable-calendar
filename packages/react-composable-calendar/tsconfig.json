@@ -1,10 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-    },
     "lib": [
       "ESNext",
       "DOM"
