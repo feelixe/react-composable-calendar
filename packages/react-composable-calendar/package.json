@@ -32,7 +32,6 @@
     "package.json"
   ],
   "devDependencies": {
-    "@types/bun": "latest",
     "dayjs": "^1.11.6",
     "prompts": "^2.4.2",
     "react": "^19.0.0",
