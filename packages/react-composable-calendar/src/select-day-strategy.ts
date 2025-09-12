@@ -1,9 +1,10 @@
+import { getDaysBetween, isAfter, isBefore, isSame } from "./date-helpers.js";
 import type { CalendarInternalValue } from "./types.js";
-import type { Dayjs } from "./extended-dayjs.js";
+import type { Temporal } from "temporal-polyfill";
 
 export type SelectDayStrategyParams = {
   currentValue: CalendarInternalValue;
-  clickedDate: Dayjs;
+  clickedDate: Temporal.PlainDate;
   mode: "single" | "range";
 };
 
@@ -23,14 +24,14 @@ export const closestStrategy: SelectDayStrategy = (args) => {
   if (!currentValue[1]) {
     return [currentValue[0], clickedDate];
   }
-  if (currentValue[0].isSame(clickedDate, "day")) {
+  if (isSame(currentValue[0], clickedDate)) {
     return [null, currentValue[1]];
   }
-  if (currentValue[1].isSame(clickedDate, "day")) {
+  if (isSame(currentValue[1], clickedDate)) {
     return [currentValue[0], null];
   }
-  const distanceToStart = clickedDate.diff(currentValue[0], "day");
-  const distanceToEnd = clickedDate.diff(currentValue[1], "day");
+  const distanceToStart = getDaysBetween(clickedDate, currentValue[0]);
+  const distanceToEnd = getDaysBetween(clickedDate, currentValue[1]);
   const isStartClosest = Math.abs(distanceToStart) < Math.abs(distanceToEnd);
   if (isStartClosest) {
     return [clickedDate, currentValue[1]];
@@ -42,7 +43,7 @@ export const selectStartDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [, endDate] = currentValue;
 
-  if (endDate && clickedDate.isAfter(endDate, "day")) {
+  if (endDate && isAfter(clickedDate, endDate)) {
     return [clickedDate, clickedDate];
   }
   return [clickedDate, endDate];
@@ -52,7 +53,7 @@ export const selectEndDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [startDate] = currentValue;
 
-  if (startDate && clickedDate.isBefore(startDate, "day")) {
+  if (startDate && isBefore(clickedDate, startDate)) {
     return [clickedDate, clickedDate];
   }
   return [startDate, clickedDate];

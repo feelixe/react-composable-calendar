@@ -1,10 +1,14 @@
-import { dayjs } from "./extended-dayjs.js";
+import { Temporal } from "temporal-polyfill";
 
+// todo, duplicate
 export function getDefaultWeekdayName(
-  dayNumber: number,
+  dayIndex: number,
   locale: string | null,
 ): string {
-  const baseDate = locale ? dayjs().locale(locale) : dayjs();
-  const referenceDate = baseDate.startOf("week").add(dayNumber, "day");
-  return referenceDate.format("dd");
+  const now = Temporal.Now.plainDateISO();
+  const weekDay = now.dayOfWeek;
+  const startOfWeek = now.subtract({ days: weekDay - 1 });
+  const day = startOfWeek.add({ days: dayIndex });
+
+  return day.toLocaleString(locale ?? undefined, { weekday: "narrow" });
 }

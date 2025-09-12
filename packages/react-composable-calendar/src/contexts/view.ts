@@ -1,10 +1,13 @@
-import type { Dayjs } from "../extended-dayjs.js";
+import type { Temporal } from "temporal-polyfill";
 import { createContext, useContext } from "react";
 
-export type IsDateSelectableFn = (date: Dayjs) => boolean;
+export type IsDateSelectableFn = (date: Temporal.PlainDate) => boolean;
 
 export type ViewContextValue = {
-  viewState: [view: Dayjs, setView: (day: Dayjs) => void];
+  viewState: [
+    view: Temporal.PlainDate,
+    setView: (day: Temporal.PlainDate) => void,
+  ];
   isDateSelectableFn?: IsDateSelectableFn;
 };
 

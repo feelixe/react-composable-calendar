@@ -34,11 +34,11 @@
   "devDependencies": {
     "dayjs": "^1.11.6",
     "prompts": "^2.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "semver": "^7.7.1",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.1"
   },
   "peerDependencies": {
     "dayjs": "^1.11.6"

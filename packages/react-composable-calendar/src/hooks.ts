@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { getToday } from "./helpers.js";
+import { getToday, isNeighboringMonth, isSame } from "./date-helpers.js";
+import { Temporal } from "temporal-polyfill";
 
 export function useViewState() {
   const viewContext = useViewContext();
@@ -23,17 +24,13 @@ export function useMode() {
   return context.mode;
 }
 
-export function useCalendarTimezone() {
-  const context = useCalendarContext();
-  return context.timezone;
-}
-
 export function useCalendarLocale() {
   const context = useCalendarContext();
   return context.locale;
 }
 
 export type UseIsInRangeParams = {
+  // todo, temp removed.
   inclusive?: boolean;
 };
 
@@ -48,16 +45,18 @@ export function useIsInRange(args?: UseIsInRangeParams) {
     if (mode === "single") {
       return false;
     }
-    const isAfterStart = inclusive
-      ? day.isAfter(value[0], "day") || day.isSame(value[0], "day")
-      : day.isAfter(value[0], "day");
 
-    const isBeforeEnd = inclusive
-      ? day.isBefore(value[1], "day") || day.isSame(value[1], "day")
-      : day.isBefore(value[1], "day");
+    const rangeStart = value[0];
+    const rangeEnd = value[1];
+    if (!rangeStart || !rangeEnd) {
+      return false;
+    }
+
+    const isAfterStart = Temporal.PlainDate.compare(day, rangeStart) >= 0;
+    const isBeforeEnd = Temporal.PlainDate.compare(day, rangeEnd) <= 0;
 
     return isAfterStart && isBeforeEnd;
-  }, [mode, value, day, inclusive]);
+  }, [mode, value, day]);
 }
 
 export function useIsSelected() {
@@ -67,26 +66,21 @@ export function useIsSelected() {
 
   return useMemo(() => {
     if (mode === "single") {
-      return value[0]?.isSame(day, "day") ?? false;
+      if (!value[0]) {
+        return false;
+      }
+      return isSame(day, value[0]);
     }
-    return value.some((d) => d?.isSame(day, "day") ?? false);
+    return value.some((el) => (el ? isSame(day, el) : false));
   }, [value, day, mode]);
 }
 
-export function useTodaysDate() {
-  const timezone = useCalendarTimezone();
-
-  return useMemo(() => {
-    return getToday(timezone);
-  }, [timezone]);
-}
-
 export function useIsToday() {
-  const todaysDate = useTodaysDate();
+  const todaysDate = getToday();
   const { day } = useDayContext();
 
   return useMemo(() => {
-    return day.isSame(todaysDate, "day");
+    return isSame(day, todaysDate);
   }, [day, todaysDate]);
 }
 
@@ -95,7 +89,7 @@ export function useIsNeighboringMonth() {
   const [view] = useViewState();
 
   return useMemo(() => {
-    return !day.isSame(view, "month");
+    return isNeighboringMonth(day, view);
   }, [day, view]);
 }
 
@@ -104,7 +98,10 @@ export function useIsStartOfRange() {
   const [value] = useCalendarValue();
 
   return useMemo(() => {
-    return value[0]?.isSame(day, "day");
+    if (!value[0]) {
+      return false;
+    }
+    return isSame(day, value[0]);
   }, [value, day]);
 }
 
@@ -113,7 +110,10 @@ export function useIsEndOfRange() {
   const [value] = useCalendarValue();
 
   return useMemo(() => {
-    return value[1]?.isSame(day, "day");
+    if (!value[1]) {
+      return false;
+    }
+    return isSame(day, value[1]);
   }, [value, day]);
 }
 

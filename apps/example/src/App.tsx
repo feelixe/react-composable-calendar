@@ -1,3 +1,18 @@
+import type { Temporal } from "temporal-polyfill";
+import { BasicCalendar } from "./basic.tsx";
+import { useState } from "react";
+
 export default function App() {
-  return <div>123</div>;
+  const [value, setValue] = useState<Temporal.PlainDate | null>(null);
+
+  console.log(value?.toString());
+
+  return (
+    <BasicCalendar
+      value={value}
+      onValueChange={setValue}
+      mode="single"
+      weekOffset={1}
+    />
+  );
 }

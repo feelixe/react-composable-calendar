@@ -1,9 +1,12 @@
-import type { Dayjs } from "./extended-dayjs.js";
+import type { Temporal } from "temporal-polyfill";
 
 export type Mode = "single" | "range";
 export type CalendarInputName = [string | null, string | null];
 
-export type CalendarSingleValue = Dayjs | null;
+export type CalendarSingleValue = Temporal.PlainDate | null;
+
 export type CalendarRangeValue = [CalendarSingleValue, CalendarSingleValue];
+
 export type CalendarAnyValue = CalendarSingleValue | CalendarRangeValue;
+
 export type CalendarInternalValue = CalendarRangeValue;

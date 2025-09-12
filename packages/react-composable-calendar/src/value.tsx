@@ -11,5 +11,8 @@ export function sortValue(value: CalendarInternalValue): CalendarInternalValue {
   if (!value[0] || !value[1]) {
     return value;
   }
-  return value.sort((a, b) => a!.diff(b, "day"));
+  return value.sort((a, b) => {
+    const duration = b!.until(a!);
+    return duration.total({ unit: "milliseconds" });
+  });
 }
