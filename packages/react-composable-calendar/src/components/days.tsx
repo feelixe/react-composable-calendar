@@ -7,13 +7,7 @@ import {
 } from "react";
 import { useViewState } from "../hooks.js";
 import { useCalendarContext } from "../contexts/calendar.js";
-import {
-  getDaysBetween,
-  getEndOfMonth,
-  getEndOfWeek,
-  getStartOfMonth,
-  getStartOfWeek,
-} from "../date-helpers.js";
+import { Utils } from "../date-helpers.js";
 import { range } from "../helpers/range.js";
 import { DayContext } from "../contexts/day.js";
 
@@ -27,15 +21,14 @@ export function Days(props: DaysProps) {
   const [view] = useViewState();
   const { weekOffset } = useCalendarContext();
 
-  const startOfMonth = getStartOfMonth(view);
-  const endOfMonth = getEndOfMonth(view);
+  const monthView = Utils.getMonthView(view, weekOffset);
 
-  const viewStart = getStartOfWeek(startOfMonth).add({ days: weekOffset });
-  const viewEnd = getEndOfWeek(endOfMonth).add({ days: weekOffset });
+  const totalDays =
+    Math.abs(Utils.getDaysBetween(monthView.start, monthView.end)) + 1;
 
-  const totalDays = Math.abs(getDaysBetween(viewStart, viewEnd)) + 1;
-
-  const days = range(totalDays).map((index) => viewStart.add({ days: index }));
+  const days = range(totalDays).map((index) =>
+    monthView.start.add({ days: index })
+  );
 
   return (
     <div {...rest}>

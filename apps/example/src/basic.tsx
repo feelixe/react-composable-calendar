@@ -33,8 +33,6 @@ export function CalendarBody() {
         </Calendar.Day>
       </Calendar.Days>
       <Calendar.FormInput />
-
-      <Calendar.ValueLabel />
     </Calendar.View>
   );
 }

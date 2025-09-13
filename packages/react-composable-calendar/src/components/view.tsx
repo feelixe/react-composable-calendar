@@ -11,7 +11,7 @@ import {
   type IsDateSelectableFn,
   type ViewContextValue,
 } from "../contexts/view.js";
-import { getToday } from "../date-helpers.js";
+import { Utils } from "../date-helpers.js";
 import { useCalendarLocale } from "../hooks.js";
 
 export type ViewProps = Omit<ComponentProps<"div">, "defaultValue"> & {
@@ -31,7 +31,7 @@ export function View(props: ViewProps) {
     ...divProps
   } = props;
 
-  const today = getToday();
+  const today = Utils.getToday();
   const locale = useCalendarLocale();
 
   const isStateUncontrolled = value === undefined;

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { getToday, isOtherMonth, isSame } from "./date-helpers.js";
+import { Utils } from "./date-helpers.js";
 import { Temporal } from "./temporal.js";
 
 export function useViewState() {
@@ -62,18 +62,18 @@ export function useIsSelected() {
       if (!value[0]) {
         return false;
       }
-      return isSame(day, value[0]);
+      return Utils.isSameDay(day, value[0]);
     }
-    return value.some((el) => (el ? isSame(day, el) : false));
+    return value.some((el) => (el ? Utils.isSameDay(day, el) : false));
   }, [value, day, mode]);
 }
 
 export function useIsToday() {
-  const todaysDate = getToday();
+  const todaysDate = Utils.getToday();
   const { day } = useDayContext();
 
   return useMemo(() => {
-    return isSame(day, todaysDate);
+    return Utils.isSameDay(day, todaysDate);
   }, [day, todaysDate]);
 }
 
@@ -82,7 +82,7 @@ export function useIsNeighboringMonth() {
   const [view] = useViewState();
 
   return useMemo(() => {
-    return isOtherMonth(day, view);
+    return Utils.isOtherMonth(day, view);
   }, [day, view]);
 }
 
@@ -94,7 +94,7 @@ export function useIsStartOfRange() {
     if (!value[0]) {
       return false;
     }
-    return isSame(day, value[0]);
+    return Utils.isSameDay(day, value[0]);
   }, [value, day]);
 }
 
@@ -106,7 +106,7 @@ export function useIsEndOfRange() {
     if (!value[1]) {
       return false;
     }
-    return isSame(day, value[1]);
+    return Utils.isSameDay(day, value[1]);
   }, [value, day]);
 }
 

@@ -1,4 +1,4 @@
-import { getDaysBetween, isAfter, isBefore, isSame } from "./date-helpers.js";
+import { Utils } from "./date-helpers.js";
 import type { CalendarInternalValue } from "./types.js";
 import type { PlainDate } from "./temporal.js";
 
@@ -24,14 +24,14 @@ export const closestStrategy: SelectDayStrategy = (args) => {
   if (!currentValue[1]) {
     return [currentValue[0], clickedDate];
   }
-  if (isSame(currentValue[0], clickedDate)) {
+  if (Utils.isSameDay(currentValue[0], clickedDate)) {
     return [null, currentValue[1]];
   }
-  if (isSame(currentValue[1], clickedDate)) {
+  if (Utils.isSameDay(currentValue[1], clickedDate)) {
     return [currentValue[0], null];
   }
-  const distanceToStart = getDaysBetween(clickedDate, currentValue[0]);
-  const distanceToEnd = getDaysBetween(clickedDate, currentValue[1]);
+  const distanceToStart = Utils.getDaysBetween(clickedDate, currentValue[0]);
+  const distanceToEnd = Utils.getDaysBetween(clickedDate, currentValue[1]);
   const isStartClosest = Math.abs(distanceToStart) < Math.abs(distanceToEnd);
   if (isStartClosest) {
     return [clickedDate, currentValue[1]];
@@ -43,7 +43,7 @@ export const selectStartDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [, endDate] = currentValue;
 
-  if (endDate && isAfter(clickedDate, endDate)) {
+  if (endDate && Utils.isAfter(clickedDate, endDate)) {
     return [clickedDate, clickedDate];
   }
   return [clickedDate, endDate];
@@ -53,7 +53,7 @@ export const selectEndDateStrategy: SelectDayStrategy = (args) => {
   const { currentValue, clickedDate } = args;
   const [startDate] = currentValue;
 
-  if (startDate && isBefore(clickedDate, startDate)) {
+  if (startDate && Utils.isBefore(clickedDate, startDate)) {
     return [clickedDate, clickedDate];
   }
   return [startDate, clickedDate];

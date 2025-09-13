@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import type { GetWeekdayNameFn } from "../format.js";
-import { getWeekdayNameFromIndex } from "../date-helpers.js";
+import { Utils } from "../date-helpers.js";
 import { useCalendarContext } from "../contexts/calendar.js";
 import { useWeekdayContext } from "../contexts/weekday.js";
 import { useCalendarLocale } from "../hooks.js";
@@ -9,7 +9,7 @@ export type WeekdayLabelProps = ComponentProps<"div"> & {
   getWeekdayName?: GetWeekdayNameFn;
 };
 export function WeekdayLabel(props: WeekdayLabelProps) {
-  const { getWeekdayName = getWeekdayNameFromIndex, ...rest } = props;
+  const { getWeekdayName = Utils.getWeekdayNameFromIndex, ...rest } = props;
 
   const { weekOffset } = useCalendarContext();
   const { weekdayIndex } = useWeekdayContext();
