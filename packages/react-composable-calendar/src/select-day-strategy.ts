@@ -1,15 +1,15 @@
 import { getDaysBetween, isAfter, isBefore, isSame } from "./date-helpers.js";
 import type { CalendarInternalValue } from "./types.js";
-import type { Temporal } from "temporal-polyfill";
+import type { PlainDate } from "./temporal.js";
 
 export type SelectDayStrategyParams = {
   currentValue: CalendarInternalValue;
-  clickedDate: Temporal.PlainDate;
+  clickedDate: PlainDate;
   mode: "single" | "range";
 };
 
 export type SelectDayStrategy = (
-  args: SelectDayStrategyParams,
+  args: SelectDayStrategyParams
 ) => CalendarInternalValue;
 
 export const closestStrategy: SelectDayStrategy = (args) => {

@@ -1,4 +1,3 @@
-import type { Temporal } from "temporal-polyfill";
 import { BasicCalendar } from "./basic.tsx";
 import { useState } from "react";
 

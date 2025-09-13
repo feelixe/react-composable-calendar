@@ -13,9 +13,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.2.3",
-    "temporal-polyfill": "^0.3.0"
-  }
+  ]
 }

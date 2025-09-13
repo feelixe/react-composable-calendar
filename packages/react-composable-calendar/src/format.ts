@@ -1,16 +1,16 @@
 import type { CalendarSingleValue } from "./types.js";
-import type { Temporal } from "temporal-polyfill";
+import type { PlainDate } from "./temporal.js";
 
 export type GetWeekdayNameFn = (
   dayNumber: number,
-  locale: string | null,
+  locale: string | null
 ) => string;
 
 export type FormatDateFn = (value: CalendarSingleValue) => string | null;
 
 export type FormatRequiredDateFn = (
-  value: Temporal.PlainDate,
-  locale: string | null,
+  value: PlainDate,
+  locale: string | null
 ) => string;
 
 export const defaultFormatMonth: FormatRequiredDateFn = (date, locale) => {

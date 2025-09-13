@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
-import type { Temporal } from "temporal-polyfill";
+import type { PlainDate } from "../temporal.js";
 
 export type DayContextValue = {
-  day: Temporal.PlainDate;
+  day: PlainDate;
 };
 
 export const DayContext = createContext<DayContextValue | null>(null);

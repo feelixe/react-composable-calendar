@@ -1,26 +1,26 @@
-import { Temporal } from "temporal-polyfill";
+import { Temporal, type PlainDate } from "./temporal.js";
 
 export function getToday() {
   return Temporal.Now.plainDateISO();
 }
 
-export function isSame(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+export function isSame(a: PlainDate, b: PlainDate) {
   return Temporal.PlainDate.compare(a, b) === 0;
 }
 
-export function isAfter(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+export function isAfter(a: PlainDate, b: PlainDate) {
   return Temporal.PlainDate.compare(a, b) > 0;
 }
 
-export function isBefore(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+export function isBefore(a: PlainDate, b: PlainDate) {
   return Temporal.PlainDate.compare(a, b) < 0;
 }
 
-export function isOtherMonth(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+export function isOtherMonth(a: PlainDate, b: PlainDate) {
   return a.month !== b.month || a.year !== b.year;
 }
 
-export function getStartOfMonth(date: Temporal.PlainDate) {
+export function getStartOfMonth(date: PlainDate) {
   return Temporal.PlainDate.from({
     year: date.year,
     month: date.month,
@@ -28,23 +28,23 @@ export function getStartOfMonth(date: Temporal.PlainDate) {
   });
 }
 
-export function getEndOfMonth(date: Temporal.PlainDate) {
+export function getEndOfMonth(date: PlainDate) {
   return Temporal.PlainDate.from({ year: date.year, month: date.month, day: 1 })
     .add({ months: 1 })
     .subtract({ days: 1 });
 }
 
-export function getStartOfWeek(date: Temporal.PlainDate) {
+export function getStartOfWeek(date: PlainDate) {
   return date.subtract({
     days: date.dayOfWeek - 1,
   });
 }
 
-export function getEndOfWeek(date: Temporal.PlainDate) {
+export function getEndOfWeek(date: PlainDate) {
   return getStartOfWeek(date).add({ days: 6 });
 }
 
-export function getDaysBetween(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+export function getDaysBetween(a: PlainDate, b: PlainDate) {
   const duration = b.until(a);
   return duration.total({ unit: "days" });
 }
