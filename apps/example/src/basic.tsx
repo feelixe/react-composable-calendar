@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils.ts";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import * as Calendar from "react-composable-calendar";
+import * as Calendar from "react-composable-calendar/components";
 import { Button } from "./components/ui/button";
 
 export function CalendarBody() {

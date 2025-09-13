@@ -12,7 +12,7 @@ export default function App() {
       value={value}
       onValueChange={setValue}
       mode="single"
-      weekOffset={1}
+      locale="sv-SE"
     />
   );
 }

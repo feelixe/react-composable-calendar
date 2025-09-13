@@ -1,6 +1,7 @@
 import type { Temporal } from "temporal-polyfill";
 
 export type Mode = "single" | "range";
+
 export type CalendarInputName = [string | null, string | null];
 
 export type CalendarSingleValue = Temporal.PlainDate | null;

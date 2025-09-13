@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { getToday, isNeighboringMonth, isSame } from "./date-helpers.js";
+import { getToday, isOtherMonth, isSame } from "./date-helpers.js";
 import { Temporal } from "temporal-polyfill";
 
 export function useViewState() {
@@ -29,14 +29,7 @@ export function useCalendarLocale() {
   return context.locale;
 }
 
-export type UseIsInRangeParams = {
-  // todo, temp removed.
-  inclusive?: boolean;
-};
-
-export function useIsInRange(args?: UseIsInRangeParams) {
-  const { inclusive = true } = args ?? {};
-
+export function useIsInRange() {
   const mode = useMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
@@ -89,7 +82,7 @@ export function useIsNeighboringMonth() {
   const [view] = useViewState();
 
   return useMemo(() => {
-    return isNeighboringMonth(day, view);
+    return isOtherMonth(day, view);
   }, [day, view]);
 }
 

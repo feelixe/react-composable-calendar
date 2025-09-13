@@ -16,17 +16,8 @@ export function isBefore(a: Temporal.PlainDate, b: Temporal.PlainDate) {
   return Temporal.PlainDate.compare(a, b) < 0;
 }
 
-export function monthDifference(a: Temporal.PlainDate, b: Temporal.PlainDate) {
-  const duration = a.until(b);
-  return duration.total({ unit: "months" });
-}
-
-export function isNeighboringMonth(
-  a: Temporal.PlainDate,
-  b: Temporal.PlainDate,
-) {
-  const diff = monthDifference(a, b);
-  return Math.abs(diff) === 1;
+export function isOtherMonth(a: Temporal.PlainDate, b: Temporal.PlainDate) {
+  return a.month !== b.month || a.year !== b.year;
 }
 
 export function getStartOfMonth(date: Temporal.PlainDate) {
@@ -60,7 +51,7 @@ export function getDaysBetween(a: Temporal.PlainDate, b: Temporal.PlainDate) {
 
 export function getWeekdayNameFromIndex(
   dayIndex: number,
-  locale: string | null,
+  locale: string | null
 ): string {
   const now = Temporal.Now.plainDateISO();
   const weekDay = now.dayOfWeek;
