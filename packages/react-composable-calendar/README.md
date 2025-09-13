@@ -19,26 +19,51 @@ React Composable Calendar is a collection of headless, highly customizable, and 
 
 ## Key Features
 
-* 📆 **Single Date or Range:** Select a single date or a range.
-* 🤯 **Headless:** Bring your own styles using any styling method.
-* 🏗️ **Composable:** Build your own calendar with small building blocks.
-* 💾 **State:** Supports uncontrolled and controlled state.
-* 🗿 **shadcn/ui:** Embraces the principles of shadcn/ui. 
+- 📅 **Temporal:** Built on the upcoming Temporal API — the future JavaScript standard for dates.
+- ↔ **Single Date or Range:** Select a single date or a range.
+- 🤯 **Headless:** Bring your own styles using any styling method.
+- 🏗️ **Composable:** Build your own calendar with small building blocks.
+- 💾 **State:** Supports uncontrolled and controlled state.
+- 🗿 **shadcn/ui:** Embraces the principles of shadcn/ui.
+
+## Prerequisites
+
+Temporal has [limited availability](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) in browser. So it needs to be polyfilled for now.
+
+1. Install **Temporal Polyfill**
+
+```bash
+npm install temporal-polyfill
+```
+
+2. Import it to polyfill globally, must be imported before `react-composable-calendar`
+
+```ts
+import "temporal-polyfill/global";
+```
+
+> When Temporal is widely supported in browsers you simply remove this polyfill and everything will continue to work.
 
 ## Installation
+
 1. Install dependencies
+
 ```
 npm i react-composable-calendar dayjs
 ```
+
 2. This package is designed for you to build your own calendar. To get started, copy and paste one of the examples below into your project, such as `/components/ui/calendar.tsx`, and customize it to fit your needs.
 
 ## Background
+
 This package was created as an alternative the calendar component used by shadcn/ui, `react-day-picker`, which lacks composability. React Composable Calendar was designed to offer a seamless and enjoyable developer experience, making it easy to build and customize calendars exactly the way you want.
 
 ## Components
 
 ### Basic Calendar
+
 1. Copy paste to `src/components/ui/calendar.tsx`
+
 ```tsx
 "use client";
 
@@ -91,4 +116,5 @@ export function BasicCalendar(props: Calendar.RootProps) {
 ```
 
 ### More components
+
 Visit the [documentation site](https://react-composable-calendar.vercel.app/) for advanced usage and more examples.
