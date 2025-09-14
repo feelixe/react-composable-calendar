@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useViewState } from "../hooks.js";
 import { useCalendarContext } from "../contexts/calendar.js";
-import { Utils } from "../date-helpers.js";
+import { Utils } from "../date-utils.js";
 import { range } from "../helpers/range.js";
 import { DayContext } from "../contexts/day.js";
 

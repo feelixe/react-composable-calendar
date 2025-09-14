@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import type { GetWeekdayNameFn } from "../format.js";
-import { Utils } from "../date-helpers.js";
+import { Utils } from "../date-utils.js";
 import { useCalendarContext } from "../contexts/calendar.js";
 import { useWeekdayContext } from "../contexts/weekday.js";
 import { useCalendarLocale } from "../hooks.js";

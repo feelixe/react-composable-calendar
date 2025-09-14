@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { Utils } from "./date-helpers.js";
+import { Utils } from "./date-utils.js";
 import { Temporal } from "./temporal.js";
 
 export function useViewState() {
@@ -45,8 +45,8 @@ export function useIsInRange() {
       return false;
     }
 
-    const isAfterStart = Temporal.PlainDate.compare(day, rangeStart) >= 0;
-    const isBeforeEnd = Temporal.PlainDate.compare(day, rangeEnd) <= 0;
+    const isAfterStart = Utils.isAfter(day, rangeStart);
+    const isBeforeEnd = Utils.isBefore(day, rangeEnd);
 
     return isAfterStart && isBeforeEnd;
   }, [mode, value, day]);

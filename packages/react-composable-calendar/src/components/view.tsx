@@ -11,7 +11,7 @@ import {
   type IsDateSelectableFn,
   type ViewContextValue,
 } from "../contexts/view.js";
-import { Utils } from "../date-helpers.js";
+import { Utils } from "../date-utils.js";
 import { useCalendarLocale } from "../hooks.js";
 
 export type ViewProps = Omit<ComponentProps<"div">, "defaultValue"> & {
