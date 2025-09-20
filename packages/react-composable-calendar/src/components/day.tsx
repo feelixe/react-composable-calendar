@@ -2,6 +2,7 @@ import {
   useCallback,
   useMemo,
   type ComponentProps,
+  type FC,
   type MouseEventHandler,
 } from "react";
 import {
@@ -16,10 +17,18 @@ import {
   useIsNeighboringMonth,
   useIsSelected,
   useIsToday,
-  useMode,
+  useCalendarMode,
 } from "../hooks.js";
 import { sortValue } from "../value.js";
 import { Root } from "@radix-ui/react-slot";
+import type { PlainDate } from "../temporal.js";
+
+export type DayRenderProps = {
+  day: PlainDate;
+  isToday: boolean;
+  isSelected: boolean;
+  isNeighboringMonth: boolean;
+};
 
 export type DayState = {
   isToday: boolean;
@@ -29,15 +38,16 @@ export type DayState = {
 
 export type DayProps = Omit<ComponentProps<"button">, "className"> & {
   asChild?: boolean;
-  className?: string | undefined | ((state: DayState) => string);
+  className?: string | undefined;
   selectDayStrategy?: SelectDayStrategy;
+  render?: FC<DayRenderProps>;
 };
 export function Day(props: DayProps) {
   const {
     asChild,
-    className,
     onClick,
     selectDayStrategy = closestStrategy,
+    render: Render,
     children,
     ...rest
   } = props;
@@ -45,7 +55,7 @@ export function Day(props: DayProps) {
   const { day } = useDayContext();
   const [value, setValue] = useCalendarValue();
   const view = useCalendarView();
-  const mode = useMode();
+  const mode = useCalendarMode();
   const isNeighboringMonth = useIsNeighboringMonth();
   const isToday = useIsToday();
   const isSelected = useIsSelected();
@@ -75,17 +85,6 @@ export function Day(props: DayProps) {
     [onClick, setValue, selectDayStrategy, day, mode, value]
   );
 
-  const computedClassName = useMemo(() => {
-    if (className === undefined || typeof className === "string") {
-      return className;
-    }
-    return className({
-      isToday,
-      isSelected,
-      isNeighboringMonth: isNeighboringMonth,
-    });
-  }, [className, isToday, isSelected, isNeighboringMonth]);
-
   const Comp = asChild ? Root : "button";
 
   return (
@@ -97,10 +96,18 @@ export function Day(props: DayProps) {
       data-is-today={isToday ? true : undefined}
       disabled={isDisabled}
       onClick={clickHandler}
-      className={computedClassName}
       {...rest}
     >
-      {children}
+      {Render ? (
+        <Render
+          day={day}
+          isToday={isToday}
+          isSelected={isSelected}
+          isNeighboringMonth={isNeighboringMonth}
+        />
+      ) : (
+        children
+      )}
     </Comp>
   );
 }

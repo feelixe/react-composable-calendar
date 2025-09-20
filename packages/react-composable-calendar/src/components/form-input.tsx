@@ -1,37 +1,55 @@
-import { useMemo, type ComponentProps } from "react";
-import { defaultFormatValue, type FormatDateFn } from "../format.js";
-import { useCalendarValue, useInputName } from "../hooks.js";
-import { useMode } from "../hooks.js";
+import type { ComponentProps, FC } from "react";
+import { useCalendarLocale, useCalendarValue, useInputName } from "../hooks.js";
+import { useCalendarMode } from "../hooks.js";
+import type {
+  CalendarInputName,
+  CalendarInternalValue,
+  Mode,
+} from "../types.js";
+
+export type FormInputRenderProps = {
+  names: CalendarInputName;
+  value: CalendarInternalValue;
+  locale: string | null;
+  mode: Mode;
+};
+
+export function DefaultRenderFn(props: FormInputRenderProps) {
+  const inputName = useInputName();
+
+  return (
+    <>
+      <input
+        type="hidden"
+        name={props.names[0] ?? undefined}
+        value={props.value[0]?.toString()}
+      />
+      {props.mode === "range" && (
+        <input
+          type="hidden"
+          name={props.names[1] ?? undefined}
+          value={props.value[1]?.toString()}
+        />
+      )}
+    </>
+  );
+}
 
 export type FormInputProps = ComponentProps<"div"> & {
-  formatFn?: FormatDateFn;
+  render?: FC<FormInputRenderProps>;
 };
 
 export function FormInput(props: FormInputProps) {
-  const { formatFn = defaultFormatValue, ...rest } = props;
+  const { render: Render = DefaultRenderFn, ...rest } = props;
 
-  const mode = useMode();
+  const mode = useCalendarMode();
+  const locale = useCalendarLocale();
   const [value] = useCalendarValue();
   const inputName = useInputName();
 
-  const inputValues = useMemo(() => {
-    return [formatFn(value[0]) ?? "", formatFn(value[1]) ?? ""] as const;
-  }, [value, formatFn]);
-
   return (
     <div {...rest}>
-      <input
-        type="hidden"
-        name={inputName[0] ?? undefined}
-        value={inputValues[0]}
-      />
-      {mode === "range" && (
-        <input
-          type="hidden"
-          name={inputName[1] ?? undefined}
-          value={inputValues[1]}
-        />
-      )}
+      <Render names={inputName} value={value} locale={locale} mode={mode} />
     </div>
   );
 }

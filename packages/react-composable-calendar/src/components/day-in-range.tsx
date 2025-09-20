@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { useIsEndOfRange, useIsInRange, useIsStartOfRange } from "../hooks.js";
-import { useMode } from "../hooks.js";
+import { useCalendarMode } from "../hooks.js";
 import { Root } from "@radix-ui/react-slot";
 
 export type DayInRangeProps = ComponentProps<"div"> & {
@@ -9,7 +9,7 @@ export type DayInRangeProps = ComponentProps<"div"> & {
 
 export function DayInRange(props: DayInRangeProps) {
   const { asChild, ...rest } = props;
-  const mode = useMode();
+  const mode = useCalendarMode();
   const isInRange = useIsInRange();
   const isStartOfRange = useIsStartOfRange();
   const isEndOfRange = useIsEndOfRange();

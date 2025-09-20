@@ -1,20 +1,32 @@
-import { useMemo, type ComponentProps } from "react";
-import { defaultFormatMonth, type FormatRequiredDateFn } from "../format.js";
+import type { ComponentProps, FC } from "react";
 import { useCalendarLocale, useViewState } from "../hooks.js";
+import type { PlainDate } from "../temporal.js";
+
+export type MonthTitleRenderProps = {
+  view: PlainDate;
+  locale: string | null;
+};
+
+export const defaultRenderFn = (props: MonthTitleRenderProps) => {
+  return props.view.toLocaleString(props.locale ?? undefined, {
+    year: "numeric",
+    month: "long",
+  });
+};
 
 export type MonthTitleProps = ComponentProps<"div"> & {
-  formatFn?: FormatRequiredDateFn;
+  render?: FC<{ view: PlainDate; locale: string | null }>;
 };
 
 export function MonthTitle(props: MonthTitleProps) {
-  const { formatFn = defaultFormatMonth, ...rest } = props;
+  const { render: Render = defaultRenderFn, ...rest } = props;
 
   const [view] = useViewState();
   const locale = useCalendarLocale();
 
-  const monthTitle = useMemo(() => {
-    return formatFn(view, locale);
-  }, [view, formatFn, locale]);
-
-  return <div {...rest}>{monthTitle}</div>;
+  return (
+    <div {...rest}>
+      <Render view={view} locale={locale} />
+    </div>
+  );
 }

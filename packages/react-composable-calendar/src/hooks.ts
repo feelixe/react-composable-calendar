@@ -19,7 +19,7 @@ export function useCalendarValue() {
   return context.valueState;
 }
 
-export function useMode() {
+export function useCalendarMode() {
   const context = useCalendarContext();
   return context.mode;
 }
@@ -30,7 +30,7 @@ export function useCalendarLocale() {
 }
 
 export function useIsInRange() {
-  const mode = useMode();
+  const mode = useCalendarMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
@@ -53,7 +53,7 @@ export function useIsInRange() {
 }
 
 export function useIsSelected() {
-  const mode = useMode();
+  const mode = useCalendarMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
@@ -111,7 +111,7 @@ export function useIsEndOfRange() {
 }
 
 export function useHasValue() {
-  const mode = useMode();
+  const mode = useCalendarMode();
   const [value] = useCalendarValue();
 
   return useMemo(() => {
