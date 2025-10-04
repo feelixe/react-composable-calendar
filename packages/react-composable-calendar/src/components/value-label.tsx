@@ -9,7 +9,7 @@ export type ValueRenderProps = {
   mode: Mode;
 };
 
-export function DefaultRenderFn(props: ValueRenderProps) {
+function DefaultRenderFn(props: ValueRenderProps) {
   if (props.mode === "single") {
     return props.value[0]?.toString();
   }

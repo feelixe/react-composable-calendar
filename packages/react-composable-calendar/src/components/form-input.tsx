@@ -14,7 +14,7 @@ export type FormInputRenderProps = {
   mode: Mode;
 };
 
-export function DefaultRenderFn(props: FormInputRenderProps) {
+function DefaultRenderFn(props: FormInputRenderProps) {
   const inputName = useInputName();
 
   return (
