@@ -1,18 +1,17 @@
 {
   "name": "react-composable-calendar-workspace",
-  "private": true,
-  "type": "module",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "latest",
-    "typescript": "^5.7.3"
+    "typescript": "^5.9.2"
   },
+  "private": true,
   "scripts": {
     "build:packages": "bun run --filter './packages/*' build"
   },
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {}
+  ]
 }

@@ -8,9 +8,9 @@
     "publish-package": "bun publish.ts"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+    "./components": {
+      "import": "./dist/components/index.js",
+      "types": "./dist/components/index.d.ts"
     },
     "./types": {
       "import": "./dist/types.js",
@@ -32,16 +32,16 @@
     "package.json"
   ],
   "devDependencies": {
-    "@types/bun": "latest",
     "dayjs": "^1.11.6",
     "prompts": "^2.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "semver": "^7.7.1",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.1"
   },
   "peerDependencies": {
-    "dayjs": "^1.11.6"
+    "@radix-ui/react-slot": "^1.2.3",
+    "temporal-spec": "^0.3.0"
   }
 }

@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
     "typescript.preferences.importModuleSpecifierEnding": "js",
-    "typescript.preferences.importModuleSpecifier": "relative"
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

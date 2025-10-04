@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
-import type { Dayjs } from "../extended-dayjs.js";
+import type { PlainDate } from "../temporal.js";
 
 export type DayContextValue = {
-  day: Dayjs;
+  day: PlainDate;
 };
 
 export const DayContext = createContext<DayContextValue | null>(null);

@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
-import { getToday } from "./helpers.js";
+import { Utils } from "./date-utils.js";
+import { Temporal } from "./temporal.js";
 
 export function useViewState() {
   const viewContext = useViewContext();
@@ -18,14 +19,9 @@ export function useCalendarValue() {
   return context.valueState;
 }
 
-export function useMode() {
+export function useCalendarMode() {
   const context = useCalendarContext();
   return context.mode;
-}
-
-export function useCalendarTimezone() {
-  const context = useCalendarContext();
-  return context.timezone;
 }
 
 export function useCalendarLocale() {
@@ -33,14 +29,8 @@ export function useCalendarLocale() {
   return context.locale;
 }
 
-export type UseIsInRangeParams = {
-  inclusive?: boolean;
-};
-
-export function useIsInRange(args?: UseIsInRangeParams) {
-  const { inclusive = true } = args ?? {};
-
-  const mode = useMode();
+export function useIsInRange() {
+  const mode = useCalendarMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
@@ -48,45 +38,42 @@ export function useIsInRange(args?: UseIsInRangeParams) {
     if (mode === "single") {
       return false;
     }
-    const isAfterStart = inclusive
-      ? day.isAfter(value[0], "day") || day.isSame(value[0], "day")
-      : day.isAfter(value[0], "day");
 
-    const isBeforeEnd = inclusive
-      ? day.isBefore(value[1], "day") || day.isSame(value[1], "day")
-      : day.isBefore(value[1], "day");
+    const rangeStart = value[0];
+    const rangeEnd = value[1];
+    if (!rangeStart || !rangeEnd) {
+      return false;
+    }
+
+    const isAfterStart = Utils.isAfter(day, rangeStart);
+    const isBeforeEnd = Utils.isBefore(day, rangeEnd);
 
     return isAfterStart && isBeforeEnd;
-  }, [mode, value, day, inclusive]);
+  }, [mode, value, day]);
 }
 
 export function useIsSelected() {
-  const mode = useMode();
+  const mode = useCalendarMode();
   const { day } = useDayContext();
   const [value] = useCalendarValue();
 
   return useMemo(() => {
     if (mode === "single") {
-      return value[0]?.isSame(day, "day") ?? false;
+      if (!value[0]) {
+        return false;
+      }
+      return Utils.isSameDay(day, value[0]);
     }
-    return value.some((d) => d?.isSame(day, "day") ?? false);
+    return value.some((el) => (el ? Utils.isSameDay(day, el) : false));
   }, [value, day, mode]);
 }
 
-export function useTodaysDate() {
-  const timezone = useCalendarTimezone();
-
-  return useMemo(() => {
-    return getToday(timezone);
-  }, [timezone]);
-}
-
 export function useIsToday() {
-  const todaysDate = useTodaysDate();
+  const todaysDate = Utils.getToday();
   const { day } = useDayContext();
 
   return useMemo(() => {
-    return day.isSame(todaysDate, "day");
+    return Utils.isSameDay(day, todaysDate);
   }, [day, todaysDate]);
 }
 
@@ -95,7 +82,7 @@ export function useIsNeighboringMonth() {
   const [view] = useViewState();
 
   return useMemo(() => {
-    return !day.isSame(view, "month");
+    return Utils.isOtherMonth(day, view);
   }, [day, view]);
 }
 
@@ -104,7 +91,10 @@ export function useIsStartOfRange() {
   const [value] = useCalendarValue();
 
   return useMemo(() => {
-    return value[0]?.isSame(day, "day");
+    if (!value[0]) {
+      return false;
+    }
+    return Utils.isSameDay(day, value[0]);
   }, [value, day]);
 }
 
@@ -113,12 +103,15 @@ export function useIsEndOfRange() {
   const [value] = useCalendarValue();
 
   return useMemo(() => {
-    return value[1]?.isSame(day, "day");
+    if (!value[1]) {
+      return false;
+    }
+    return Utils.isSameDay(day, value[1]);
   }, [value, day]);
 }
 
 export function useHasValue() {
-  const mode = useMode();
+  const mode = useCalendarMode();
   const [value] = useCalendarValue();
 
   return useMemo(() => {

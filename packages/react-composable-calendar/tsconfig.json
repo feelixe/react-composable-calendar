@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
     ],
     "target": "ESNext",
     "module": "ESNext",
@@ -32,6 +32,7 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts"
   ]
 }
