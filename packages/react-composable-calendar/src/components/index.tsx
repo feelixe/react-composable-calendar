@@ -14,4 +14,5 @@ export * from "./month-title.js";
 export * from "./days.js";
 export * from "./day.js";
 export * from "./day-label.js";
+export * from "./day-renderer.js";
 export * from "./form-input.js";
