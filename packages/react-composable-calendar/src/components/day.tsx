@@ -21,10 +21,9 @@ import {
 } from "../hooks.js";
 import { sortValue } from "../value.js";
 import { Root } from "@radix-ui/react-slot";
-import type { PlainDate } from "../temporal.js";
 
 export type DayRenderProps = {
-  day: PlainDate;
+  day: Temporal.PlainDate;
   isToday: boolean;
   isSelected: boolean;
   isNeighboringMonth: boolean;

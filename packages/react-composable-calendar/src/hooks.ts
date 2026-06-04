@@ -3,7 +3,6 @@ import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
 import { Utils } from "./date-utils.js";
-import { Temporal } from "./temporal.js";
 
 export function useViewState() {
   const viewContext = useViewContext();

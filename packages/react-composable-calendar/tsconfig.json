@@ -13,10 +13,9 @@
     "declarationMap": false,
     "sourceMap": false,
     "outDir": "./dist",
-    "baseUrl": "./src",
-    "allowSyntheticDefaultImports": true,
+    "rootDir": "./src",
     // Bundler mode
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     // Best practices
     "strict": true,

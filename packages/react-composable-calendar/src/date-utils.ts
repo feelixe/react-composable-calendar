@@ -1,27 +1,25 @@
-import { Temporal, type PlainDate } from "./temporal.js";
-
 export namespace Utils {
   export function getToday() {
     return Temporal.Now.plainDateISO();
   }
 
-  export function isSameDay(a: PlainDate, b: PlainDate) {
+  export function isSameDay(a: Temporal.PlainDate, b: Temporal.PlainDate) {
     return Temporal.PlainDate.compare(a, b) === 0;
   }
 
-  export function isAfter(a: PlainDate, b: PlainDate) {
+  export function isAfter(a: Temporal.PlainDate, b: Temporal.PlainDate) {
     return Temporal.PlainDate.compare(a, b) > 0;
   }
 
-  export function isBefore(a: PlainDate, b: PlainDate) {
+  export function isBefore(a: Temporal.PlainDate, b: Temporal.PlainDate) {
     return Temporal.PlainDate.compare(a, b) < 0;
   }
 
-  export function isOtherMonth(a: PlainDate, b: PlainDate) {
+  export function isOtherMonth(a: Temporal.PlainDate, b: Temporal.PlainDate) {
     return a.month !== b.month || a.year !== b.year;
   }
 
-  export function getStartOfMonth(date: PlainDate) {
+  export function getStartOfMonth(date: Temporal.PlainDate) {
     return Temporal.PlainDate.from({
       year: date.year,
       month: date.month,
@@ -29,7 +27,7 @@ export namespace Utils {
     });
   }
 
-  export function getEndOfMonth(date: PlainDate) {
+  export function getEndOfMonth(date: Temporal.PlainDate) {
     return Temporal.PlainDate.from({
       year: date.year,
       month: date.month,
@@ -39,17 +37,17 @@ export namespace Utils {
       .subtract({ days: 1 });
   }
 
-  export function getStartOfWeek(date: PlainDate) {
+  export function getStartOfWeek(date: Temporal.PlainDate) {
     return date.subtract({
       days: date.dayOfWeek - 1,
     });
   }
 
-  export function getEndOfWeek(date: PlainDate) {
+  export function getEndOfWeek(date: Temporal.PlainDate) {
     return getStartOfWeek(date).add({ days: 6 });
   }
 
-  export function getDaysBetween(a: PlainDate, b: PlainDate) {
+  export function getDaysBetween(a: Temporal.PlainDate, b: Temporal.PlainDate) {
     const duration = b.until(a);
     return duration.total({ unit: "days" });
   }
@@ -66,7 +64,7 @@ export namespace Utils {
     return day.toLocaleString(locale ?? undefined, { weekday: "short" });
   }
 
-  export function getMonthView(month: PlainDate, weekOffset: number) {
+  export function getMonthView(month: Temporal.PlainDate, weekOffset: number) {
     const startOfMonth = getStartOfMonth(month);
     const endOfMonth = getEndOfMonth(month);
 

@@ -1,4 +1,4 @@
-import { useMemo, type ComponentProps, type FC, type ReactNode } from "react";
+import { type ComponentProps, type FC, type ReactNode } from "react";
 import { useCalendarLocale, useCalendarMode } from "../hooks.js";
 import { useCalendarValue } from "../hooks.js";
 import type { CalendarInternalValue, Mode } from "../types.js";

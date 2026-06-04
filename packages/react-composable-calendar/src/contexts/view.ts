@@ -1,10 +1,9 @@
 import { createContext, useContext } from "react";
-import type { PlainDate } from "../temporal.js";
 
-export type IsDateSelectableFn = (date: PlainDate) => boolean;
+export type IsDateSelectableFn = (date: Temporal.PlainDate) => boolean;
 
 export type ViewContextValue = {
-  viewState: [view: PlainDate, setView: (day: PlainDate) => void];
+  viewState: [view: Temporal.PlainDate, setView: (day: Temporal.PlainDate) => void];
   isDateSelectableFn?: IsDateSelectableFn;
 };
 

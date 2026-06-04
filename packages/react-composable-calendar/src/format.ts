@@ -1,5 +1,4 @@
 import type { CalendarSingleValue } from "./types.js";
-import type { PlainDate } from "./temporal.js";
 
 export type GetWeekdayNameFn = (
   dayNumber: number,

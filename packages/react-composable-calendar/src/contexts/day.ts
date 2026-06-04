@@ -1,8 +1,7 @@
 import { createContext, useContext } from "react";
-import type { PlainDate } from "../temporal.js";
 
 export type DayContextValue = {
-  day: PlainDate;
+  day: Temporal.PlainDate;
 };
 
 export const DayContext = createContext<DayContextValue | null>(null);

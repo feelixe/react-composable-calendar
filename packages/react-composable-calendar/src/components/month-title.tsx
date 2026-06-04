@@ -1,9 +1,8 @@
 import type { ComponentProps, FC } from "react";
 import { useCalendarLocale, useViewState } from "../hooks.js";
-import type { PlainDate } from "../temporal.js";
 
 export type MonthTitleRenderProps = {
-  view: PlainDate;
+  view: Temporal.PlainDate;
   locale: string | null;
 };
 
@@ -15,7 +14,7 @@ export const defaultRenderFn = (props: MonthTitleRenderProps) => {
 };
 
 export type MonthTitleProps = ComponentProps<"div"> & {
-  render?: FC<{ view: PlainDate; locale: string | null }>;
+  render?: FC<{ view: Temporal.PlainDate; locale: string | null }>;
 };
 
 export function MonthTitle(props: MonthTitleProps) {

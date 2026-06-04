@@ -1,4 +1,3 @@
-import type { PlainDate } from "../temporal.js";
 import {
   type ComponentProps,
   useCallback,
@@ -15,10 +14,10 @@ import { Utils } from "../date-utils.js";
 import { useCalendarLocale } from "../hooks.js";
 
 export type ViewProps = Omit<ComponentProps<"div">, "defaultValue"> & {
-  value?: PlainDate;
-  onValueChange?: (value: PlainDate) => unknown;
+  value?: Temporal.PlainDate;
+  onValueChange?: (value: Temporal.PlainDate) => unknown;
   isDateSelectableFn?: IsDateSelectableFn;
-  defaultValue?: PlainDate;
+  defaultValue?: Temporal.PlainDate;
 };
 
 export function View(props: ViewProps) {
@@ -36,7 +35,7 @@ export function View(props: ViewProps) {
 
   const isStateUncontrolled = value === undefined;
 
-  const [internalView, setInternalView] = useState<PlainDate>(() => {
+  const [internalView, setInternalView] = useState<Temporal.PlainDate>(() => {
     if (!isStateUncontrolled) {
       return value;
     }
@@ -48,7 +47,7 @@ export function View(props: ViewProps) {
 
   // Sync external state
   const updateValue = useCallback(
-    (newView: PlainDate) => {
+    (newView: Temporal.PlainDate) => {
       onValueChange?.(newView);
       if (isStateUncontrolled) {
         setInternalView(newView);

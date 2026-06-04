@@ -1,10 +1,9 @@
 import { Utils } from "./date-utils.js";
 import type { CalendarInternalValue } from "./types.js";
-import type { PlainDate } from "./temporal.js";
 
 export type SelectDayStrategyParams = {
   currentValue: CalendarInternalValue;
-  clickedDate: PlainDate;
+  clickedDate: Temporal.PlainDate;
   mode: "single" | "range";
 };
 
