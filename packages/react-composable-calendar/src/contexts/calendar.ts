@@ -4,12 +4,10 @@ import type {
   CalendarInternalValue,
   Mode,
 } from "../types.js";
+import type { Atom } from "../atom.js";
 
 export type CalendarContextValue = {
-  valueState: [
-    value: CalendarInternalValue,
-    setValue: (value: CalendarInternalValue) => void,
-  ];
+  valueAtom: Atom<CalendarInternalValue>;
   mode: Mode;
   inputName: CalendarInputName;
   locale: string | null;
@@ -22,7 +20,7 @@ export function useCalendarContext() {
   const context = useContext(CalendarContext);
   if (context === null) {
     throw new Error(
-      "'useCalendarContext' must be used within a 'CalendarProvider'",
+      "'useCalendarContext' must be used within a 'CalendarProvider'"
     );
   }
   return context;

@@ -1,6 +1,8 @@
 import {
   useCallback,
   useMemo,
+  useRef,
+  useState,
   type ComponentProps,
   type FC,
   type MouseEventHandler,
@@ -18,6 +20,7 @@ import {
   useIsSelected,
   useIsToday,
   useCalendarMode,
+  useCalendarValueAtom,
 } from "../hooks.js";
 import { sortValue } from "../value.js";
 import { Root } from "@radix-ui/react-slot";
@@ -51,8 +54,8 @@ export function Day(props: DayProps) {
     ...rest
   } = props;
 
+  const valueAtom = useCalendarValueAtom();
   const { day } = useDayContext();
-  const [value, setValue] = useCalendarValue();
   const view = useCalendarView();
   const mode = useCalendarMode();
   const isNeighboringMonth = useIsNeighboringMonth();
@@ -75,13 +78,13 @@ export function Day(props: DayProps) {
       }
       const newValue = selectDayStrategy({
         clickedDate: day,
-        currentValue: value,
+        currentValue: valueAtom.get(),
         mode,
       });
       const sortedValue = sortValue(newValue);
-      setValue(sortedValue);
+      valueAtom.set(sortedValue);
     },
-    [onClick, setValue, selectDayStrategy, day, mode, value]
+    [onClick, selectDayStrategy, day, mode, valueAtom]
   );
 
   const Comp = asChild ? Root : "button";

@@ -18,6 +18,7 @@ import {
   CalendarContext,
   type CalendarContextValue,
 } from "../contexts/calendar.js";
+import { type Atom, atom } from "../atom.js";
 
 export type RootBaseProps = Omit<ComponentProps<"div">, "defaultValue"> & {
   locale?: string | null;
@@ -64,7 +65,7 @@ export function Root(props: RootProps) {
         return normalizeValue(defaultValue);
       }
       return [null, null];
-    },
+    }
   );
 
   // Sync external state
@@ -79,7 +80,7 @@ export function Root(props: RootProps) {
         setInternalValue(newValue);
       }
     },
-    [onValueChange, isStateUncontrolled, mode],
+    [onValueChange, isStateUncontrolled, mode]
   );
 
   // Sync internal state
@@ -97,15 +98,22 @@ export function Root(props: RootProps) {
     return [name ?? null, null];
   }, [name, mode]);
 
+  const valueAtomRef = useRef<Atom<CalendarRangeValue>>(
+    atom(
+      defaultValue !== undefined ? normalizeValue(defaultValue) : [null, null]
+    )
+  );
+
   const contextValue = useMemo<CalendarContextValue>(
     () => ({
       valueState: [internalValue, updateValue],
+      valueAtom: valueAtomRef.current,
       mode,
       inputName: normalizedName,
       locale,
       weekOffset,
     }),
-    [internalValue, mode, updateValue, normalizedName, locale, weekOffset],
+    [internalValue, mode, updateValue, normalizedName, locale, weekOffset]
   );
 
   const previousMode = useRef<Mode>(mode);

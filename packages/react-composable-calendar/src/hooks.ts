@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useCalendarContext } from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
 import { Utils } from "./date-utils.js";
+import { useAtom, useAtomComputed } from "./atom.js";
 
 export function useViewState() {
   const viewContext = useViewContext();
@@ -15,7 +16,12 @@ export function useCalendarView() {
 }
 export function useCalendarValue() {
   const context = useCalendarContext();
-  return context.valueState;
+  return useAtom(context.valueAtom);
+}
+
+export function useCalendarValueAtom() {
+  const context = useCalendarContext();
+  return context.valueAtom;
 }
 
 export function useCalendarMode() {
@@ -31,9 +37,9 @@ export function useCalendarLocale() {
 export function useIsInRange() {
   const mode = useCalendarMode();
   const { day } = useDayContext();
-  const [value] = useCalendarValue();
+  const valueAtom = useCalendarValueAtom();
 
-  return useMemo(() => {
+  return useAtomComputed(valueAtom, (value) => {
     if (mode === "single") {
       return false;
     }
@@ -48,15 +54,15 @@ export function useIsInRange() {
     const isBeforeEnd = Utils.isBefore(day, rangeEnd);
 
     return isAfterStart && isBeforeEnd;
-  }, [mode, value, day]);
+  });
 }
 
 export function useIsSelected() {
   const mode = useCalendarMode();
   const { day } = useDayContext();
-  const [value] = useCalendarValue();
+  const valueAtom = useCalendarValueAtom();
 
-  return useMemo(() => {
+  return useAtomComputed(valueAtom, (value) => {
     if (mode === "single") {
       if (!value[0]) {
         return false;
@@ -64,7 +70,7 @@ export function useIsSelected() {
       return Utils.isSameDay(day, value[0]);
     }
     return value.some((el) => (el ? Utils.isSameDay(day, el) : false));
-  }, [value, day, mode]);
+  });
 }
 
 export function useIsToday() {
