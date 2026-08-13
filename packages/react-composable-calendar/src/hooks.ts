@@ -1,5 +1,8 @@
 import { useMemo, useRef } from "react";
-import { useCalendarContext } from "./contexts/calendar.js";
+import {
+  useCalendarContext,
+  useValueAtomContext,
+} from "./contexts/calendar.js";
 import { useDayContext } from "./contexts/day.js";
 import { useViewContext } from "./contexts/view.js";
 import { Utils } from "./date-utils.js";
@@ -15,13 +18,12 @@ export function useCalendarView() {
   return context;
 }
 export function useCalendarValue() {
-  const context = useCalendarContext();
-  return useAtom(context.valueAtom);
+  const valueAtom = useValueAtomContext();
+  return useAtom(valueAtom);
 }
 
 export function useCalendarValueAtom() {
-  const context = useCalendarContext();
-  return context.valueAtom;
+  return useValueAtomContext();
 }
 
 export function useCalendarMode() {

@@ -19,6 +19,7 @@ import {
   type CalendarContextValue,
 } from "../contexts/calendar.js";
 import { type Atom, atom } from "../atom.js";
+import { ValueAtomContext } from "../contexts/calendar.js";
 
 export type RootBaseProps = Omit<ComponentProps<"div">, "defaultValue"> & {
   locale?: string | null;
@@ -59,13 +60,10 @@ export function Root(props: RootProps) {
 
   const isStateUncontrolled = value === undefined;
 
-  const [internalValue, setInternalValue] = useState<CalendarInternalValue>(
-    () => {
-      if (defaultValue !== undefined) {
-        return normalizeValue(defaultValue);
-      }
-      return [null, null];
-    }
+  const valueAtomRef = useRef<Atom<CalendarRangeValue>>(
+    atom(
+      defaultValue !== undefined ? normalizeValue(defaultValue) : [null, null]
+    )
   );
 
   // Sync external state
@@ -77,7 +75,7 @@ export function Root(props: RootProps) {
         onValueChange?.(newValue);
       }
       if (isStateUncontrolled) {
-        setInternalValue(newValue);
+        valueAtomRef.current.set(newValue);
       }
     },
     [onValueChange, isStateUncontrolled, mode]
@@ -88,7 +86,7 @@ export function Root(props: RootProps) {
     if (value === undefined) {
       return;
     }
-    setInternalValue(normalizeValue(value));
+    valueAtomRef.current.set(normalizeValue(value));
   }, [value]);
 
   const normalizedName = useMemo<CalendarInputName>(() => {
@@ -98,40 +96,47 @@ export function Root(props: RootProps) {
     return [name ?? null, null];
   }, [name, mode]);
 
-  const valueAtomRef = useRef<Atom<CalendarRangeValue>>(
-    atom(
-      defaultValue !== undefined ? normalizeValue(defaultValue) : [null, null]
-    )
-  );
-
   const contextValue = useMemo<CalendarContextValue>(
     () => ({
-      valueState: [internalValue, updateValue],
-      valueAtom: valueAtomRef.current,
       mode,
       inputName: normalizedName,
       locale,
       weekOffset,
     }),
-    [internalValue, mode, updateValue, normalizedName, locale, weekOffset]
+    [mode, normalizedName, locale, weekOffset]
   );
 
   const previousMode = useRef<Mode>(mode);
   useEffect(() => {
+    const value = valueAtomRef.current.get();
     if (mode !== previousMode.current) {
       if (mode === "single") {
-        updateValue([internalValue[0], null]);
+        updateValue([value[0], null]);
       } else {
-        updateValue([internalValue[0], internalValue[1]]);
+        updateValue([value[0], value[1]]);
       }
     }
     previousMode.current = mode;
-  }, [mode, updateValue, internalValue]);
+  }, [mode, updateValue]);
+
+  useEffect(() => {
+    const listener = () => {
+      updateValue(valueAtomRef.current.get());
+    };
+
+    valueAtomRef.current.subscribe(listener);
+
+    return () => {
+      valueAtomRef.current.unsubscribe(listener);
+    };
+  }, [updateValue]);
 
   return (
     <div ref={ref} {...rest}>
       <CalendarContext.Provider value={contextValue}>
-        {children}
+        <ValueAtomContext.Provider value={valueAtomRef.current}>
+          {children}
+        </ValueAtomContext.Provider>
       </CalendarContext.Provider>
     </div>
   );

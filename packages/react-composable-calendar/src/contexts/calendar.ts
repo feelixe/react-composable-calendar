@@ -7,7 +7,6 @@ import type {
 import type { Atom } from "../atom.js";
 
 export type CalendarContextValue = {
-  valueAtom: Atom<CalendarInternalValue>;
   mode: Mode;
   inputName: CalendarInputName;
   locale: string | null;
@@ -24,4 +23,18 @@ export function useCalendarContext() {
     );
   }
   return context;
+}
+
+export const ValueAtomContext = createContext<
+  Atom<CalendarInternalValue> | undefined
+>(undefined);
+
+export function useValueAtomContext() {
+  const contextValue = useContext(ValueAtomContext);
+  if (contextValue === undefined) {
+    throw new Error(
+      "'useValueAtomContext' must be used within a 'ValueAtomContext'"
+    );
+  }
+  return contextValue;
 }

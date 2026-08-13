@@ -1,5 +1,6 @@
 import {
   type ComponentProps,
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -11,7 +12,6 @@ import {
   type ViewContextValue,
 } from "../contexts/view.js";
 import { Utils } from "../date-utils.js";
-import { useCalendarLocale } from "../hooks.js";
 
 export type ViewProps = Omit<ComponentProps<"div">, "defaultValue"> & {
   value?: Temporal.PlainDate;
@@ -20,7 +20,7 @@ export type ViewProps = Omit<ComponentProps<"div">, "defaultValue"> & {
   defaultValue?: Temporal.PlainDate;
 };
 
-export function View(props: ViewProps) {
+export const View = memo((props: ViewProps) => {
   const {
     value,
     onValueChange,
@@ -31,7 +31,6 @@ export function View(props: ViewProps) {
   } = props;
 
   const today = Utils.getToday();
-  const locale = useCalendarLocale();
 
   const isStateUncontrolled = value === undefined;
 
@@ -79,4 +78,4 @@ export function View(props: ViewProps) {
       </ViewContext.Provider>
     </div>
   );
-}
+});
